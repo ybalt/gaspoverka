@@ -7,10 +7,10 @@ public class Reference {
 
     private String Type;
     private int Channel;
-    private float UD;
-    private float PL;
-    private float IC;
-    private float MIC;
+    private double UD;
+    private double PL;
+    private double IC;
+    private double MIC;
     private ReferenceDB db;
     private MeasureRange mr;
 
@@ -54,27 +54,27 @@ public class Reference {
         this.Channel = Channel;
     }
 
-    public float getIC() {
+    public double getIC() {
         return IC;
     }
 
-    public void setIC(float IC) {
+    public void setIC(double IC) {
         this.IC = IC;
     }
 
-    public float getMIC() {
+    public double getMIC() {
         return MIC;
     }
 
-    public void setMIC(float MIC) {
+    public void setMIC(double MIC) {
         this.MIC = MIC;
     }
 
-    public float getPL() {
+    public double getPL() {
         return PL;
     }
 
-    public void setPL(float PL) {
+    public void setPL(double PL) {
         this.PL = PL;
     }
 
@@ -86,11 +86,11 @@ public class Reference {
         this.Type = Type;
     }
 
-    public float getUD() {
+    public double getUD() {
         return UD;
     }
 
-    public void setUD(float UD) {
+    public void setUD(double UD) {
         this.UD = UD;
     }
 

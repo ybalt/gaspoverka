@@ -17,16 +17,16 @@ public class CountersPov {
     private String Date;
     private int KP;
     private int MeasureNum;
-    private float RefValue;
-    private float RefPressure;
-    private float RefTemp;
-    private float RefRValue;
-    private float CounterValue;
-    private float CounterPressure;
-    private float CounterTemp;
-    private float CounterRValue;
-    private float Error;
-    private float ErrorInRange;
+    private double RefValue;
+    private double RefPressure;
+    private double RefTemp;
+    private double RefRValue;
+    private double CounterValue;
+    private double CounterPressure;
+    private double CounterTemp;
+    private double CounterRValue;
+    private double Error;
+    private double ErrorInRange;
 
     public String getDate() {
         return Date;
@@ -44,35 +44,35 @@ public class CountersPov {
         this.Number = Number;
     }
 
-    public float getCounterPressure() {
+    public double getCounterPressure() {
         return CounterPressure;
     }
 
-    public void setCounterPressure(float CounterPressure) {
+    public void setCounterPressure(double CounterPressure) {
         this.CounterPressure = CounterPressure;
     }
 
-    public float getCounterRValue() {
+    public double getCounterRValue() {
         return CounterRValue;
     }
 
-    public void setCounterRValue(float CounterRValue) {
+    public void setCounterRValue(double CounterRValue) {
         this.CounterRValue = CounterRValue;
     }
 
-    public float getCounterTemp() {
+    public double getCounterTemp() {
         return CounterTemp;
     }
 
-    public void setCounterTemp(float CounterTemp) {
+    public void setCounterTemp(double CounterTemp) {
         this.CounterTemp = CounterTemp;
     }
 
-    public float getCounterValue() {
+    public double getCounterValue() {
         return CounterValue;
     }
 
-    public void setCounterValue(float CounterValue) {
+    public void setCounterValue(double CounterValue) {
         this.CounterValue = CounterValue;
     }
 
@@ -84,19 +84,19 @@ public class CountersPov {
         this.Number = Counter;
     }
 
-    public float getError() {
+    public double getError() {
         return Error;
     }
 
-    public void setError(float Error) {
+    public void setError(double Error) {
         this.Error = Error;
     }
 
-    public float getErrorInRange() {
+    public double getErrorInRange() {
         return ErrorInRange;
     }
 
-    public void setErrorInRange(float ErrorInRange) {
+    public void setErrorInRange(double ErrorInRange) {
         this.ErrorInRange = ErrorInRange;
     }
 
@@ -132,35 +132,35 @@ public class CountersPov {
         this.Ref = Ref;
     }
 
-    public float getRefPressure() {
+    public double getRefPressure() {
         return RefPressure;
     }
 
-    public void setRefPressure(float RefPressure) {
+    public void setRefPressure(double RefPressure) {
         this.RefPressure = RefPressure;
     }
 
-    public float getRefRValue() {
+    public double getRefRValue() {
         return RefRValue;
     }
 
-    public void setRefRValue(float RefRValue) {
+    public void setRefRValue(double RefRValue) {
         this.RefRValue = RefRValue;
     }
 
-    public float getRefTemp() {
+    public double getRefTemp() {
         return RefTemp;
     }
 
-    public void setRefTemp(float RefTemp) {
+    public void setRefTemp(double RefTemp) {
         this.RefTemp = RefTemp;
     }
 
-    public float getRefValue() {
+    public double getRefValue() {
         return RefValue;
     }
 
-    public void setRefValue(float RefValue) {
+    public void setRefValue(double RefValue) {
         this.RefValue = RefValue;
     }
 

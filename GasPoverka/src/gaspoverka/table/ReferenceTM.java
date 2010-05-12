@@ -44,7 +44,7 @@ public class ReferenceTM extends AbstractTableModel {
             case PL_INDEX:
             case IC_INDEX:
             case MIC_INDEX:
-                return Float.class;
+                return Double.class;
             default:
                 return Object.class;
         }

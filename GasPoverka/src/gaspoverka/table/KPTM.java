@@ -18,9 +18,9 @@ public class KPTM extends AbstractTableModel {
         dataVector = new Vector();
         Vector row = new Vector();
         row.add(Integer.valueOf(0));
-        row.add(Float.valueOf(0));
-        row.add(Float.valueOf(0));
-        row.add(Float.valueOf(0));
+        row.add(Double.valueOf(0));
+        row.add(Double.valueOf(0));
+        row.add(Double.valueOf(0));
         dataVector.add(row);
     }
 
@@ -48,9 +48,9 @@ public class KPTM extends AbstractTableModel {
         for (int i = 0; i < dataVector.size(); i++) {
             kp.setKP(i,
                     (Integer) ((Vector) dataVector.get(i)).get(0),
-                    (Float) ((Vector) dataVector.get(i)).get(1),
-                    (Float) ((Vector) dataVector.get(i)).get(2),
-                    (Float) ((Vector) dataVector.get(i)).get(3));
+                    (Double) ((Vector) dataVector.get(i)).get(1),
+                    (Double) ((Vector) dataVector.get(i)).get(2),
+                    (Double) ((Vector) dataVector.get(i)).get(3));
         }
         edit = false;
     }
@@ -61,9 +61,9 @@ public class KPTM extends AbstractTableModel {
             for (int j = 0; j < i; j++) {
                 Vector row = new Vector();
                 row.add(Integer.valueOf(0));
-                row.add(Float.valueOf(0));
-                row.add(Float.valueOf(0));
-                row.add(Float.valueOf(0));
+                row.add(Double.valueOf(0));
+                row.add(Double.valueOf(0));
+                row.add(Double.valueOf(0));
                 dataVector.add(row);
             }
         }
@@ -79,7 +79,7 @@ public class KPTM extends AbstractTableModel {
             case ValueL_INDEX:
             case ValueH_INDEX:
             case Error_INDEX:
-                return Float.class;
+                return Double.class;
             default:
                 return Object.class;
         }

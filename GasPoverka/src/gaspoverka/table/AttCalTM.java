@@ -3,27 +3,30 @@ package gaspoverka.table;
 import java.util.*;
 import javax.swing.table.*;
 
-public class AttCalc extends AbstractTableModel {
+public class AttCalTM extends AbstractTableModel {
 
     public static final int Point_INDEX = 0;
     public static final int X_INDEX = 1;
     public static final int Y_INDEX = 2;
     public static final int Xs_INDEX = 3;
     public static final int Ys_INDEX = 4;
-    protected String[] columnNames = {"Точка", "X", "Y", "X'", "Y'"};
+    protected String[] columnNamesInitial = {"Точка", "Эталон", "Измерено", "Расчет", "Поправка"};
+    protected String[] columnNames;
     protected Vector<calculator> dataVector;
 
-    public AttCalc() {
+    public AttCalTM() {
         dataVector = new Vector();
+        columnNames = new String[5];
+        setRows(0, "");
     }
 
     private class calculator {
 
         private String type;
-        private float x;
-        private float y;
-        private float xs;
-        private float ys;
+        private double x;
+        private double y;
+        private double xs;
+        private double ys;
 
         // <editor-fold defaultstate="collapsed" desc="get & set">
         public String getType() {
@@ -34,35 +37,35 @@ public class AttCalc extends AbstractTableModel {
             this.type = type;
         }
 
-        public float getX() {
+        public double getX() {
             return x;
         }
 
-        public void setX(float x) {
+        public void setX(double x) {
             this.x = x;
         }
 
-        public float getXs() {
+        public double getXs() {
             return xs;
         }
 
-        public void setXs(float xs) {
+        public void setXs(double xs) {
             this.xs = xs;
         }
 
-        public float getY() {
+        public double getY() {
             return y;
         }
 
-        public void setY(float y) {
+        public void setY(double y) {
             this.y = y;
         }
 
-        public float getYs() {
+        public double getYs() {
             return ys;
         }
 
-        public void setYs(float ys) {
+        public void setYs(double ys) {
             this.ys = ys;
         }// </editor-fold>
 
@@ -80,7 +83,10 @@ public class AttCalc extends AbstractTableModel {
         return columnNames[column];
     }
 
-    public void setRows(int type) {
+    public void setRows(int type, String post) {
+        for (int i = 1; i < 5; i++) {
+            columnNames[i] = columnNamesInitial[i] + ", " + post;
+        }
         dataVector.clear();
         char[] alphabet = new char[6];
         for (char c = 'A'; c <= 'F'; ++c) {
@@ -100,20 +106,19 @@ public class AttCalc extends AbstractTableModel {
                 dataVector.get(row).setType(value.toString());
                 break;
             case X_INDEX:
-                dataVector.get(row).setX(Float.parseFloat(value.toString()));
+                dataVector.get(row).setX(Double.parseDouble(value.toString()));
                 break;
             case Y_INDEX:
-                dataVector.get(row).setY(Float.parseFloat(value.toString()));
+                dataVector.get(row).setY(Double.parseDouble(value.toString()));
                 break;
             case Xs_INDEX:
-                dataVector.get(row).setXs(Float.parseFloat(value.toString()));
+                dataVector.get(row).setXs(Double.parseDouble(value.toString()));
                 break;
             case Ys_INDEX:
-                dataVector.get(row).setYs(Float.parseFloat(value.toString()));
+                dataVector.get(row).setYs(Double.parseDouble(value.toString()));
                 break;
 
         }
-        //((Vector) dataVector.get(row)).set(col, value);
         fireTableChanged(null);
     }
 
@@ -124,19 +129,19 @@ public class AttCalc extends AbstractTableModel {
             try {
                 //y=x*(F1/F4)-(F2/F4)+(F3/F4)
                 //y=kx+b
-                float F1 = B.getY() - A.getY();
-                float F2 = A.getX() * B.getY();
-                float F3 = B.getX() * A.getY();
-                float F4 = B.getX() - A.getY();
-                float k1 = F1 / F4;
-                float b1 = (F3 / F4) - (F2 / F4);
+                double F1 = B.getY() - A.getY();
+                double F2 = A.getX() * B.getY();
+                double F3 = B.getX() * A.getY();
+                double F4 = B.getX() - A.getY();
+                double k1 = F1 / F4;
+                double b1 = (F3 / F4) - (F2 / F4);
 
-                float G1 = B.getYs() - A.getYs();
-                float G2 = A.getY() * B.getYs();
-                float G3 = B.getY() * A.getYs();
-                float G4 = B.getY() - A.getY();
-                float k2 = G1 / G4;
-                float b2 = (G3 / G4) - (G2 / G4);
+                double G1 = B.getYs() - A.getYs();
+                double G2 = A.getY() * B.getYs();
+                double G3 = B.getY() * A.getYs();
+                double G4 = B.getY() - A.getY();
+                double k2 = G1 / G4;
+                double b2 = (G3 / G4) - (G2 / G4);
                 A.setXs(b2);
             } catch (Exception e) {
                 A.setXs(0);
@@ -151,37 +156,34 @@ public class AttCalc extends AbstractTableModel {
             case Point_INDEX:
                 return String.class;
             default:
-                return Float.class;
+                return Double.class;
         }
     }
 
+    @Override
     public Object getValueAt(int row, int col) {
         switch (col) {
             case Point_INDEX:
                 return dataVector.get(row).getType();
             case X_INDEX:
                 return dataVector.get(row).getX();
-
             case Y_INDEX:
                 return dataVector.get(row).getY();
-
             case Xs_INDEX:
                 return dataVector.get(row).getXs();
-
             case Ys_INDEX:
                 return dataVector.get(row).getYs();
-
             default:
                 return new Object();
         }
-        //return ((Vector) dataVector.get(row)).get(col);
-
     }
 
+    @Override
     public int getRowCount() {
         return dataVector.size();
     }
 
+    @Override
     public int getColumnCount() {
         return columnNames.length;
     }

@@ -7,9 +7,9 @@ public class Counters {
 
     private String Type;
     private int Channel;
-    private float UD;
-    private float PL;
-    private float IC;
+    private double UD;
+    private double PL;
+    private double IC;
     private CountersKP kp;
     private MeasureRange mr;
     private CountersDB db;
@@ -54,19 +54,19 @@ public class Counters {
         this.Channel = Channel;
     }
 
-    public float getIC() {
+    public double getIC() {
         return IC;
     }
 
-    public void setIC(float IC) {
+    public void setIC(double IC) {
         this.IC = IC;
     }
 
-    public float getPL() {
+    public double getPL() {
         return PL;
     }
 
-    public void setPL(float PL) {
+    public void setPL(double PL) {
         this.PL = PL;
     }
 
@@ -78,11 +78,11 @@ public class Counters {
         this.Type = Type;
     }
 
-    public float getUD() {
+    public double getUD() {
         return UD;
     }
 
-    public void setUD(float UD) {
+    public void setUD(double UD) {
         this.UD = UD;
     }
 

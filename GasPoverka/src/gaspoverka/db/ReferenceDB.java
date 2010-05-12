@@ -62,10 +62,10 @@ public class ReferenceDB {
                 Vector row = new Vector();
                 row.add(res.getString(1));
                 row.add(res.getInt(2));
-                row.add(res.getFloat(3));
-                row.add(res.getFloat(4));
-                row.add(res.getFloat(5));
-                row.add(res.getFloat(6));
+                row.add(res.getDouble(3));
+                row.add(res.getDouble(4));
+                row.add(res.getDouble(5));
+                row.add(res.getDouble(6));
                 vector.add(row);
             }
             if (vector.size() == 0) {
@@ -97,10 +97,10 @@ public class ReferenceDB {
 
             saveDev.setString(1, device.getType());
             saveDev.setInt(2, device.getChannel());
-            saveDev.setFloat(3, device.getUD());
-            saveDev.setFloat(4, device.getPL());
-            saveDev.setFloat(5, device.getIC());
-            saveDev.setFloat(6, device.getMIC());
+            saveDev.setDouble(3, device.getUD());
+            saveDev.setDouble(4, device.getPL());
+            saveDev.setDouble(5, device.getIC());
+            saveDev.setDouble(6, device.getMIC());
             result = saveDev.executeUpdate();
             if (result == 0) {
                 conn.rollback();
@@ -114,9 +114,9 @@ public class ReferenceDB {
             for (int i = 0; i < device.getMR().getNum(); i++) {
                 saveMR.setString(1, device.getType());
                 saveMR.setInt(2, device.getMR().getNumber(i));
-                saveMR.setFloat(3, device.getMR().getMRH(i));
-                saveMR.setFloat(4, device.getMR().getMRL(i));
-                saveMR.setFloat(5, device.getMR().getError(i));
+                saveMR.setDouble(3, device.getMR().getMRH(i));
+                saveMR.setDouble(4, device.getMR().getMRL(i));
+                saveMR.setDouble(5, device.getMR().getError(i));
                 result = saveMR.executeUpdate();
                 if (result == 0) {
                     conn.rollback();
@@ -153,8 +153,8 @@ public class ReferenceDB {
 
             device.setType(resultRef.getString(1));
             device.setChannel(resultRef.getInt(2));
-            device.setUD(resultRef.getFloat(3));
-            device.setPL(resultRef.getFloat(4));
+            device.setUD(resultRef.getDouble(3));
+            device.setPL(resultRef.getDouble(4));
             device.setIC(resultRef.getInt(5));
             device.setMIC(resultRef.getInt(6));
 
@@ -179,7 +179,7 @@ public class ReferenceDB {
             resultMR.beforeFirst();
             i = 0;
             while (resultMR.next()) {
-                device.getMR().setMR(i, resultMR.getInt(1), resultMR.getFloat(2), resultMR.getFloat(3), resultMR.getFloat(4));
+                device.getMR().setMR(i, resultMR.getInt(1), resultMR.getDouble(2), resultMR.getDouble(3), resultMR.getDouble(4));
                 i++;
             }
             fin();
@@ -232,9 +232,9 @@ public class ReferenceDB {
                     + "WHERE TYPE=?");
 
             updateDev.setInt(1, device.getChannel());
-            updateDev.setFloat(2, device.getUD());
-            updateDev.setFloat(3, device.getPL());
-            updateDev.setFloat(4, device.getIC());
+            updateDev.setDouble(2, device.getUD());
+            updateDev.setDouble(3, device.getPL());
+            updateDev.setDouble(4, device.getIC());
             updateDev.setString(5, device.getType());
             result = updateDev.executeUpdate();
             if (result == 0) {
@@ -249,9 +249,9 @@ public class ReferenceDB {
             for (int i = 1; i <= device.getMR().getNum(); i++) {
                 updateMR.setString(1, device.getMR().getType());
                 updateMR.setInt(2, device.getMR().getNumber(i));
-                updateMR.setFloat(3, device.getMR().getMRH(i));
-                updateMR.setFloat(4, device.getMR().getMRL(i));
-                updateMR.setFloat(5, device.getMR().getError(i));
+                updateMR.setDouble(3, device.getMR().getMRH(i));
+                updateMR.setDouble(4, device.getMR().getMRL(i));
+                updateMR.setDouble(5, device.getMR().getError(i));
                 result = updateMR.executeUpdate();
                 if (result == 0) {
                     conn.rollback();

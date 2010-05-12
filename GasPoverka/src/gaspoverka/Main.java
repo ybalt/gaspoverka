@@ -28,11 +28,8 @@ public class Main extends javax.swing.JFrame {
 
         PovButton = new javax.swing.JButton();
         IzmButton = new javax.swing.JButton();
+        AttButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        Att = new javax.swing.JMenu();
-        AttIzm = new javax.swing.JMenuItem();
-        AttCal = new javax.swing.JMenuItem();
-        AttPov = new javax.swing.JMenuItem();
         Arch = new javax.swing.JMenu();
         ArchCounter = new javax.swing.JMenuItem();
         ArchRef = new javax.swing.JMenuItem();
@@ -56,33 +53,12 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        Att.setText("Аттестация");
-
-        AttIzm.setText("Измерение");
-        AttIzm.addActionListener(new java.awt.event.ActionListener() {
+        AttButton.setText("Аттестация");
+        AttButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AttIzmActionPerformed(evt);
+                AttButtonActionPerformed(evt);
             }
         });
-        Att.add(AttIzm);
-
-        AttCal.setText("Калибровка");
-        AttCal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AttCalActionPerformed(evt);
-            }
-        });
-        Att.add(AttCal);
-
-        AttPov.setText("Поверка");
-        AttPov.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AttPovActionPerformed(evt);
-            }
-        });
-        Att.add(AttPov);
-
-        jMenuBar1.add(Att);
 
         Arch.setText("Архив");
 
@@ -119,35 +95,34 @@ public class Main extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(211, 211, 211)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PovButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(IzmButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addGap(214, 214, 214)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(IzmButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                    .addComponent(PovButton, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                .addGap(222, 222, 222))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(201, 201, 201)
+                .addComponent(AttButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(201, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(72, 72, 72)
+                .addGap(80, 80, 80)
                 .addComponent(PovButton)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(IzmButton)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addGap(69, 69, 69)
+                .addComponent(AttButton)
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AttIzmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttIzmActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Attestation().setVisible(true);
-            }
-        });
-    }//GEN-LAST:event_AttIzmActionPerformed
-
     private void ArchCounterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchCounterActionPerformed
        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new EditCounters().setVisible(true);
             }
@@ -156,6 +131,7 @@ public class Main extends javax.swing.JFrame {
 
     private void ArchRefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchRefActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new EditRefrence().setVisible(true);
             }
@@ -164,6 +140,7 @@ public class Main extends javax.swing.JFrame {
 
     private void ArchSensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchSensActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new EditSensors().setVisible(true);
             }
@@ -172,6 +149,7 @@ public class Main extends javax.swing.JFrame {
 
     private void PovButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PovButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new PoverkaPov().setVisible(true);
             }
@@ -180,29 +158,28 @@ public class Main extends javax.swing.JFrame {
 
     private void IzmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IzmButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new PoverkaIzm().setVisible(true);
             }
         });
     }//GEN-LAST:event_IzmButtonActionPerformed
 
-    private void AttCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttCalActionPerformed
-            java.awt.EventQueue.invokeLater(new Runnable() {
+    private void AttButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttButtonActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                //new AttCal().setVisible(true);
+                new Attestation().setVisible(true);
             }
         });
-    }//GEN-LAST:event_AttCalActionPerformed
-
-    private void AttPovActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttPovActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AttPovActionPerformed
+    }//GEN-LAST:event_AttButtonActionPerformed
 
     /**
     * @param args the command line arguments
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Main().setVisible(true);
             }
@@ -214,10 +191,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem ArchCounter;
     private javax.swing.JMenuItem ArchRef;
     private javax.swing.JMenuItem ArchSens;
-    private javax.swing.JMenu Att;
-    private javax.swing.JMenuItem AttCal;
-    private javax.swing.JMenuItem AttIzm;
-    private javax.swing.JMenuItem AttPov;
+    private javax.swing.JButton AttButton;
     private javax.swing.JButton IzmButton;
     private javax.swing.JButton PovButton;
     private javax.swing.JMenuBar jMenuBar1;

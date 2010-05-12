@@ -16,9 +16,9 @@ public class MRTM extends AbstractTableModel {
     public MRTM() {
         dataVector = new Vector();
         Vector row = new Vector();
-        row.add(Float.valueOf("0"));
-        row.add(Float.valueOf("0"));
-        row.add(Float.valueOf("0"));
+        row.add(Double.valueOf("0"));
+        row.add(Double.valueOf("0"));
+        row.add(Double.valueOf("0"));
         dataVector.add(row);
     }
 
@@ -44,9 +44,9 @@ public class MRTM extends AbstractTableModel {
         mr.setNum(dataVector.size());
         for (int i = 0; i < dataVector.size(); i++) {
             mr.setNumber(i, i);
-            mr.setMRL(i, (Float) ((Vector) dataVector.get(i)).get(0));
-            mr.setMRH(i, (Float) ((Vector) dataVector.get(i)).get(1));
-            mr.setError(i, (Float) ((Vector) dataVector.get(i)).get(2));
+            mr.setMRL(i, (Double) ((Vector) dataVector.get(i)).get(0));
+            mr.setMRH(i, (Double) ((Vector) dataVector.get(i)).get(1));
+            mr.setError(i, (Double) ((Vector) dataVector.get(i)).get(2));
         }
         edit = false;
     }
@@ -56,9 +56,9 @@ public class MRTM extends AbstractTableModel {
             dataVector.clear();
             for (int j = 0; j < i; j++) {
                 Vector row = new Vector();
-                row.add(Float.valueOf("0"));
-                row.add(Float.valueOf("0"));
-                row.add(Float.valueOf("0"));
+                row.add(Double.valueOf("0"));
+                row.add(Double.valueOf("0"));
+                row.add(Double.valueOf("0"));
                 dataVector.add(row);
             }
         }
@@ -72,7 +72,7 @@ public class MRTM extends AbstractTableModel {
             case MRH_INDEX:
             case MRL_INDEX:
             case Error_INDEX:
-                return Float.class;
+                return Double.class;
             default:
                 return Object.class;
         }

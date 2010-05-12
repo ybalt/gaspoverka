@@ -4,9 +4,9 @@ public class CountersKP {
     //private String Type;
 
     private int[] KP;
-    private float[] ValueL;
-    private float[] ValueH;
-    private float[] Error;
+    private double[] ValueL;
+    private double[] ValueH;
+    private double[] Error;
     private int KPNUM;
 
     public int getNum() {
@@ -19,16 +19,16 @@ public class CountersKP {
     public void setNum(int i) {
         this.KPNUM = i;
         this.KP = new int[i];
-        this.ValueL = new float[i];
-        this.ValueH = new float[i];
-        this.Error = new float[i];
+        this.ValueL = new double[i];
+        this.ValueH = new double[i];
+        this.Error = new double[i];
     }
 
-    public float getError(int i) {
+    public double getError(int i) {
         return Error[i];
     }
 
-    public void setError(int i, float Error) {
+    public void setError(int i, double Error) {
         this.Error[i] = Error;
     }
 
@@ -36,7 +36,7 @@ public class CountersKP {
         return KP[i];
     }
 
-    public void setKP(int i, int KP, float ValueL, float ValueH, float Error) {
+    public void setKP(int i, int KP, double ValueL, double ValueH, double Error) {
         if (i < getNum()) {
             this.setKP(i, KP);
             this.setValueL(i, ValueL);
@@ -49,19 +49,19 @@ public class CountersKP {
         this.KP[i] = KP;
     }
 
-    public float getValueL(int i) {
+    public double getValueL(int i) {
         return ValueL[i];
     }
 
-    public void setValueL(int i, float Value) {
+    public void setValueL(int i, double Value) {
         this.ValueL[i] = Value;
     }
 
-    public float getValueH(int i) {
+    public double getValueH(int i) {
         return ValueH[i];
     }
 
-    public void setValueH(int i, float Value) {
+    public void setValueH(int i, double Value) {
         this.ValueH[i] = Value;
     }
 

@@ -394,9 +394,9 @@ public class EditCounters extends javax.swing.JFrame {
     public void updateDev() {
         device.setType(Type.getText());
         device.setChannel(Integer.valueOf(Channel.getText()));
-        device.setUD(Float.valueOf(UD.getText()));
-        device.setPL(Float.valueOf(PL.getText()));
-        device.setIC(Float.valueOf(IC.getText()));
+        device.setUD(Double.valueOf(UD.getText()));
+        device.setPL(Double.valueOf(PL.getText()));
+        device.setIC(Double.valueOf(IC.getText()));
         KPTM.updateData(device.getKP());
         MRTM.updateData(device.getMR());
     }

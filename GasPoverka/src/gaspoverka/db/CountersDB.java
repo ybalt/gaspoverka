@@ -62,9 +62,9 @@ public class CountersDB {
                 Vector row = new Vector();
                 row.add(res.getString(1));
                 row.add(res.getInt(2));
-                row.add(res.getFloat(3));
-                row.add(res.getFloat(4));
-                row.add(res.getFloat(5));
+                row.add(res.getDouble(3));
+                row.add(res.getDouble(4));
+                row.add(res.getDouble(5));
                 vector.add(row);
             }
             if (vector.size() == 0) {
@@ -94,9 +94,9 @@ public class CountersDB {
                     + "VALUES (?,?,?,?,?)");
             saveDev.setString(1, device.getType());
             saveDev.setInt(2, device.getChannel());
-            saveDev.setFloat(3, device.getUD());
-            saveDev.setFloat(4, device.getPL());
-            saveDev.setFloat(5, device.getIC());
+            saveDev.setDouble(3, device.getUD());
+            saveDev.setDouble(4, device.getPL());
+            saveDev.setDouble(5, device.getIC());
             result = saveDev.executeUpdate();
             if (result == 0) {
                 conn.rollback();
@@ -110,9 +110,9 @@ public class CountersDB {
             for (int i = 0; i < device.getKP().getNum(); i++) {
                 saveKP.setString(1, device.getType());
                 saveKP.setInt(2, device.getKP().getKP(i));
-                saveKP.setFloat(3, device.getKP().getValueL(i));
-                saveKP.setFloat(4, device.getKP().getValueH(i));
-                saveKP.setFloat(5, device.getKP().getError(i));
+                saveKP.setDouble(3, device.getKP().getValueL(i));
+                saveKP.setDouble(4, device.getKP().getValueH(i));
+                saveKP.setDouble(5, device.getKP().getError(i));
                 result = saveKP.executeUpdate();
                 if (result == 0) {
                     conn.rollback();
@@ -128,9 +128,9 @@ public class CountersDB {
             for (int i = 0; i < device.getMR().getNum(); i++) {
                 saveMR.setString(1, device.getType());
                 saveMR.setInt(2, device.getMR().getNumber(i));
-                saveMR.setFloat(3, device.getMR().getMRH(i));
-                saveMR.setFloat(4, device.getMR().getMRL(i));
-                saveMR.setFloat(5, device.getMR().getError(i));
+                saveMR.setDouble(3, device.getMR().getMRH(i));
+                saveMR.setDouble(4, device.getMR().getMRL(i));
+                saveMR.setDouble(5, device.getMR().getError(i));
                 result = saveMR.executeUpdate();
                 if (result == 0) {
                     conn.rollback();
@@ -170,8 +170,8 @@ public class CountersDB {
 
             device.setType(resultCounter.getString(1));
             device.setChannel(resultCounter.getInt(2));
-            device.setUD(resultCounter.getFloat(3));
-            device.setPL(resultCounter.getFloat(4));
+            device.setUD(resultCounter.getDouble(3));
+            device.setPL(resultCounter.getDouble(4));
             device.setIC(resultCounter.getInt(5));
 
             PreparedStatement loadKP = conn.prepareStatement("SELECT "
@@ -195,7 +195,7 @@ public class CountersDB {
             i = 0;
             resultKP.beforeFirst();
             while (resultKP.next()) {
-                device.getKP().setKP(i, resultKP.getInt(1), resultKP.getFloat(2), resultKP.getFloat(3), resultKP.getFloat(4));
+                device.getKP().setKP(i, resultKP.getInt(1), resultKP.getDouble(2), resultKP.getDouble(3), resultKP.getDouble(4));
                 i++;
             }
 
@@ -220,7 +220,7 @@ public class CountersDB {
             resultMR.beforeFirst();
             i = 0;
             while (resultMR.next()) {
-                device.getMR().setMR(i, resultMR.getInt(1), resultMR.getFloat(2), resultMR.getFloat(3), resultMR.getFloat(4));
+                device.getMR().setMR(i, resultMR.getInt(1), resultMR.getDouble(2), resultMR.getDouble(3), resultMR.getDouble(4));
                 i++;
             }
             fin();
@@ -271,9 +271,9 @@ public class CountersDB {
                     + "WHERE TYPE=?");
 
             updateDev.setInt(1, device.getChannel());
-            updateDev.setFloat(2, device.getUD());
-            updateDev.setFloat(3, device.getPL());
-            updateDev.setFloat(4, device.getIC());
+            updateDev.setDouble(2, device.getUD());
+            updateDev.setDouble(3, device.getPL());
+            updateDev.setDouble(4, device.getIC());
             updateDev.setString(5, device.getType());
             result = updateDev.executeUpdate();
             if (result == 0) {
@@ -287,9 +287,9 @@ public class CountersDB {
                     + "WHERE TYPE=?");
             for (int i = 1; i <= device.getKP().getNum(); i++) {
                 updateKP.setInt(1, device.getKP().getKP(i));
-                updateKP.setFloat(2, device.getKP().getValueL(i));
-                updateKP.setFloat(3, device.getKP().getValueH(i));
-                updateKP.setFloat(4, device.getKP().getError(i));
+                updateKP.setDouble(2, device.getKP().getValueL(i));
+                updateKP.setDouble(3, device.getKP().getValueH(i));
+                updateKP.setDouble(4, device.getKP().getError(i));
                 updateKP.setString(5, device.getType());
                 result = updateKP.executeUpdate();
                 if (result == 0) {
@@ -306,9 +306,9 @@ public class CountersDB {
             for (int i = 1; i <= device.getMR().getNum(); i++) {
                 saveMR.setString(1, device.getMR().getType());
                 saveMR.setInt(2, device.getMR().getNumber(i));
-                saveMR.setFloat(3, device.getMR().getMRH(i));
-                saveMR.setFloat(4, device.getMR().getMRL(i));
-                saveMR.setFloat(5, device.getMR().getError(i));
+                saveMR.setDouble(3, device.getMR().getMRH(i));
+                saveMR.setDouble(4, device.getMR().getMRL(i));
+                saveMR.setDouble(5, device.getMR().getError(i));
                 result = saveMR.executeUpdate();
                 if (result == 0) {
                     conn.rollback();

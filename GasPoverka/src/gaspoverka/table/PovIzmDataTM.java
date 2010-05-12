@@ -24,7 +24,7 @@ public class PovIzmDataTM extends AbstractTableModel {
     }
 
     public void recalc() {
-       // GR = (float)((Vector) dataVector.get(0)).get(0);
+       // GR = (double)((Vector) dataVector.get(0)).get(0);
 
 
     }
@@ -36,7 +36,7 @@ public class PovIzmDataTM extends AbstractTableModel {
         Vector row = new Vector();
 
         for (int i=0;i<11;i++) {
-        row.add(Float.valueOf("0")); }
+        row.add(Double.valueOf("0")); }
         dataVector.add(row);
         set();
     }
@@ -52,9 +52,10 @@ public class PovIzmDataTM extends AbstractTableModel {
 
     @Override
     public Class getColumnClass(int column) {
-        return Float.class;
+        return Double.class;
         }
 
+    @Override
     public Object getValueAt(int row, int col) {
         return ((Vector) dataVector.get(row)).get(col);
 
@@ -66,10 +67,12 @@ public class PovIzmDataTM extends AbstractTableModel {
         fireTableChanged(null);
     }
 
+    @Override
     public int getRowCount() {
         return dataVector.size();
     }
 
+    @Override
     public int getColumnCount() {
         return columnNames.length;
     }

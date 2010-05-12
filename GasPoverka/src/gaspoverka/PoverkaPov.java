@@ -30,7 +30,7 @@ public class PoverkaPov extends javax.swing.JFrame {
         setTitle("Измерение");
         
         try {
-        dataTable.setDefaultRenderer(Class.forName("java.lang.Float"), dataTR);
+        dataTable.setDefaultRenderer(Class.forName("java.lang.Double"), dataTR);
         } catch (ClassNotFoundException ex) {
         ex.printStackTrace();
         }

@@ -104,9 +104,9 @@ public class SensorsDB {
             for (int i = 0; i < device.getMR().getNum(); i++) {
                 saveMR.setString(1, device.getType());
                 saveMR.setInt(2, device.getMR().getNumber(i));
-                saveMR.setFloat(3, device.getMR().getMRH(i));
-                saveMR.setFloat(4, device.getMR().getMRL(i));
-                saveMR.setFloat(5, device.getMR().getError(i));
+                saveMR.setDouble(3, device.getMR().getMRH(i));
+                saveMR.setDouble(4, device.getMR().getMRL(i));
+                saveMR.setDouble(5, device.getMR().getError(i));
                 result = saveMR.executeUpdate();
                 if (result == 0) {
                     conn.rollback();
@@ -169,7 +169,7 @@ public class SensorsDB {
             resultMR.beforeFirst();
             i = 0;
             while (resultMR.next()) {
-                device.getMR().setMR(i, resultMR.getInt(1), resultMR.getFloat(2), resultMR.getFloat(3), resultMR.getFloat(4));
+                device.getMR().setMR(i, resultMR.getInt(1), resultMR.getDouble(2), resultMR.getDouble(3), resultMR.getDouble(4));
                 i++;
             }
             fin();

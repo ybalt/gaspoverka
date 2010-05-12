@@ -13,26 +13,26 @@ public class EvalError {
     private String Type;
     private int Point;
     private int Number;
-    private float Result;
-    private float MedVal;
-    private float SysError;
-    private float MedSqDev;
-    private float RandError;
-    private float RelativeError;
+    private double Result;
+    private double MedVal;
+    private double SysError;
+    private double MedSqDev;
+    private double RandError;
+    private double RelativeError;
 
-    public float getMedSqDev() {
+    public double getMedSqDev() {
         return MedSqDev;
     }
 
-    public void setMedSqDev(float MedSqDev) {
+    public void setMedSqDev(double MedSqDev) {
         this.MedSqDev = MedSqDev;
     }
 
-    public float getMedVal() {
+    public double getMedVal() {
         return MedVal;
     }
 
-    public void setMedVal(float MedVal) {
+    public void setMedVal(double MedVal) {
         this.MedVal = MedVal;
     }
 
@@ -52,35 +52,35 @@ public class EvalError {
         this.Point = Point;
     }
 
-    public float getRandError() {
+    public double getRandError() {
         return RandError;
     }
 
-    public void setRandError(float RandError) {
+    public void setRandError(double RandError) {
         this.RandError = RandError;
     }
 
-    public float getRelativeError() {
+    public double getRelativeError() {
         return RelativeError;
     }
 
-    public void setRelativeError(float RelativeError) {
+    public void setRelativeError(double RelativeError) {
         this.RelativeError = RelativeError;
     }
 
-    public float getResult() {
+    public double getResult() {
         return Result;
     }
 
-    public void setResult(float Result) {
+    public void setResult(double Result) {
         this.Result = Result;
     }
 
-    public float getSysError() {
+    public double getSysError() {
         return SysError;
     }
 
-    public void setSysError(float SysError) {
+    public void setSysError(double SysError) {
         this.SysError = SysError;
     }
 

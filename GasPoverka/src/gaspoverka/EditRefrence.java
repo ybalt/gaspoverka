@@ -378,10 +378,10 @@ public class EditRefrence extends javax.swing.JFrame {
     public void updateDev() {
         device.setType(Type.getText());
         device.setChannel(Integer.valueOf(Channel.getText()));
-        device.setUD(Float.valueOf(UD.getText()));
-        device.setPL(Float.valueOf(PL.getText()));
-        device.setIC(Float.valueOf(IC.getText()));
-        device.setMIC(Float.valueOf(MIC.getText()));
+        device.setUD(Double.valueOf(UD.getText()));
+        device.setPL(Double.valueOf(PL.getText()));
+        device.setIC(Double.valueOf(IC.getText()));
+        device.setMIC(Double.valueOf(MIC.getText()));
         MRTM.updateData(device.getMR());
     }
 

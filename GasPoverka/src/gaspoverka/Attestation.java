@@ -1,6 +1,8 @@
 package gaspoverka;
 
 import gaspoverka.table.*;
+import java.awt.*;
+import javax.swing.*;
 
 public class Attestation extends javax.swing.JFrame {
 
@@ -10,6 +12,7 @@ public class Attestation extends javax.swing.JFrame {
 
     public Attestation() {
         initComponents();
+
 
         pressureCal.setSelected(true);
         calTM = new AttCalTM();
@@ -22,6 +25,8 @@ public class Attestation extends javax.swing.JFrame {
         povTM = new AttPovTM();
         povTM.setRow();
         tablePov.setModel(povTM);
+
+
     }
 
     @SuppressWarnings("unchecked")
@@ -45,6 +50,7 @@ public class Attestation extends javax.swing.JFrame {
         cnannelCal = new javax.swing.JTextField();
         jspCal = new javax.swing.JScrollPane();
         tableCal = new javax.swing.JTable();
+        graphP = new Graph();
         AttIzm = new javax.swing.JPanel();
         choosePanelIzm = new javax.swing.JPanel();
         pressureIzm = new javax.swing.JRadioButton();
@@ -150,7 +156,7 @@ public class Attestation extends javax.swing.JFrame {
                         .addGroup(choosePanelCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(calcButtonCal)
                             .addComponent(saveButtonCal))))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         choosePanelCalLayout.setVerticalGroup(
             choosePanelCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,12 +201,31 @@ public class Attestation extends javax.swing.JFrame {
         ));
         jspCal.setViewportView(tableCal);
 
+        graphP.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        graphP.setPreferredSize(new java.awt.Dimension(200, 200));
+
+        javax.swing.GroupLayout graphPLayout = new javax.swing.GroupLayout(graphP);
+        graphP.setLayout(graphPLayout);
+        graphPLayout.setHorizontalGroup(
+            graphPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 196, Short.MAX_VALUE)
+        );
+        graphPLayout.setVerticalGroup(
+            graphPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 196, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout AttCalLayout = new javax.swing.GroupLayout(AttCal);
         AttCal.setLayout(AttCalLayout);
         AttCalLayout.setHorizontalGroup(
             AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(choosePanelCal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jspCal, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+            .addComponent(jspCal, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+            .addGroup(AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(AttCalLayout.createSequentialGroup()
+                    .addGap(144, 144, 144)
+                    .addComponent(graphP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(175, Short.MAX_VALUE)))
         );
         AttCalLayout.setVerticalGroup(
             AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,7 +233,12 @@ public class Attestation extends javax.swing.JFrame {
                 .addComponent(choosePanelCal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jspCal, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
+            .addGroup(AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AttCalLayout.createSequentialGroup()
+                    .addContainerGap(259, Short.MAX_VALUE)
+                    .addComponent(graphP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         jtP.addTab("Калибровка", AttCal);
@@ -297,7 +327,7 @@ public class Attestation extends javax.swing.JFrame {
                     .addComponent(saveButtonIzm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(clearButtonIzm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(newButtonIzm, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         choosePanelIzmLayout.setVerticalGroup(
             choosePanelIzmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,14 +386,15 @@ public class Attestation extends javax.swing.JFrame {
         AttIzmLayout.setHorizontalGroup(
             AttIzmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(choosePanelIzm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jspIzm, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+            .addComponent(jspIzm, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
         );
         AttIzmLayout.setVerticalGroup(
             AttIzmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AttIzmLayout.createSequentialGroup()
                 .addComponent(choosePanelIzm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspIzm, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
+                .addComponent(jspIzm, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(216, Short.MAX_VALUE))
         );
 
         jtP.addTab("Измерение", AttIzm);
@@ -435,7 +466,7 @@ public class Attestation extends javax.swing.JFrame {
                     .addComponent(calcButtonPov))
                 .addGap(18, 18, 18)
                 .addComponent(saveButtonPov)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         choosePanelPovLayout.setVerticalGroup(
             choosePanelPovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,14 +519,14 @@ public class Attestation extends javax.swing.JFrame {
         AttPovLayout.setHorizontalGroup(
             AttPovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(choosePanelPov, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jspPov, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+            .addComponent(jspPov, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
         );
         AttPovLayout.setVerticalGroup(
             AttPovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AttPovLayout.createSequentialGroup()
                 .addComponent(choosePanelPov, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspPov, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
+                .addComponent(jspPov, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
         );
 
         jtP.addTab("Поверка", AttPov);
@@ -504,22 +535,68 @@ public class Attestation extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtP, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+            .addComponent(jtP)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtP, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+            .addComponent(jtP, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private class Graph extends JPanel {
+
+        Graph() {
+            setBackground(Color.BLACK);
+        }
+
+        @Override
+        public void paintComponent(Graphics g) {
+
+            super.paintComponent(g);
+
+
+            int dy = getSize().height;
+            int dx = getSize().width;
+
+            g.setColor(Color.WHITE);
+            int count = calTM.getRowCount();
+
+            int x = 0;
+            int y = dy;
+
+            for (int i = 0; i < count; i++) {
+                x += dx / (count + 1);
+                g.drawLine(x, dy, x, dy - 5);
+                y -= dx / (count + 1);
+                g.drawLine(0, y, 5, y);
+            }
+
+            for (int i=0;i<count;i++) {
+                
+            }
+
+
+
+
+
+
+
+
+
+
+        } // paintComponent
+    }
     private void pressureCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureCalActionPerformed
         calTM.setRows(5, "кПа");
+        graphP.repaint();
     }//GEN-LAST:event_pressureCalActionPerformed
 
     private void temperatureCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temperatureCalActionPerformed
         calTM.setRows(6, "С°");
+        graphP.repaint();
+
     }//GEN-LAST:event_temperatureCalActionPerformed
 
     private void calcButtonCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcButtonCalActionPerformed
@@ -583,6 +660,7 @@ public class Attestation extends javax.swing.JFrame {
     private javax.swing.JPanel choosePanelPov;
     private javax.swing.JButton clearButtonIzm;
     private javax.swing.JTextField cnannelCal;
+    private javax.swing.JPanel graphP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -134,14 +134,15 @@ public class AttCalTM extends AbstractTableModel {
                 double F3 = B.getX() * A.getY();
                 double F4 = B.getX() - A.getY();
                 double k1 = F1 / F4;
-                double b1 = (F3 / F4) - (F2 / F4);
-
+                double b1 = (F2 + F3) / F4;
+                //
                 double G1 = B.getYs() - A.getYs();
                 double G2 = A.getY() * B.getYs();
                 double G3 = B.getY() * A.getYs();
                 double G4 = B.getY() - A.getY();
                 double k2 = G1 / G4;
-                double b2 = (G3 / G4) - (G2 / G4);
+                double b2 = (G2 + G3) / G4;
+
                 A.setXs(b2);
             } catch (Exception e) {
                 A.setXs(0);

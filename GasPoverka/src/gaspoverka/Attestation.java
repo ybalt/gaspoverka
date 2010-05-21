@@ -556,7 +556,6 @@ public class Attestation extends javax.swing.JFrame {
 
             super.paintComponent(g);
 
-
             int dy = getSize().height;
             int dx = getSize().width;
 
@@ -573,20 +572,22 @@ public class Attestation extends javax.swing.JFrame {
                 g.drawLine(0, y, 5, y);
             }
 
-            for (int i=0;i<count;i++) {
+            for (int i=0;i<count-1;i++) {
+                Double xs, ys, xe, ye;
                 
+                xs = calTM.getX(i);
+                ys = calTM.getY(i);
+                xe = calTM.getX(i+1);
+                ye = calTM.getY(i+1);
+                
+                int x1 = xs.intValue();
+                int y1 = ys.intValue();
+                int x2 = xe.intValue();
+                int y2 = ye.intValue();
+                
+                g.drawLine(x1, y1, x2, y2);
             }
-
-
-
-
-
-
-
-
-
-
-        } // paintComponent
+       } // paintComponent
     }
     private void pressureCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureCalActionPerformed
         calTM.setRows(5, "кПа");

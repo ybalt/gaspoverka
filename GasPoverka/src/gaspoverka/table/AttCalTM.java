@@ -179,6 +179,22 @@ public class AttCalTM extends AbstractTableModel {
         }
     }
 
+    public double getX(int point) {
+        try {
+            return dataVector.get(point).getX();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public double getY(int point){
+        try {
+            return dataVector.get(point).getY();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     @Override
     public int getRowCount() {
         return dataVector.size();

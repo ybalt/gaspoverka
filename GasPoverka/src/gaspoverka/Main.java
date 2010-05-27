@@ -31,9 +31,7 @@ public class Main extends javax.swing.JFrame {
         AttButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         Arch = new javax.swing.JMenu();
-        ArchCounter = new javax.swing.JMenuItem();
-        ArchRef = new javax.swing.JMenuItem();
-        ArchSens = new javax.swing.JMenuItem();
+        ArchDev = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ЗАО \"Белавтоматикасервис\" - ГАЗ-Поверка");
@@ -62,29 +60,13 @@ public class Main extends javax.swing.JFrame {
 
         Arch.setText("Архив");
 
-        ArchCounter.setText("Счетчики");
-        ArchCounter.addActionListener(new java.awt.event.ActionListener() {
+        ArchDev.setText("Устройства");
+        ArchDev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ArchCounterActionPerformed(evt);
+                ArchDevActionPerformed(evt);
             }
         });
-        Arch.add(ArchCounter);
-
-        ArchRef.setText("Эталоны");
-        ArchRef.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ArchRefActionPerformed(evt);
-            }
-        });
-        Arch.add(ArchRef);
-
-        ArchSens.setText("Сенсоры");
-        ArchSens.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ArchSensActionPerformed(evt);
-            }
-        });
-        Arch.add(ArchSens);
+        Arch.add(ArchDev);
 
         jMenuBar1.add(Arch);
 
@@ -120,32 +102,14 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ArchCounterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchCounterActionPerformed
+    private void ArchDevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchDevActionPerformed
        java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new EditCounters().setVisible(true);
+                new EditDev().setVisible(true);
             }
         });
-    }//GEN-LAST:event_ArchCounterActionPerformed
-
-    private void ArchRefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchRefActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new EditRefrence().setVisible(true);
-            }
-        });
-    }//GEN-LAST:event_ArchRefActionPerformed
-
-    private void ArchSensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchSensActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new EditSensors().setVisible(true);
-            }
-        });
-    }//GEN-LAST:event_ArchSensActionPerformed
+    }//GEN-LAST:event_ArchDevActionPerformed
 
     private void PovButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PovButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -188,9 +152,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Arch;
-    private javax.swing.JMenuItem ArchCounter;
-    private javax.swing.JMenuItem ArchRef;
-    private javax.swing.JMenuItem ArchSens;
+    private javax.swing.JMenuItem ArchDev;
     private javax.swing.JButton AttButton;
     private javax.swing.JButton IzmButton;
     private javax.swing.JButton PovButton;

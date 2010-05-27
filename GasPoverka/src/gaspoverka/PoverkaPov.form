@@ -229,7 +229,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-              <JLayeredPaneConstraints x="140" y="110" width="180" height="140" layer="0" position="-1"/>
+              <JLayeredPaneConstraints x="160" y="110" width="170" height="140" layer="0" position="-1"/>
             </Constraint>
           </Constraints>
 
@@ -264,7 +264,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-              <JLayeredPaneConstraints x="10" y="110" width="130" height="140" layer="0" position="-1"/>
+              <JLayeredPaneConstraints x="10" y="110" width="150" height="140" layer="0" position="-1"/>
             </Constraint>
           </Constraints>
 
@@ -347,7 +347,7 @@
             <Component class="javax.swing.JComboBox" name="devCB">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new javax.swing.DefaultComboBoxModel(counter.getList())" type="code"/>
+                  <Connection code="new javax.swing.DefaultComboBoxModel(counter.getDevListByChannel(4))" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -418,7 +418,7 @@
             <Component class="javax.swing.JComboBox" name="refCB">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new javax.swing.DefaultComboBoxModel(refrence.getList())" type="code"/>
+                  <Connection code="new javax.swing.DefaultComboBoxModel(refrence.getDevListByChannel(1))" type="code"/>
                 </Property>
               </Properties>
               <Constraints>

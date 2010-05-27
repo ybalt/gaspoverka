@@ -5,24 +5,23 @@ import gaspoverka.table.*;
 
 public class PoverkaIzm extends javax.swing.JFrame {
 
-    Counters counter;
-    Reference refrence;
-    MRTM MRTM;
-    KPTM KPTM;
-    //IzmRefTableModel RITM;
-    //IzmCountTableModel CITM;
+    Dev counter;
+    Dev refrence;
+    TTM MRTM;
+    TTM KPTM;
+    String[] KPnames = {"№", "Зн.Н", "Зн.В", "Погр."};
+    String[] MRnames = {"№", "ДИ.Н", "ДИ.В", "Погр"};
     PovIzmDataTM dataTM;
     DefTR dataTR;
 
     public PoverkaIzm() {
-        counter = new Counters();
-        refrence = new Reference();
-        MRTM = new MRTM();
-        KPTM = new KPTM();
+        counter = new Dev();
+        refrence = new Dev();
+        MRTM = new TTM(counter.getMR(), MRnames);
+        KPTM = new TTM(counter.getKP(), KPnames);
         dataTM = new PovIzmDataTM();
         dataTR = new DefTR();
-        //RITM = new IzmRefTableModel();
-        //CITM = new IzmCountTableModel();
+        
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Измерение");
@@ -114,23 +113,23 @@ public class PoverkaIzm extends javax.swing.JFrame {
         CVL.setText("Контр. объем");
 
         devInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Информация")));
-        UD.setBounds(110, 20, 60, 20);
+        UD.setBounds(110, 20, 60, -1);
         devInfo.add(UD, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         UDL.setText("Условный диаметр");
-        UDL.setBounds(10, 20, 96, 14);
+        UDL.setBounds(10, 20, -1, -1);
         devInfo.add(UDL, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        PL.setBounds(110, 40, 60, 20);
+        PL.setBounds(110, 40, 60, -1);
         devInfo.add(PL, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         PLL.setText("Потеря давления");
-        PLL.setBounds(10, 40, 89, 14);
+        PLL.setBounds(10, 40, -1, -1);
         devInfo.add(PLL, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        IC.setBounds(110, 60, 60, 20);
+        IC.setBounds(110, 60, 60, -1);
         devInfo.add(IC, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         ICL.setText("Коэф. передачи");
-        ICL.setBounds(10, 60, 82, 14);
+        ICL.setBounds(10, 60, -1, -1);
         devInfo.add(ICL, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jspdevInfoKP.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Контр. точки"));
@@ -153,44 +152,44 @@ public class PoverkaIzm extends javax.swing.JFrame {
 
         devPane.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Счетчик")));
 
-        devCB.setModel(new javax.swing.DefaultComboBoxModel(counter.getList()));
+        devCB.setModel(new javax.swing.DefaultComboBoxModel(counter.getDevListByChannel(4)));
         devCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 devCBActionPerformed(evt);
             }
         });
-        devCB.setBounds(10, 20, 100, 20);
+        devCB.setBounds(10, 20, 100, -1);
         devPane.add(devCB, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        devP.setBounds(60, 50, 50, 20);
+        devP.setBounds(60, 50, 50, -1);
         devPane.add(devP, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        devT.setBounds(60, 80, 50, 20);
+        devT.setBounds(60, 80, 50, -1);
         devPane.add(devT, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         devTL.setText("Темп.");
-        devTL.setBounds(10, 80, 30, 14);
+        devTL.setBounds(10, 80, 30, -1);
         devPane.add(devTL, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         devPL.setText("Давл.");
-        devPL.setBounds(10, 50, 30, 14);
+        devPL.setBounds(10, 50, -1, -1);
         devPane.add(devPL, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         refPane.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Эталон")));
         refPane.setName(""); // NOI18N
 
-        refCB.setModel(new javax.swing.DefaultComboBoxModel(refrence.getList()));
-        refCB.setBounds(10, 20, 100, 20);
+        refCB.setModel(new javax.swing.DefaultComboBoxModel(refrence.getDevListByChannel(1)));
+        refCB.setBounds(10, 20, 100, -1);
         refPane.add(refCB, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        refP.setBounds(60, 50, 50, 20);
+        refP.setBounds(60, 50, 50, -1);
         refPane.add(refP, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        refT.setBounds(60, 80, 50, 20);
+        refT.setBounds(60, 80, 50, -1);
         refPane.add(refT, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         refTL.setText("Темп.");
-        refTL.setBounds(10, 80, 30, 14);
+        refTL.setBounds(10, 80, 30, -1);
         refPane.add(refTL, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         refPL.setText("Давл.");
-        refPL.setBounds(10, 50, 30, 14);
+        refPL.setBounds(10, 50, -1, -1);
         refPane.add(refPL, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout devSelectionLayout = new javax.swing.GroupLayout(devSelection);
@@ -304,8 +303,8 @@ public class PoverkaIzm extends javax.swing.JFrame {
         UD.setText(String.valueOf(counter.getUD()));
         PL.setText(String.valueOf(counter.getPL()));
         IC.setText(String.valueOf(counter.getIC()));
-        MRTM.reload(counter.getMR());
-        KPTM.reload(counter.getKP());
+        MRTM.refresh();
+        KPTM.refresh();
     }
 
     public static void main(String args[]) {

@@ -10,31 +10,33 @@ import javax.swing.table.*;
 
 public class PoverkaPov extends javax.swing.JFrame {
 
-    Counters counter;
-    Reference refrence;
-    MRTM MRTM;
-    KPTM KPTM;
+    Dev counter;
+    Dev refrence;
+    TTM MRTM;
+    TTM KPTM;
+    String[] KPnames = {"№", "Зн.Н", "Зн.В", "Погр."};
+    String[] MRnames = {"№", "ДИ.Н", "ДИ.В", "Погр"};
     PovPovDataTM dataTM;
     DefTR dataTR;
 
     public PoverkaPov() {
-        counter = new Counters();
-        refrence = new Reference();
-        MRTM = new MRTM();
-        KPTM = new KPTM();
+        counter = new Dev();
+        refrence = new Dev();
+        MRTM = new TTM(counter.getMR(), MRnames);
+        KPTM = new TTM(counter.getKP(), KPnames);
         dataTM = new PovPovDataTM();
         dataTR = new DefTR();
 
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Измерение");
-        
+
         try {
-        dataTable.setDefaultRenderer(Class.forName("java.lang.Double"), dataTR);
+            dataTable.setDefaultRenderer(Class.forName("java.lang.Double"), dataTR);
         } catch (ClassNotFoundException ex) {
-        ex.printStackTrace();
+            ex.printStackTrace();
         }
-        
+
 
 
         //dataTable.getColumn(dataTable.getColumnName(0)).setCellRenderer(new ButtonRenderer());
@@ -132,7 +134,7 @@ public class PoverkaPov extends javax.swing.JFrame {
         devInfoKP.getTableHeader().setReorderingAllowed(false);
         jspdevInfoKP.setViewportView(devInfoKP);
 
-        jspdevInfoKP.setBounds(140, 110, 180, 140);
+        jspdevInfoKP.setBounds(160, 110, 170, 140);
         devInfo.add(jspdevInfoKP, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jspDevInfoMR.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Диапазоны"));
@@ -140,7 +142,7 @@ public class PoverkaPov extends javax.swing.JFrame {
         devInfoMR.setModel(MRTM);
         jspDevInfoMR.setViewportView(devInfoMR);
 
-        jspDevInfoMR.setBounds(10, 110, 130, 140);
+        jspDevInfoMR.setBounds(10, 110, 150, 140);
         devInfo.add(jspDevInfoMR, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         savedbButton.setText("Запись в БД");
@@ -154,7 +156,7 @@ public class PoverkaPov extends javax.swing.JFrame {
 
         devPane.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Счетчик")));
 
-        devCB.setModel(new javax.swing.DefaultComboBoxModel(counter.getList()));
+        devCB.setModel(new javax.swing.DefaultComboBoxModel(counter.getDevListByChannel(4)));
         devCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 devCBActionPerformed(evt);
@@ -178,7 +180,7 @@ public class PoverkaPov extends javax.swing.JFrame {
         refPane.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Эталон")));
         refPane.setName(""); // NOI18N
 
-        refCB.setModel(new javax.swing.DefaultComboBoxModel(refrence.getList()));
+        refCB.setModel(new javax.swing.DefaultComboBoxModel(refrence.getDevListByChannel(1)));
         refCB.setBounds(10, 20, 100, 20);
         refPane.add(refCB, javax.swing.JLayeredPane.DEFAULT_LAYER);
         refP.setBounds(60, 50, 50, 20);
@@ -294,8 +296,8 @@ public class PoverkaPov extends javax.swing.JFrame {
         UD.setText(String.valueOf(counter.getUD()));
         PL.setText(String.valueOf(counter.getPL()));
         IC.setText(String.valueOf(counter.getIC()));
-        MRTM.reload(counter.getMR());
-        KPTM.reload(counter.getKP());
+        MRTM.refresh();
+        KPTM.refresh();
     }
 
     class ButtonColumn extends AbstractCellEditor

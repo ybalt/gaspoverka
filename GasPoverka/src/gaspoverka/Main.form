@@ -9,28 +9,12 @@
             <Property name="text" type="java.lang.String" value="&#x410;&#x440;&#x445;&#x438;&#x432;"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="ArchCounter">
+            <MenuItem class="javax.swing.JMenuItem" name="ArchDev">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x421;&#x447;&#x435;&#x442;&#x447;&#x438;&#x43a;&#x438;"/>
+                <Property name="text" type="java.lang.String" value="&#x423;&#x441;&#x442;&#x440;&#x43e;&#x439;&#x441;&#x442;&#x432;&#x430;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ArchCounterActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="ArchRef">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="&#x42d;&#x442;&#x430;&#x43b;&#x43e;&#x43d;&#x44b;"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ArchRefActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="ArchSens">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="&#x421;&#x435;&#x43d;&#x441;&#x43e;&#x440;&#x44b;"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ArchSensActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ArchDevActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

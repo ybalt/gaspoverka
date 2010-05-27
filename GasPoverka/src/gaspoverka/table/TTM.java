@@ -12,12 +12,29 @@ public class TTM extends AbstractTableModel {
     public static final int Error_INDEX = 3;
     protected String[] columnNames;
     boolean edit = false;
-    
     Vector<T> devT;
 
     public TTM(Vector<T> t, String[] columnNames) {
         this.columnNames = columnNames;
         this.devT = t;
+    }
+
+    public void setRow(int newnum) {
+        int lastnum;
+        if (devT.size() > 0) {
+            lastnum = devT.get(devT.size() - 1).getNumber();
+        } else {
+            lastnum = 0;
+        }
+        if (newnum > lastnum) {
+            devT.add(new T());
+            devT.lastElement().setNumber(newnum);
+        }
+        if ((newnum < lastnum) && (lastnum != 0)) {
+            devT.removeElementAt(devT.size() - 1);
+        }
+        refresh();
+
     }
 
     public void refresh() {
@@ -46,7 +63,7 @@ public class TTM extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-       switch (column) {
+        switch (column) {
             case Number_INDEX:
                 return devT.get(row).getNumber();
             case VL_INDEX:
@@ -62,6 +79,21 @@ public class TTM extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object value, int row, int col) {
+         switch (col) {
+            case Number_INDEX:
+                devT.get(row).setNumber(Integer.valueOf(value.toString()));
+                break;
+            case VL_INDEX:
+                devT.get(row).setVL(Double.valueOf(value.toString()));
+                break;
+            case VH_INDEX:
+                devT.get(row).setVH(Double.valueOf(value.toString()));
+                break;
+            case Error_INDEX:
+                devT.get(row).setError(Double.valueOf(value.toString()));
+                break;
+        }
+         refresh();
     }
 
     @Override

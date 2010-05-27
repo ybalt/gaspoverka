@@ -2,6 +2,8 @@ package gaspoverka.table;
 
 import java.util.*;
 import javax.swing.table.*;
+import java.math.*;
+import gaspoverka.data.*;
 
 public class AttCalTM extends AbstractTableModel {
 
@@ -13,20 +15,25 @@ public class AttCalTM extends AbstractTableModel {
     protected String[] columnNamesInitial = {"Точка", "Эталон", "Измерено", "Расчет", "Поправка"};
     protected String[] columnNames;
     protected Vector<calculator> dataVector;
+    
 
     public AttCalTM() {
-        dataVector = new Vector();
+        dataVector = new Vector<calculator>();
         columnNames = new String[5];
         setRows(0, "");
+
     }
 
     private class calculator {
 
+        private int channel;
         private String type;
         private double x;
         private double y;
         private double xs;
         private double ys;
+        private Double k1, b1;
+        private Double k2, b2;
 
         // <editor-fold defaultstate="collapsed" desc="get & set">
         public String getType() {
@@ -67,16 +74,88 @@ public class AttCalTM extends AbstractTableModel {
 
         public void setYs(double ys) {
             this.ys = ys;
-        }// </editor-fold>
+        }
 
+        public double getB1() {
+            return b1;
+        }
+
+        public void setB1(double b1) {
+            this.b1 = b1;
+        }
+
+        public double getB2() {
+            return b2;
+        }
+
+        public void setB2(double b2) {
+            this.b2 = b2;
+        }
+
+        public double getK1() {
+            return k1;
+        }
+
+        public void setK1(double k1) {
+            this.k1 = k1;
+        }
+
+        public double getK2() {
+            return k2;
+        }
+
+        public void setK2(double k2) {
+            this.k2 = k2;
+        }
+
+        // </editor-fold>
         public calculator(String type) {
             this.setType(type);
             this.setX(0);
             this.setY(0);
             this.setXs(0);
             this.setYs(0);
+            this.setK1(0);
+            this.setK2(0);
+            this.setB1(0);
+            this.setB2(0);
+
         }
+        
     }
+
+    public String ur1(int i) {
+        int decimalPlace = 4;
+        BigDecimal k = new BigDecimal(dataVector.get(i).getK1());
+        BigDecimal b = new BigDecimal(dataVector.get(i).getB1());
+        k = k.setScale(decimalPlace, BigDecimal.ROUND_UP);
+        b = b.setScale(decimalPlace, BigDecimal.ROUND_UP);
+
+        String ur = "y=x*"
+                + k
+                + "+"
+                + b;
+        return ur;
+
+    }
+
+    public String ur2(int i) {
+        int decimalPlace = 4;
+        BigDecimal k = new BigDecimal(dataVector.get(i).getK2());
+        BigDecimal b = new BigDecimal(dataVector.get(i).getB2());
+        k.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        b.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        String ur = "y=x*"
+                + k
+                + "+"
+                + b;
+        return ur;
+    }
+
+    public void save(){
+
+    }
+
 
     @Override
     public String getColumnName(int column) {
@@ -132,20 +211,18 @@ public class AttCalTM extends AbstractTableModel {
                 double F1 = B.getY() - A.getY();
                 double F2 = A.getX() * B.getY();
                 double F3 = B.getX() * A.getY();
-                double F4 = B.getX() - A.getY();
-                double k1 = F1 / F4;
-                double b1 = (F2 + F3) / F4;
-                //
+                double F4 = B.getX() - A.getX();
+                A.setK1(F1 / F4);
+                A.setK2((-F2 + F3) / F4);
+                //                //
                 double G1 = B.getYs() - A.getYs();
                 double G2 = A.getY() * B.getYs();
                 double G3 = B.getY() * A.getYs();
                 double G4 = B.getY() - A.getY();
-                double k2 = G1 / G4;
-                double b2 = (G2 + G3) / G4;
+                A.setK2(G1 / G4);
+                A.setB2((-G2 + G3) / G4);
 
-                A.setXs(b2);
             } catch (Exception e) {
-                A.setXs(0);
             }
         }
         fireTableChanged(null);

@@ -4,6 +4,10 @@ import gaspoverka.table.*;
 import gaspoverka.data.*;
 import java.lang.Object.*;
 
+/**
+ *
+ * @author bes
+ */
 public class EditDev extends javax.swing.JFrame {
 
     Dev dev;
@@ -15,7 +19,7 @@ public class EditDev extends javax.swing.JFrame {
 
     public EditDev() {
         dev = new Dev();
-        
+
         devTM = new DevTM(dev.getDevTable());
         MRTM = new TTM(dev.getMR(), MRnames);
         KPTM = new TTM(dev.getKP(), KPnames);
@@ -28,7 +32,7 @@ public class EditDev extends javax.swing.JFrame {
         tableDev.setRowSelectionInterval(0, 0);
         refresh();
         enableEdit(false);
-  }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -62,14 +66,14 @@ public class EditDev extends javax.swing.JFrame {
         tableKP.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jspKP.setViewportView(tableKP);
 
-        MRSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        MRSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
         MRSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 MRSpinnerStateChanged(evt);
             }
         });
 
-        KPSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        KPSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
         KPSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 KPSpinnerStateChanged(evt);
@@ -196,26 +200,21 @@ public class EditDev extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableDevMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDevMouseClicked
-        try {
-            refresh();
-            int selection = tableDev.getSelectedRow();
-            tableDev.setRowSelectionInterval(selection, selection);
-        } catch (Exception e) {
-        }
-
+        refresh();
     }//GEN-LAST:event_tableDevMouseClicked
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+
         enableEdit(true);
         clearData();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        tableDev.setRowSelectionInterval(0, 0);
         dev.save();
         devTM.setRowEdit(-1);
         refresh();
         enableEdit(false);
+        tableDev.setRowSelectionInterval(0, 0);
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -236,15 +235,19 @@ public class EditDev extends javax.swing.JFrame {
     }//GEN-LAST:event_modButtonActionPerformed
 
     private void KPSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_KPSpinnerStateChanged
-        String value = KPSpinner.getValue().toString();
-        //System.out.println(value);
-        //KPTM.setMRRow(Integer.valueOf(value));
+        int value = Integer.valueOf(KPSpinner.getValue().toString());
+        System.out.println(value);
+        KPTM.setRow(value);
+        
+        
     }//GEN-LAST:event_KPSpinnerStateChanged
 
     private void MRSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_MRSpinnerStateChanged
-        String value = MRSpinner.getValue().toString();
-        //System.out.println(value);
-        //MRTM.setMRRow(Integer.valueOf(value));
+        int value = Integer.valueOf(MRSpinner.getValue().toString());
+        System.out.println(value);
+        MRTM.setRow(value);
+        
+        
     }//GEN-LAST:event_MRSpinnerStateChanged
 
     public void refresh() {
@@ -277,7 +280,6 @@ public class EditDev extends javax.swing.JFrame {
     }
 
     public void clearData() {
-        
     }
 
     public void updateDev() {

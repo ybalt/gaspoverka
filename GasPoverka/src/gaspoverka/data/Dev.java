@@ -285,19 +285,21 @@ public class Dev {
 
     }
 
-    public void update() {
+    public void save() {
         connect();
         int result;
+        Savepoint save = null;
         try {
-            PreparedStatement saveDev = conn.prepareStatement("UPDATE DEV SET "
-                    + "TYPE=?, CHANNEL=?, UD=?, PL=?, IC=?, MIC=? "
-                    + "WHERE TYPE=?");
-            PreparedStatement saveKP = conn.prepareStatement("UPDATE DEV_KP SET "
-                    + "TYPE=?, NUMBER=?, VL=?, VH=?, ERROR=? "
-                    + "WHERE TYPE=?");
-            PreparedStatement saveMR = conn.prepareStatement("UPDATE DEV_MR SET "
-                    + "TYPE=?, NUMBER=?, VL=?, VH=?, ERROR=? "
-                    + "WHERE TYPE=?");
+            save = delete();
+            PreparedStatement saveDev = conn.prepareStatement("INSERT INTO DEV "
+                    + "(TYPE, CHANNEL, UD, PL, IC, MIC) "
+                    + "VALUES (?,?,?,?,?,?)");
+            PreparedStatement saveKP = conn.prepareStatement("INSERT INTO DEV_KP "
+                    + "(TYPE, NUMBER, VL, VH, ERRROR) "
+                    + "VALUES (?,?,?,?,?)");
+            PreparedStatement saveMR = conn.prepareStatement("INSERT INTO DEV_MR "
+                    + "(TYPE, NUMBER, VL, VH, ERRROR) "
+                    + "VALUES (?,?,?,?,?)");
 
             //dev update
             saveDev.setString(1, getType());
@@ -356,6 +358,13 @@ public class Dev {
             fin();
         } catch (Exception e) {
             e.printStackTrace();
+            if (save != null) {
+                try {
+                    conn.rollback(save);
+                } catch (Exception ej) {
+                    ej.printStackTrace();
+                }
+            }
         }
     }
 
@@ -433,7 +442,39 @@ public class Dev {
         }
     }
 
-    public void delete() {
+    public Savepoint delete() {
+        connect();
+        int result;
+        Savepoint save = null;
+        try {
+            save = conn.setSavepoint("fromSave");
+            PreparedStatement delDev = conn.prepareStatement("DELETE FROM DEV "
+                    + "WHERE TYPE = ?");
+
+            delDev.setString(1, getType());
+            result = delDev.executeUpdate();
+            delDev.close();
+
+            PreparedStatement delKP = conn.prepareStatement("DELETE FROM DEV_KP "
+                    + "WHERE TYPE = ?");
+            delKP.setString(1, getType());
+            result = delKP.executeUpdate();
+            delKP.close();
+
+            PreparedStatement delMR = conn.prepareStatement("DELETE FROM DEV_MR "
+                    + "WHERE TYPE = ?");
+            delMR.setString(1, getType());
+            result = delMR.executeUpdate();
+            delMR.close();
+            conn.commit();
+            fin();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return save;
+
     }
 
     private void connect() {
@@ -465,3 +506,4 @@ public class Dev {
 
     }
 }
+

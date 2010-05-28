@@ -16,6 +16,10 @@ public class DevTM extends AbstractTableModel {
     Vector<Dev> dataVector;
     int editRow = -1;
 
+    public Vector<Dev> getDev() {
+        return dataVector;
+    }
+
     public DevTM(Vector<Dev> dataVector) {
         this.dataVector = dataVector;
     }
@@ -113,5 +117,8 @@ public class DevTM extends AbstractTableModel {
 
     public void setRowEdit(int row) {
         editRow = row;
+    }
+    public int getRowEdit() {
+        return this.editRow;
     }
 }

@@ -116,7 +116,7 @@ public class Dev {
                     ResultSet.CONCUR_READ_ONLY);
             String query = "SELECT "
                     + "TYPE, CHANNEL, UD, PL, IC, MIC "
-                    + "FROM DEV ORDER BY CHANNEL ASC";
+                    + "FROM DEV ORDER BY TYPE ASC";
             res = stat.executeQuery(query);
             fin();
             res.beforeFirst();
@@ -172,7 +172,38 @@ public class Dev {
         }
         return str;
     }
+    public String[] getRefList() {
+        ResultSet res = null;
+        Vector vector = new Vector();
 
+        try {
+            connect();
+            PreparedStatement loadDev = conn.prepareStatement("SELECT "
+                    + "TYPE "
+                    + "FROM DEV WHERE CHANNEL "
+                    + "BETWEEN 1 AND 3",
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            res = loadDev.executeQuery();
+            fin();
+            res.beforeFirst();
+
+            while (res.next()) {
+                vector.add(res.getString(1));
+            }
+            if (vector.size() == 0) {
+                vector.add(new Object());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String[] str = new String[vector.size()];
+        for (int i = 0; i < vector.size(); i++) {
+            str[i] = String.valueOf(vector.get(i));
+        }
+        return str;
+    }
     public String[] getDevListByChannel(int Channel) {
         ResultSet res = null;
         Vector vector = new Vector();
@@ -286,19 +317,38 @@ public class Dev {
     }
 
     public void save() {
-        connect();
         int result;
-        Savepoint save = null;
+
         try {
-            save = delete();
+            connect();
+
+            PreparedStatement delDev = conn.prepareStatement("DELETE FROM DEV "
+                    + "WHERE TYPE = ?");
+
+            delDev.setString(1, getType());
+            result = delDev.executeUpdate();
+            delDev.close();
+
+            PreparedStatement delKP = conn.prepareStatement("DELETE FROM DEV_KP "
+                    + "WHERE TYPE = ?");
+            delKP.setString(1, getType());
+            result = delKP.executeUpdate();
+            delKP.close();
+
+            PreparedStatement delMR = conn.prepareStatement("DELETE FROM DEV_MR "
+                    + "WHERE TYPE = ?");
+            delMR.setString(1, getType());
+            result = delMR.executeUpdate();
+            delMR.close();
+
             PreparedStatement saveDev = conn.prepareStatement("INSERT INTO DEV "
                     + "(TYPE, CHANNEL, UD, PL, IC, MIC) "
                     + "VALUES (?,?,?,?,?,?)");
             PreparedStatement saveKP = conn.prepareStatement("INSERT INTO DEV_KP "
-                    + "(TYPE, NUMBER, VL, VH, ERRROR) "
+                    + "(TYPE, NUMBER, VL, VH, ERROR) "
                     + "VALUES (?,?,?,?,?)");
             PreparedStatement saveMR = conn.prepareStatement("INSERT INTO DEV_MR "
-                    + "(TYPE, NUMBER, VL, VH, ERRROR) "
+                    + "(TYPE, NUMBER, VL, VH, ERROR) "
                     + "VALUES (?,?,?,?,?)");
 
             //dev update
@@ -308,7 +358,6 @@ public class Dev {
             saveDev.setDouble(4, getPL());
             saveDev.setDouble(5, getIC());
             saveDev.setDouble(6, getMIC());
-            saveDev.setString(7, getType());
 
             result = saveDev.executeUpdate();
             if (result == 0) {
@@ -325,7 +374,6 @@ public class Dev {
                     saveKP.setDouble(3, getKP(i).getVL());
                     saveKP.setDouble(4, getKP(i).getVH());
                     saveKP.setDouble(5, getKP(i).getError());
-                    saveKP.setString(6, getType());
                     result = saveKP.executeUpdate();
                     if (result == 0) {
                         conn.rollback();
@@ -340,11 +388,10 @@ public class Dev {
             if (this.getMR().size() != 0) {
                 for (int i = 0; i < this.getMR().size(); i++) {
                     saveMR.setString(1, getType());
-                    saveMR.setInt(2, getKP(i).getNumber());
-                    saveMR.setDouble(3, getKP(i).getVL());
-                    saveMR.setDouble(4, getKP(i).getVH());
-                    saveMR.setDouble(5, getKP(i).getError());
-                    saveMR.setString(6, getType());
+                    saveMR.setInt(2, getMR(i).getNumber());
+                    saveMR.setDouble(3, getMR(i).getVL());
+                    saveMR.setDouble(4, getMR(i).getVH());
+                    saveMR.setDouble(5, getMR(i).getError());
                     result = saveMR.executeUpdate();
                     if (result == 0) {
                         conn.rollback();
@@ -354,18 +401,30 @@ public class Dev {
                 }
                 saveMR.close();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            try {
+                conn.rollback();
+                fin();
+                JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
+                return;
+            } catch (Exception ej) {
+                ej.printStackTrace();
+                fin();
+                JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно. Обартитесь к разработчику");
+                return;
+            }
+
+        }
+        try {
             conn.commit();
             fin();
         } catch (Exception e) {
             e.printStackTrace();
-            if (save != null) {
-                try {
-                    conn.rollback(save);
-                } catch (Exception ej) {
-                    ej.printStackTrace();
-                }
-            }
+            fin();
         }
+        
     }
 
     public void insert() {
@@ -392,15 +451,24 @@ public class Dev {
             insertDev.setString(7, getType());
 
             result = insertDev.executeUpdate();
+
+
             if (result == 0) {
                 conn.rollback();
                 JOptionPane.showMessageDialog(null, "Невозможно обновить базу данных");
+
+
                 return;
+
+
             }
             insertDev.close();
             //KP update
+
+
             if (this.getKP().size() != 0) {
-                for (int i = 0; i < this.getKP().size(); i++) {
+                for (int i = 0; i
+                        < this.getKP().size(); i++) {
                     insertKP.setString(1, getType());
                     insertKP.setInt(2, getKP(i).getNumber());
                     insertKP.setDouble(3, getKP(i).getVL());
@@ -408,18 +476,27 @@ public class Dev {
                     insertKP.setDouble(5, getKP(i).getError());
                     insertKP.setString(6, getType());
                     result = insertKP.executeUpdate();
+
+
                     if (result == 0) {
                         conn.rollback();
                         JOptionPane.showMessageDialog(null, "Невозможно обновить базу данных");
+
+
                         return;
+
+
                     }
 
                 }
                 insertKP.close();
+
+
             }
 
             if (this.getMR().size() != 0) {
-                for (int i = 0; i < this.getMR().size(); i++) {
+                for (int i = 0; i
+                        < this.getMR().size(); i++) {
                     insertMR.setString(1, getType());
                     insertMR.setInt(2, getKP(i).getNumber());
                     insertMR.setDouble(3, getKP(i).getVL());
@@ -427,27 +504,37 @@ public class Dev {
                     insertMR.setDouble(5, getKP(i).getError());
                     insertMR.setString(6, getType());
                     result = insertMR.executeUpdate();
+
+
                     if (result == 0) {
                         conn.rollback();
                         JOptionPane.showMessageDialog(null, "Невозможно обновить базу данных");
+
+
                         return;
+
+
                     }
                 }
                 insertMR.close();
+
+
             }
             conn.commit();
             fin();
+
+
         } catch (Exception e) {
             e.printStackTrace();
+
+
         }
     }
 
-    public Savepoint delete() {
+    public void delete() {
         connect();
         int result;
-        Savepoint save = null;
         try {
-            save = conn.setSavepoint("fromSave");
             PreparedStatement delDev = conn.prepareStatement("DELETE FROM DEV "
                     + "WHERE TYPE = ?");
 
@@ -466,14 +553,27 @@ public class Dev {
             delMR.setString(1, getType());
             result = delMR.executeUpdate();
             delMR.close();
-            conn.commit();
-            fin();
 
+            //fin();
         } catch (Exception e) {
             e.printStackTrace();
-
+            try {
+                conn.rollback();
+                fin();
+                JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
+            } catch (Exception ej) {
+                ej.printStackTrace();
+                fin();
+                JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно. Обартитесь к разработчику");
+            }
         }
-        return save;
+        try {
+            conn.commit();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ошибка записи - невозможно записать изменения");
+            e.printStackTrace();
+        }
+        fin();
 
     }
 
@@ -481,15 +581,21 @@ public class Dev {
         String db_name = ".//db//arch";
         jdbcDataSource dataSource = new jdbcDataSource();
 
+
+
         try {
             dataSource.setDatabase("jdbc:hsqldb:" + db_name);
             conn = dataSource.getConnection("sa", "");
             conn.setAutoCommit(false);
             System.out.println("Connected");
+
+
         } catch (SQLException ex2) {
             ex2.printStackTrace();
             JOptionPane.showMessageDialog(null, "Невозможно открыть базу данных по адресу " + dataSource.getDatabase());
             System.exit(1);
+
+
         }
     }
 
@@ -502,6 +608,7 @@ public class Dev {
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Ошибка закрытия базы данных");
+
         }
 
     }

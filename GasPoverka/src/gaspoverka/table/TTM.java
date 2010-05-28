@@ -19,6 +19,11 @@ public class TTM extends AbstractTableModel {
         this.devT = t;
     }
 
+    public void setDev(Vector<T> t) {
+        this.devT = t;
+        refresh();
+    }
+
     public void setRow(int newnum) {
         int lastnum;
         if (devT.size() > 0) {

@@ -22,7 +22,9 @@ public class PovIzmDataTM extends AbstractTableModel {
         dataVector = new Vector();
         set();
     }
-
+    public void flush() {
+        dataVector.clear();
+    }
     public void recalc() {
        // GR = (double)((Vector) dataVector.get(0)).get(0);
 

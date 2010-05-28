@@ -3,6 +3,7 @@ package gaspoverka;
 import gaspoverka.table.*;
 import gaspoverka.data.*;
 import java.lang.Object.*;
+import java.util.Vector;
 
 /**
  *
@@ -11,6 +12,7 @@ import java.lang.Object.*;
 public class EditDev extends javax.swing.JFrame {
 
     Dev dev;
+    Vector<Dev> devVector;
     DevTM devTM;
     TTM MRTM;
     TTM KPTM;
@@ -19,10 +21,11 @@ public class EditDev extends javax.swing.JFrame {
 
     public EditDev() {
         dev = new Dev();
+        devVector = dev.getDevTable();
 
-        devTM = new DevTM(dev.getDevTable());
-        MRTM = new TTM(dev.getMR(), MRnames);
-        KPTM = new TTM(dev.getKP(), KPnames);
+        devTM = new DevTM(devVector);
+        MRTM = new TTM(devVector.get(0).getMR(), MRnames);
+        KPTM = new TTM(devVector.get(0).getKP(), KPnames);
 
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -30,7 +33,7 @@ public class EditDev extends javax.swing.JFrame {
 
         tableDev.setSelectionMode(NORMAL);
         tableDev.setRowSelectionInterval(0, 0);
-        refresh();
+        reloadDevData();
         enableEdit(false);
     }
 
@@ -200,33 +203,41 @@ public class EditDev extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableDevMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDevMouseClicked
-        refresh();
+        if (devTM.getRowEdit()==-1) {
+        reloadDevData();}
     }//GEN-LAST:event_tableDevMouseClicked
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-
         enableEdit(true);
-        clearData();
+        devVector.add(new Dev());
+        devTM.fireTableChanged(null);
+        MRTM.setDev(devVector.lastElement().getMR());
+        MRSpinner.setValue(new Integer(0));
+        
+        KPTM.setDev(devVector.lastElement().getKP());
+        KPSpinner.setValue(new Integer(0));
+
+        tableDev.setRowSelectionInterval(devVector.size()-1,devVector.size()-1);
+        devTM.setRowEdit(devVector.size()-1);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        dev.save();
+        devVector.get(devTM.getRowEdit()).save();
         devTM.setRowEdit(-1);
-        refresh();
         enableEdit(false);
-        tableDev.setRowSelectionInterval(0, 0);
+        refreshDevTable();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         tableDev.setRowSelectionInterval(0, 0);
         devTM.setRowEdit(-1);
-        refresh();
         enableEdit(false);
+        refreshDevTable();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void delButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delButtonActionPerformed
-        String type = (String) devTM.getValueAt(tableDev.getSelectedRow(), 0);
-        //device.delete(type);
+        devVector.get(tableDev.getSelectedRow()).delete();
+        refreshDevTable();
     }//GEN-LAST:event_delButtonActionPerformed
 
     private void modButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modButtonActionPerformed
@@ -236,28 +247,35 @@ public class EditDev extends javax.swing.JFrame {
 
     private void KPSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_KPSpinnerStateChanged
         int value = Integer.valueOf(KPSpinner.getValue().toString());
-        System.out.println(value);
         KPTM.setRow(value);
-        
-        
+
+
     }//GEN-LAST:event_KPSpinnerStateChanged
 
     private void MRSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_MRSpinnerStateChanged
         int value = Integer.valueOf(MRSpinner.getValue().toString());
-        System.out.println(value);
         MRTM.setRow(value);
-        
-        
+
+
     }//GEN-LAST:event_MRSpinnerStateChanged
 
-    public void refresh() {
-        //devTM.refresh(dev.getDevTable());
-        String type = (String) devTM.getValueAt(tableDev.getSelectedRow(), 0);
-        dev.load(type);
-        MRTM.refresh();
-        KPTM.refresh();
-        KPSpinner.setValue(KPTM.getRowCount());
-        MRSpinner.setValue(MRTM.getRowCount());
+    public void refreshDevTable() {
+        devVector = dev.getDevTable();
+        devTM.refresh(devVector);
+        tableDev.setRowSelectionInterval(0, 0);
+        reloadDevData();
+    }
+
+    public void reloadDevData() {
+        if (tableDev.getSelectedRow() >= 0) {
+            String type = (String) devTM.getValueAt(tableDev.getSelectedRow(), 0);
+            int number = tableDev.getSelectedRow();
+            devVector.get(number).load(type);
+            MRTM.setDev(devVector.get(number).getMR());
+            KPTM.setDev(devVector.get(number).getKP());
+            KPSpinner.setValue(KPTM.getRowCount());
+            MRSpinner.setValue(MRTM.getRowCount());
+        }
     }
 
     public void enableEdit(Boolean value) {
@@ -280,6 +298,7 @@ public class EditDev extends javax.swing.JFrame {
     }
 
     public void clearData() {
+
     }
 
     public void updateDev() {

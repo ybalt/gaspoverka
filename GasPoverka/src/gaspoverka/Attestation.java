@@ -1,6 +1,7 @@
 package gaspoverka;
 
 import gaspoverka.table.*;
+import gaspoverka.data.*;
 
 
 public class Attestation extends javax.swing.JFrame {
@@ -9,19 +10,19 @@ public class Attestation extends javax.swing.JFrame {
     AttIzmTM izmTM;
     AttPovTM povTM;
     int device;
+    Channel channel;
 
     public Attestation() {
         initComponents();
-
+        channel = new Channel();
         //cal
-        device = 1;
-        rbDev1.setSelected(true);
-        temp.setSelected(true);
+        ch5.setSelected(true);
+        channel.getChannelData(5);
         calTM = new AttCalTM();
+        calTM.setData(channel.getPoints());
         calTable.setModel(calTM);
-        tempActionPerformed(null);
         //izm
-       izmTM = new AttIzmTM();
+        izmTM = new AttIzmTM();
         tableIzm.setModel(izmTM);
         //pov
         povTM = new AttPovTM();
@@ -35,20 +36,23 @@ public class Attestation extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bgSensor = new javax.swing.ButtonGroup();
-        bgDevice = new javax.swing.ButtonGroup();
+        bgChannel = new javax.swing.ButtonGroup();
         choosePanelCal1 = new javax.swing.JPanel();
-        press = new javax.swing.JRadioButton();
-        temp = new javax.swing.JRadioButton();
         calcButton = new javax.swing.JButton();
-        rbDev1 = new javax.swing.JRadioButton();
-        rbDev2 = new javax.swing.JRadioButton();
-        rbDev3 = new javax.swing.JRadioButton();
-        rbDev4 = new javax.swing.JRadioButton();
         saveButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        channel = new javax.swing.JTextField();
         newButton = new javax.swing.JButton();
+        dev1 = new javax.swing.JPanel();
+        ch5 = new javax.swing.JRadioButton();
+        ch6 = new javax.swing.JRadioButton();
+        dev2 = new javax.swing.JPanel();
+        ch7 = new javax.swing.JRadioButton();
+        ch8 = new javax.swing.JRadioButton();
+        dev3 = new javax.swing.JPanel();
+        ch9 = new javax.swing.JRadioButton();
+        ch10 = new javax.swing.JRadioButton();
+        dev4 = new javax.swing.JPanel();
+        ch11 = new javax.swing.JRadioButton();
+        ch12 = new javax.swing.JRadioButton();
         jtP = new javax.swing.JTabbedPane();
         AttCal = new javax.swing.JPanel();
         jspCal = new javax.swing.JScrollPane();
@@ -67,22 +71,6 @@ public class Attestation extends javax.swing.JFrame {
         setTitle("Аттестация установки");
         setResizable(false);
 
-        bgSensor.add(press);
-        press.setText("Давление");
-        press.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pressActionPerformed(evt);
-            }
-        });
-
-        bgSensor.add(temp);
-        temp.setText("Температура");
-        temp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tempActionPerformed(evt);
-            }
-        });
-
         calcButton.setText("Расчет");
         calcButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,43 +78,12 @@ public class Attestation extends javax.swing.JFrame {
             }
         });
 
-        bgDevice.add(rbDev1);
-        rbDev1.setText("Эталон1");
-        rbDev1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbDev1CalActionPerformed(evt);
-            }
-        });
-
-        bgDevice.add(rbDev2);
-        rbDev2.setText("Эталон2");
-        rbDev2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbDev2CalActionPerformed(evt);
-            }
-        });
-
-        bgDevice.add(rbDev3);
-        rbDev3.setText("Эталон3");
-        rbDev3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbDev3CalActionPerformed(evt);
-            }
-        });
-
-        bgDevice.add(rbDev4);
-        rbDev4.setText("Поверяемый");
-        rbDev4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbDev4CalActionPerformed(evt);
-            }
-        });
-
         saveButton.setText("Запись");
-
-        jLabel2.setText("канал");
-
-        channel.setEditable(false);
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         newButton.setText("Новая");
         newButton.addActionListener(new java.awt.event.ActionListener() {
@@ -135,64 +92,148 @@ public class Attestation extends javax.swing.JFrame {
             }
         });
 
+        dev1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Эталон1"));
+
+        bgChannel.add(ch5);
+        ch5.setText("5 - Температура");
+        ch5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ch5ActionPerformed(evt);
+            }
+        });
+
+        bgChannel.add(ch6);
+        ch6.setText("6 - Давление");
+        ch6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ch6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dev1Layout = new javax.swing.GroupLayout(dev1);
+        dev1.setLayout(dev1Layout);
+        dev1Layout.setHorizontalGroup(
+            dev1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ch5)
+            .addComponent(ch6)
+        );
+        dev1Layout.setVerticalGroup(
+            dev1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dev1Layout.createSequentialGroup()
+                .addComponent(ch5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ch6))
+        );
+
+        dev2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Эталон2"));
+
+        bgChannel.add(ch7);
+        ch7.setText("7 - Температура");
+
+        bgChannel.add(ch8);
+        ch8.setText("8 - Давление");
+
+        javax.swing.GroupLayout dev2Layout = new javax.swing.GroupLayout(dev2);
+        dev2.setLayout(dev2Layout);
+        dev2Layout.setHorizontalGroup(
+            dev2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ch7)
+            .addComponent(ch8)
+        );
+        dev2Layout.setVerticalGroup(
+            dev2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dev2Layout.createSequentialGroup()
+                .addComponent(ch7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ch8))
+        );
+
+        dev3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Эталон3"));
+
+        bgChannel.add(ch9);
+        ch9.setText("9 - Температура");
+
+        bgChannel.add(ch10);
+        ch10.setText("10 - Давление");
+
+        javax.swing.GroupLayout dev3Layout = new javax.swing.GroupLayout(dev3);
+        dev3.setLayout(dev3Layout);
+        dev3Layout.setHorizontalGroup(
+            dev3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ch9)
+            .addComponent(ch10)
+        );
+        dev3Layout.setVerticalGroup(
+            dev3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dev3Layout.createSequentialGroup()
+                .addComponent(ch9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ch10))
+        );
+
+        dev4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Счетчик"));
+
+        bgChannel.add(ch11);
+        ch11.setText("11 - Температура");
+
+        bgChannel.add(ch12);
+        ch12.setText("12 - Давление");
+
+        javax.swing.GroupLayout dev4Layout = new javax.swing.GroupLayout(dev4);
+        dev4.setLayout(dev4Layout);
+        dev4Layout.setHorizontalGroup(
+            dev4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ch11)
+            .addComponent(ch12)
+        );
+        dev4Layout.setVerticalGroup(
+            dev4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dev4Layout.createSequentialGroup()
+                .addComponent(ch11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ch12))
+        );
+
         javax.swing.GroupLayout choosePanelCal1Layout = new javax.swing.GroupLayout(choosePanelCal1);
         choosePanelCal1.setLayout(choosePanelCal1Layout);
         choosePanelCal1Layout.setHorizontalGroup(
             choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(choosePanelCal1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(choosePanelCal1Layout.createSequentialGroup()
-                        .addComponent(rbDev1)
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel2))
-                    .addGroup(choosePanelCal1Layout.createSequentialGroup()
-                        .addComponent(rbDev2)
-                        .addGap(41, 41, 41)
-                        .addComponent(channel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(choosePanelCal1Layout.createSequentialGroup()
-                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rbDev4)
-                            .addComponent(rbDev3))
+                        .addComponent(dev1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(temp)
-                            .addComponent(press))))
-                .addGap(30, 30, 30)
-                .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(dev2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dev3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(choosePanelCal1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(calcButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(saveButton))
-                    .addComponent(newButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(204, Short.MAX_VALUE))
+                        .addGap(139, 139, 139)
+                        .addComponent(saveButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(choosePanelCal1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dev4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         choosePanelCal1Layout.setVerticalGroup(
             choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(choosePanelCal1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(choosePanelCal1Layout.createSequentialGroup()
-                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbDev1)
-                            .addComponent(jLabel2))
+                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dev1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dev2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dev3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbDev2)
-                            .addComponent(channel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbDev3)
-                            .addComponent(temp))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbDev4)
-                            .addComponent(press)))
-                    .addGroup(choosePanelCal1Layout.createSequentialGroup()
-                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(choosePanelCal1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(calcButton)
-                            .addComponent(saveButton))
-                        .addGap(18, 18, 18)
+                            .addComponent(saveButton)))
+                    .addGroup(choosePanelCal1Layout.createSequentialGroup()
+                        .addComponent(dev4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(newButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -208,6 +249,8 @@ public class Attestation extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        calTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        calTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         calTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 calTableMouseClicked(evt);
@@ -215,10 +258,10 @@ public class Attestation extends javax.swing.JFrame {
         });
         jspCal.setViewportView(calTable);
 
-        ur1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        ur1.setFont(new java.awt.Font("Tahoma", 0, 18));
         ur1.setText("xxxxxxxxxxxxxxxx");
 
-        ur2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        ur2.setFont(new java.awt.Font("Tahoma", 0, 18));
         ur2.setText("xxxxxxxxxxxxxxxx");
 
         jLabel5.setText("Уравнение 1:");
@@ -229,19 +272,21 @@ public class Attestation extends javax.swing.JFrame {
         AttCal.setLayout(AttCalLayout);
         AttCalLayout.setHorizontalGroup(
             AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jspCal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
             .addGroup(AttCalLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AttCalLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ur2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AttCalLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ur1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGroup(AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AttCalLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AttCalLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ur2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AttCalLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ur1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jspCal, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         AttCalLayout.setVerticalGroup(
             AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,7 +324,7 @@ public class Attestation extends javax.swing.JFrame {
         AttIzm.setLayout(AttIzmLayout);
         AttIzmLayout.setHorizontalGroup(
             AttIzmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jspIzm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+            .addComponent(jspIzm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
         );
         AttIzmLayout.setVerticalGroup(
             AttIzmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,7 +354,7 @@ public class Attestation extends javax.swing.JFrame {
         AttPov.setLayout(AttPovLayout);
         AttPovLayout.setHorizontalGroup(
             AttPovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jspPov, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+            .addComponent(jspPov, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
         );
         AttPovLayout.setVerticalGroup(
             AttPovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -322,88 +367,60 @@ public class Attestation extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(choosePanelCal1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jtP, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+            .addComponent(jtP, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(choosePanelCal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(choosePanelCal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtP, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jtP, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void calTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calTableMouseClicked
-        int selection = calTable.getSelectedRow();
-        ur1.setText(calTM.ur1(selection));
-        ur2.setText(calTM.ur2(selection));
+        String u1 = "y=x*"
+                + channel.getPoints().get(calTable.getSelectedRow()).getK1()
+                + "+"
+                + channel.getPoints().get(calTable.getSelectedRow()).getB1();
+        String u2 = "y=x*"
+                + channel.getPoints().get(calTable.getSelectedRow()).getK2()
+                + "+"
+                + channel.getPoints().get(calTable.getSelectedRow()).getB2();
 
+        ur1.setText(u1);
+        ur2.setText(u2);
     }//GEN-LAST:event_calTableMouseClicked
 
-    private void rbDev4CalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDev4CalActionPerformed
-        device = 4;
-        temp.setSelected(true);
-        tempActionPerformed(null);
-}//GEN-LAST:event_rbDev4CalActionPerformed
-
-    private void rbDev3CalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDev3CalActionPerformed
-        device = 3;
-        temp.setSelected(true);
-        tempActionPerformed(null);
-}//GEN-LAST:event_rbDev3CalActionPerformed
-
-
-    private void rbDev2CalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDev2CalActionPerformed
-        device = 2;
-        temp.setSelected(true);
-        tempActionPerformed(null);
-}//GEN-LAST:event_rbDev2CalActionPerformed
-
-    private void rbDev1CalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDev1CalActionPerformed
-        device = 1;
-        temp.setSelected(true);
-        tempActionPerformed(null);
-}//GEN-LAST:event_rbDev1CalActionPerformed
-
-
-    private void pressureCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureCalActionPerformed
-        calTM.setRows(5, "кПа");
-       
-    }//GEN-LAST:event_pressureCalActionPerformed
-
-    private void temperatureCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temperatureCalActionPerformed
-        calTM.setRows(6, "С°");
-       
-
-    }//GEN-LAST:event_temperatureCalActionPerformed
-
-
     private void calcButtonCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcButtonCalActionPerformed
-        calTM.set();
-        calTable.setRowSelectionInterval(0, 0);
-        calTableMouseClicked(null);
-
-        izmTM.set();
-
-        povTM.set();
+        channel.calc();
 }//GEN-LAST:event_calcButtonCalActionPerformed
-
-    private void tempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempActionPerformed
-        calTM.setRows(6, "С°");
-        channel.setText(String.valueOf((device*2)+4));
-    }//GEN-LAST:event_tempActionPerformed
-
-    private void pressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressActionPerformed
-         calTM.setRows(5, "кПа");
-         channel.setText(String.valueOf((device*2)+3));
-    }//GEN-LAST:event_pressActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         izmTM.addRow();
     }//GEN-LAST:event_newButtonActionPerformed
+
+    private void ch5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ch5ActionPerformed
+        channel.getChannelData(5);
+        refresh();
+    }//GEN-LAST:event_ch5ActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        channel.save();
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void ch6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ch6ActionPerformed
+        
+    }//GEN-LAST:event_ch6ActionPerformed
+    
+    public void refresh() {
+        calTM.setData(channel.getPoints());
+
+    }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -418,25 +435,22 @@ public class Attestation extends javax.swing.JFrame {
     private javax.swing.JPanel AttCal;
     private javax.swing.JPanel AttIzm;
     private javax.swing.JPanel AttPov;
-    private javax.swing.ButtonGroup bgDevice;
-    private javax.swing.ButtonGroup bgSensor;
+    private javax.swing.ButtonGroup bgChannel;
     private javax.swing.JTable calTable;
     private javax.swing.JButton calcButton;
-    private javax.swing.JButton calcButtonCal;
-    private javax.swing.JButton calcButtonPov;
-    private javax.swing.JButton calcButtonPov1;
-    private javax.swing.JTextField channel;
-    private javax.swing.JTextField channelCal;
-    private javax.swing.JTextField channelPov;
-    private javax.swing.JTextField channelPov1;
-    private javax.swing.JPanel choosePanelCal;
+    private javax.swing.JRadioButton ch10;
+    private javax.swing.JRadioButton ch11;
+    private javax.swing.JRadioButton ch12;
+    private javax.swing.JRadioButton ch5;
+    private javax.swing.JRadioButton ch6;
+    private javax.swing.JRadioButton ch7;
+    private javax.swing.JRadioButton ch8;
+    private javax.swing.JRadioButton ch9;
     private javax.swing.JPanel choosePanelCal1;
-    private javax.swing.JPanel choosePanelPov;
-    private javax.swing.JPanel choosePanelPov1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel dev1;
+    private javax.swing.JPanel dev2;
+    private javax.swing.JPanel dev3;
+    private javax.swing.JPanel dev4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jspCal;
@@ -444,36 +458,9 @@ public class Attestation extends javax.swing.JFrame {
     private javax.swing.JScrollPane jspPov;
     private javax.swing.JTabbedPane jtP;
     private javax.swing.JButton newButton;
-    private javax.swing.JRadioButton press;
-    private javax.swing.JRadioButton pressureCal;
-    private javax.swing.JRadioButton pressurePov;
-    private javax.swing.JRadioButton pressurePov1;
-    private javax.swing.JRadioButton rbDev1;
-    private javax.swing.JRadioButton rbDev1Cal;
-    private javax.swing.JRadioButton rbDev1Pov;
-    private javax.swing.JRadioButton rbDev1Pov1;
-    private javax.swing.JRadioButton rbDev2;
-    private javax.swing.JRadioButton rbDev2Cal;
-    private javax.swing.JRadioButton rbDev2Pov;
-    private javax.swing.JRadioButton rbDev2Pov1;
-    private javax.swing.JRadioButton rbDev3;
-    private javax.swing.JRadioButton rbDev3Cal;
-    private javax.swing.JRadioButton rbDev3Pov;
-    private javax.swing.JRadioButton rbDev3Pov1;
-    private javax.swing.JRadioButton rbDev4;
-    private javax.swing.JRadioButton rbDev4Cal;
-    private javax.swing.JRadioButton rbDev4Pov;
-    private javax.swing.JRadioButton rbDev4Pov1;
     private javax.swing.JButton saveButton;
-    private javax.swing.JButton saveButtonCal;
-    private javax.swing.JButton saveButtonPov;
-    private javax.swing.JButton saveButtonPov1;
     private javax.swing.JTable tableIzm;
     private javax.swing.JTable tablePov;
-    private javax.swing.JRadioButton temp;
-    private javax.swing.JRadioButton temperatureCal;
-    private javax.swing.JRadioButton temperaturePov;
-    private javax.swing.JRadioButton temperaturePov1;
     private javax.swing.JLabel ur1;
     private javax.swing.JLabel ur2;
     // End of variables declaration//GEN-END:variables

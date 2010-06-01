@@ -47,7 +47,7 @@ public class Channel {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
 
-            loadData.setInt(1, this.getChannel());
+            loadData.setInt(1, Channel);
             result = loadData.executeQuery();
             fin();
             result.beforeFirst();
@@ -78,7 +78,7 @@ public class Channel {
                     }
                 }
             }
-
+            this.setChannel(Channel);
         } catch (Exception e) {
             e.printStackTrace();
         }

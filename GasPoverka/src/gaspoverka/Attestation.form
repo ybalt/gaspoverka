@@ -28,13 +28,13 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jtP" alignment="0" min="-2" pref="502" max="-2" attributes="1"/>
-          <Component id="choosePanelCal1" alignment="0" min="-2" max="-2" attributes="1"/>
+          <Component id="choosePanelCal" alignment="0" min="-2" max="-2" attributes="1"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="choosePanelCal1" min="-2" max="-2" attributes="0"/>
+              <Component id="choosePanelCal" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jtP" min="-2" pref="354" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -43,7 +43,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="choosePanelCal1">
+    <Container class="javax.swing.JPanel" name="choosePanelCal">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -220,6 +220,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="7 - &#x422;&#x435;&#x43c;&#x43f;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ch7ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="ch8">
               <Properties>
@@ -228,6 +231,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="8 - &#x414;&#x430;&#x432;&#x43b;&#x435;&#x43d;&#x438;&#x435;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ch8ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -269,6 +275,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="9 - &#x422;&#x435;&#x43c;&#x43f;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ch9ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="ch10">
               <Properties>
@@ -277,6 +286,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="10 - &#x414;&#x430;&#x432;&#x43b;&#x435;&#x43d;&#x438;&#x435;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ch10ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -318,6 +330,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="11 - &#x422;&#x435;&#x43c;&#x43f;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ch11ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="ch12">
               <Properties>
@@ -326,6 +341,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="12 - &#x414;&#x430;&#x432;&#x43b;&#x435;&#x43d;&#x438;&#x435;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ch12ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -336,6 +354,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="AttCal">
+          <Events>
+            <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="AttCalComponentShown"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&#x41a;&#x430;&#x43b;&#x438;&#x431;&#x440;&#x43e;&#x432;&#x43a;&#x430;">
@@ -444,6 +465,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="AttIzm">
+          <Events>
+            <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="AttIzmComponentShown"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&#x418;&#x437;&#x43c;&#x435;&#x440;&#x435;&#x43d;&#x438;&#x435;">
@@ -456,13 +480,50 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jspIzm" alignment="1" pref="497" max="32767" attributes="1"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="VL" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="RRL" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="MCL" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="RR" alignment="0" max="32767" attributes="1"/>
+                          <Component id="V" alignment="0" max="32767" attributes="1"/>
+                          <Component id="MC" alignment="0" min="-2" pref="67" max="-2" attributes="1"/>
+                      </Group>
+                      <EmptySpace pref="34" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="stopButton" max="32767" attributes="1"/>
+                          <Component id="startButton" alignment="0" pref="99" max="32767" attributes="1"/>
+                      </Group>
+                      <EmptySpace pref="78" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jspIzm" min="-2" pref="138" max="-2" attributes="0"/>
-                      <EmptySpace pref="188" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="VL" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="V" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="startButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="RRL" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="RR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="MCL" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="MC" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="stopButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="92" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -489,9 +550,43 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JLabel" name="VL">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x417;&#x43d;&#x430;&#x447;&#x435;&#x43d;&#x438;&#x435; &#x438;&#x437;&#x43c;&#x435;&#x440;&#x44f;&#x435;&#x43c;&#x43e;&#x439; &#x432;&#x435;&#x43b;&#x438;&#x447;&#x438;&#x43d;&#x44b;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="RRL">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x41f;&#x435;&#x440;&#x438;&#x43e;&#x434;&#x438;&#x447;&#x43d;&#x43e;&#x441;&#x442;&#x44c; &#x432;&#x44b;&#x432;&#x43e;&#x434;&#x430;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="MCL">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x41a;&#x43e;&#x43b;&#x438;&#x447;&#x435;&#x441;&#x442;&#x432;&#x43e; &#x438;&#x437;&#x43c;&#x435;&#x440;&#x435;&#x43d;&#x438;&#x439; &#x432; &#x442;&#x43e;&#x447;&#x43a;&#x435;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="V">
+            </Component>
+            <Component class="javax.swing.JTextField" name="RR">
+            </Component>
+            <Component class="javax.swing.JTextField" name="MC">
+            </Component>
+            <Component class="javax.swing.JButton" name="startButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x421;&#x442;&#x430;&#x440;&#x442;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="stopButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x421;&#x442;&#x43e;&#x43f;"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="AttPov">
+          <Events>
+            <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="AttPovComponentShown"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&#x41f;&#x43e;&#x432;&#x435;&#x440;&#x43a;&#x430;">

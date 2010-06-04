@@ -1,4 +1,4 @@
-package gaspoverka.data;
+package gaspoverka.data.config;
 
 import org.hsqldb.jdbc.jdbcDataSource;
 import java.sql.*;
@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 public class Channel {
 
+    static String db_name = ".//db//config";
     private Connection conn;
     private int Channel;
     Vector<Point> points;
@@ -168,24 +169,16 @@ public class Channel {
     }
 
     private void connect() {
-        String db_name = ".//db//arch";
         jdbcDataSource dataSource = new jdbcDataSource();
-
-
-
         try {
             dataSource.setDatabase("jdbc:hsqldb:" + db_name);
             conn = dataSource.getConnection("sa", "");
             conn.setAutoCommit(false);
             System.out.println("Connected");
-
-
         } catch (SQLException ex2) {
             ex2.printStackTrace();
             JOptionPane.showMessageDialog(null, "Невозможно открыть базу данных по адресу " + dataSource.getDatabase());
             System.exit(1);
-
-
         }
     }
 

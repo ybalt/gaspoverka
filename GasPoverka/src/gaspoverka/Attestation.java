@@ -1,5 +1,6 @@
 package gaspoverka;
 
+import gaspoverka.data.config.Channel;
 import gaspoverka.table.*;
 import gaspoverka.data.*;
 
@@ -292,8 +293,12 @@ public class Attestation extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        calTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        calTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        calTable.setRowMargin(5);
         calTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        calTable.getTableHeader().setResizingAllowed(false);
+        calTable.getTableHeader().setReorderingAllowed(false);
+        calTable.setUpdateSelectionOnSort(false);
         calTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 calTableMouseClicked(evt);
@@ -328,8 +333,10 @@ public class Attestation extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(ur1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jspCal, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(AttCalLayout.createSequentialGroup()
+                        .addComponent(jspCal, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)))
+                .addGap(0, 0, 0))
         );
         AttCalLayout.setVerticalGroup(
             AttCalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

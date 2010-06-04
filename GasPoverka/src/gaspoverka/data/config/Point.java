@@ -1,4 +1,4 @@
-package gaspoverka.data;
+package gaspoverka.data.config;
 
 import java.math.BigDecimal;
 

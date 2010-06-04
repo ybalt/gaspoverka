@@ -1,5 +1,6 @@
 package gaspoverka;
 
+import gaspoverka.data.arch.Dev;
 import gaspoverka.data.*;
 import gaspoverka.table.*;
 

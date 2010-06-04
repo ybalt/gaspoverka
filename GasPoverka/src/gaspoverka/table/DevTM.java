@@ -1,5 +1,6 @@
 package gaspoverka.table;
 
+import gaspoverka.data.arch.Dev;
 import java.util.*;
 import gaspoverka.data.*;
 import javax.swing.table.*;

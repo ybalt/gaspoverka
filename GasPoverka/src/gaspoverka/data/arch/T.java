@@ -1,4 +1,4 @@
-package gaspoverka.data;
+package gaspoverka.data.arch;
 
 
 public class T {

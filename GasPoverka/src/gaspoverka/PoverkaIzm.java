@@ -1,36 +1,41 @@
 package gaspoverka;
 
 import gaspoverka.data.arch.Dev;
-import gaspoverka.data.*;
+import gaspoverka.data.result.*;
 import gaspoverka.table.*;
+
+import javax.swing.table.*;
 
 public class PoverkaIzm extends javax.swing.JFrame {
 
     Dev counter;
     Dev refrence;
+    Result res;
     TTM MRTM;
     TTM KPTM;
     String[] KPnames = {"№", "Зн.Н", "Зн.В", "Погр."};
     String[] MRnames = {"№", "ДИ.Н", "ДИ.В", "Погр"};
     PovIzmDataTM dataTM;
-    DefTR dataTR;
+    DefIzmTR dataTR;
 
     public PoverkaIzm() {
         counter = new Dev();
         refrence = new Dev();
         MRTM = new TTM(counter.getMR(), MRnames);
         KPTM = new TTM(counter.getKP(), KPnames);
-        dataTM = new PovIzmDataTM();
-        dataTR = new DefTR();
+        res = new Result();
+
+        dataTM = new PovIzmDataTM(res);
+        dataTR = new DefIzmTR();
         
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Измерение");
+        
         try {
-
             dataTable.setDefaultRenderer(Class.forName("java.lang.Double"), dataTR);
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+           ex.printStackTrace();
         }
 
         refreshData();
@@ -66,6 +71,7 @@ public class PoverkaIzm extends javax.swing.JFrame {
         RR = new javax.swing.JTextField();
         CVL = new javax.swing.JLabel();
         CV = new javax.swing.JTextField();
+        calcButton = new javax.swing.JButton();
         infoPanel = new javax.swing.JPanel();
         jspdevInfoKP = new javax.swing.JScrollPane();
         devInfoKP = new javax.swing.JTable();
@@ -87,15 +93,15 @@ public class PoverkaIzm extends javax.swing.JFrame {
         dataPanel.setLayout(dataPanelLayout);
         dataPanelLayout.setHorizontalGroup(
             dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 621, Short.MAX_VALUE)
-            .addGroup(dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jspData, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
+            .addGroup(dataPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jspData, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE))
         );
         dataPanelLayout.setVerticalGroup(
             dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
-            .addGroup(dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jspData, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+            .addGroup(dataPanelLayout.createSequentialGroup()
+                .addComponent(jspData, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         refPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Эталон"));
@@ -209,7 +215,7 @@ public class PoverkaIzm extends javax.swing.JFrame {
             }
         });
 
-        flushIzmButton.setText("Очистить");
+        flushIzmButton.setText("C");
         flushIzmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flushIzmButtonActionPerformed(evt);
@@ -220,6 +226,13 @@ public class PoverkaIzm extends javax.swing.JFrame {
 
         CVL.setText("Контр. объем");
 
+        calcButton.setText("Расчет");
+        calcButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ctrlPanelLayout = new javax.swing.GroupLayout(ctrlPanel);
         ctrlPanel.setLayout(ctrlPanelLayout);
         ctrlPanelLayout.setHorizontalGroup(
@@ -228,43 +241,46 @@ public class PoverkaIzm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ctrlPanelLayout.createSequentialGroup()
-                        .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(RRL)
                             .addComponent(CVL))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(CV)
-                            .addComponent(RR, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CV, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addComponent(RR, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                            .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)))
+                            .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                            .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)))
                     .addGroup(ctrlPanelLayout.createSequentialGroup()
                         .addComponent(newIzmButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(delIzmButton)
+                        .addComponent(delIzmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(flushIzmButton))))
+                        .addComponent(calcButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(flushIzmButton)))
+                .addContainerGap())
         );
         ctrlPanelLayout.setVerticalGroup(
             ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ctrlPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RRL)
                     .addComponent(RR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startButton))
+                    .addComponent(startButton)
+                    .addComponent(RRL))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(CVL)
-                        .addComponent(CV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(stopButton))
+                .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stopButton)
+                    .addComponent(CVL))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ctrlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newIzmButton)
                     .addComponent(delIzmButton)
-                    .addComponent(flushIzmButton)))
+                    .addComponent(calcButton)
+                    .addComponent(flushIzmButton))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout devSelectionLayout = new javax.swing.GroupLayout(devSelection);
@@ -275,7 +291,9 @@ public class PoverkaIzm extends javax.swing.JFrame {
                 .addComponent(refPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(devPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(ctrlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(devSelectionLayout.createSequentialGroup()
+                .addComponent(ctrlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         devSelectionLayout.setVerticalGroup(
             devSelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,7 +303,7 @@ public class PoverkaIzm extends javax.swing.JFrame {
                     .addComponent(devPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ctrlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(40, 40, 40))
         );
 
         jspdevInfoKP.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Контр. точки"));
@@ -347,8 +365,8 @@ public class PoverkaIzm extends javax.swing.JFrame {
                     .addComponent(UDL))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jspdevInfoKP, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .addComponent(jspDevInfoMR, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)))
+                    .addComponent(jspdevInfoKP, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                    .addComponent(jspDevInfoMR, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -356,35 +374,28 @@ public class PoverkaIzm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(devSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(dataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(dataPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(devSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(devSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(devSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                     .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dataPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dataPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void newIzmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newIzmButtonActionPerformed
-        dataTM.addRow();
-    }//GEN-LAST:event_newIzmButtonActionPerformed
-
-    private void delIzmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delIzmButtonActionPerformed
-        dataTM.delRow();
-    }//GEN-LAST:event_delIzmButtonActionPerformed
 
     private void devCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_devCBActionPerformed
         refreshData();
@@ -394,9 +405,22 @@ public class PoverkaIzm extends javax.swing.JFrame {
         refreshData();
     }//GEN-LAST:event_refCBActionPerformed
 
+    private void calcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcButtonActionPerformed
+        res.calc();
+        dataTM.set();
+    }//GEN-LAST:event_calcButtonActionPerformed
+
     private void flushIzmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flushIzmButtonActionPerformed
         dataTM.flush();
-    }//GEN-LAST:event_flushIzmButtonActionPerformed
+}//GEN-LAST:event_flushIzmButtonActionPerformed
+
+    private void delIzmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delIzmButtonActionPerformed
+        dataTM.delRow();
+}//GEN-LAST:event_delIzmButtonActionPerformed
+
+    private void newIzmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newIzmButtonActionPerformed
+        dataTM.addRow();
+}//GEN-LAST:event_newIzmButtonActionPerformed
 
     private void refreshData() {
         counter.load((String) devCB.getSelectedItem());
@@ -433,6 +457,7 @@ public class PoverkaIzm extends javax.swing.JFrame {
     private javax.swing.JLabel RRL;
     private javax.swing.JTextField UD;
     private javax.swing.JLabel UDL;
+    private javax.swing.JButton calcButton;
     private javax.swing.JPanel ctrlPanel;
     private javax.swing.JPanel dataPanel;
     private javax.swing.JTable dataTable;

@@ -6,13 +6,54 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 public class Result {
-    
+
     private String db_name = ".//db//result";
     private Connection conn;
-
-    
     private long PovNum;
-    Vector<Calculation> data;
+    private String Type;
+    private String DevNum;
+    private String Owner;
+    private int Channel;
+    Vector<Izm> data;
+    protected double DErr;
+
+    public Result() {
+        PovNum = 0;
+        Type = "";
+        DevNum = "";
+        Owner = "";
+        Channel = 0;
+        data = new Vector<Izm>();
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="get&set">
+    public int getChannel() {
+        return Channel;
+    }
+
+    public void setChannel(int Channel) {
+        this.Channel = Channel;
+    }
+
+    public Vector<Izm> getData() {
+        return data;
+    }
+
+    public String getDevNum() {
+        return DevNum;
+    }
+
+    public void setDevNum(String DevNum) {
+        this.DevNum = DevNum;
+    }
+
+    public String getOwner() {
+        return Owner;
+    }
+
+    public void setOwner(String Owner) {
+        this.Owner = Owner;
+    }
 
     public long getPovNum() {
         return PovNum;
@@ -22,69 +63,51 @@ public class Result {
         this.PovNum = PovNum;
     }
 
-    public Vector<Calculation> getDataVector() {
-        return data;
+    public String getType() {
+        return Type;
     }
 
-    public Result() {
-        data = new Vector<Calculation>();
+    public void setType(String Type) {
+        this.Type = Type;
     }
 
-    private void connect() {
-        jdbcDataSource dataSource = new jdbcDataSource();
-        try {
-            dataSource.setDatabase("jdbc:hsqldb:" + db_name);
-            conn = dataSource.getConnection("sa", "");
-            conn.setAutoCommit(false);
-            System.out.println("Connected");
-        } catch (SQLException ex2) {
-            ex2.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Невозможно открыть базу данных по адресу " + dataSource.getDatabase());
-            System.exit(1);
-        }
+    public double getDErr(int num) {
+        return 0;
     }
 
-    private void fin() {
-        try {
-            Statement st = conn.createStatement();
-            st.execute("SHUTDOWN");
-            conn.commit();
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Ошибка закрытия базы данных");
-
-        }
-
-    }
-
-    private void save() {
+    // </editor-fold>
+    
+    public void save() {
         int result;
 
         try {
             connect();
+            //del at first
             PreparedStatement delData = conn.prepareStatement("DELETE FROM RESULT "
                     + "WHERE POVNUM=?");
 
             delData.setLong(1, this.getPovNum());
             result = delData.executeUpdate();
             delData.close();
-
+            //save
             PreparedStatement saveData = conn.prepareStatement("INSERT INTO RESULT "
-                    + "(CHANNEL, TYPE, DEVNUM, OWNER, KP, MNUM, CV, V, POVNUM) "
-                    + "VALUES (?,?,?,?,?,?,?,?,?)");
+                    + "(POVNUM, TYPE, DEVNUM, OWNER, CHANNEL, MNUM, RV, CV, RT, RP, CT, CP) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            if (data.size()!=0) {
+            if (data.size() != 0) {
                 for (int i = 0; i < data.size(); i++) {
-                    saveData.setInt(1, data.get(i).getChannel());
-                    saveData.setString(2, data.get(i).getType());
-                    saveData.setString(3, data.get(i).getDevNum());
-                    saveData.setString(4, data.get(i).getOwner());
-                    saveData.setInt(5, data.get(i).getKP());
+                    saveData.setLong(1, this.getPovNum());
+                    saveData.setString(2, this.getType());
+                    saveData.setString(3, this.getDevNum());
+                    saveData.setString(4, this.getOwner());
+                    saveData.setInt(5, this.getChannel());
                     saveData.setInt(6, data.get(i).getMeasureNum());
-                    saveData.setDouble(7, data.get(i).getControlValue());
-                    saveData.setDouble(8, data.get(i).getMeasuredValue());
-                    saveData.setLong(9, this.getPovNum());
+                    saveData.setDouble(7, data.get(i).getRV());
+                    saveData.setDouble(8, data.get(i).getRT());
+                    saveData.setDouble(9, data.get(i).getRP());
+                    saveData.setDouble(10, data.get(i).getCV());
+                    saveData.setDouble(11, data.get(i).getCT());
+                    saveData.setDouble(12, data.get(i).getCP());
                     result = saveData.executeUpdate();
                     if (result == 0) {
                         conn.rollback();
@@ -117,7 +140,7 @@ public class Result {
         }
     }
 
-    private void load(long PovNum) {
+    public void load(long PovNum) {
     }
 
     public long getLastPovNum() {
@@ -137,8 +160,7 @@ public class Result {
             if (result.next()) {
                 result.last();
                 return result.getLong(1);
-            }
-            else {
+            } else {
                 return 0;
             }
         } catch (Exception e) {
@@ -148,6 +170,49 @@ public class Result {
         return 0;
     }
 
-    public void calc() {}
+    public void calc() {
+        double Vpr, Err;
 
+        for (int i=0;i<data.size();i++)
+        {
+            Vpr = (293.16*data.get(i).getRV()*data.get(i).getRP())/((273.16-data.get(i).getRT())*0.1013);
+            data.get(i).setRVpr(Vpr);
+
+            Vpr = (293.16*data.get(i).getCV()*data.get(i).getCP())/((273.16-data.get(i).getCT())*0.1013);
+            data.get(i).setCVpr(Vpr);
+
+            Err = (data.get(i).getRV()-data.get(i).getCV())/((data.get(i).getRV()))*100;
+            data.get(i).setErr(Err);
+
+        }
+
+    }
+
+    private void connect() {
+        jdbcDataSource dataSource = new jdbcDataSource();
+        try {
+            dataSource.setDatabase("jdbc:hsqldb:" + db_name);
+            conn = dataSource.getConnection("sa", "");
+            conn.setAutoCommit(false);
+            System.out.println("Connected");
+        } catch (SQLException ex2) {
+            ex2.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Невозможно открыть базу данных по адресу " + dataSource.getDatabase());
+            System.exit(1);
+        }
+    }
+
+    private void fin() {
+        try {
+            Statement st = conn.createStatement();
+            st.execute("SHUTDOWN");
+            conn.commit();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ошибка закрытия базы данных");
+
+        }
+
+    }
 }

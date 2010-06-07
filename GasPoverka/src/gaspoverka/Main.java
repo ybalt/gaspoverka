@@ -29,6 +29,7 @@ public class Main extends javax.swing.JFrame {
         PovButton = new javax.swing.JButton();
         IzmButton = new javax.swing.JButton();
         AttButton = new javax.swing.JButton();
+        repButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         Arch = new javax.swing.JMenu();
         ArchDev = new javax.swing.JMenuItem();
@@ -58,6 +59,8 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        repButton.setText("Отчеты");
+
         Arch.setText("Архив");
 
         ArchDev.setText("Устройства");
@@ -77,24 +80,27 @@ public class Main extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(214, 214, 214)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(IzmButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                    .addComponent(PovButton, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
-                .addGap(222, 222, 222))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(201, 201, 201)
                 .addComponent(AttButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(201, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(214, 214, 214)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(repButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                    .addComponent(IzmButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                    .addComponent(PovButton, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                .addGap(222, 222, 222))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addComponent(PovButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(IzmButton)
-                .addGap(69, 69, 69)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(repButton)
+                .addGap(42, 42, 42)
                 .addComponent(AttButton)
                 .addContainerGap(181, Short.MAX_VALUE))
         );
@@ -157,6 +163,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton IzmButton;
     private javax.swing.JButton PovButton;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JButton repButton;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 
-public class DefTR extends DefaultTableCellRenderer {
+public class DefIzmTR extends DefaultTableCellRenderer {
 
     protected int col;
 
@@ -22,6 +22,8 @@ public class DefTR extends DefaultTableCellRenderer {
         } else {
             cell.setBackground(Color.GREEN);
         }
+        JLabel renderedLabel = (JLabel)cell;
+        renderedLabel.setHorizontalAlignment(CENTER);
         return cell;
 
     }

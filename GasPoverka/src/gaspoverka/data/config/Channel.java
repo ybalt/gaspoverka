@@ -80,6 +80,7 @@ public class Channel {
                 }
             }
             this.setChannel(Channel);
+            calc();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,6 +89,7 @@ public class Channel {
     public void calc() {
         for (int A = 0; A < points.size() - 1; A++) {
             int B = A + 1;
+            if (points.get(B).getY()!=0 || points.get(B).getX()!=0 || points.get(B).getYS()!=0)
             try {
                 //y=x*(F1/F4)+(-F2+F3/F4))
                 //y=kx+b
@@ -95,17 +97,22 @@ public class Channel {
                 double F2 = points.get(A).getX() * points.get(B).getY();
                 double F3 = points.get(B).getX() * points.get(A).getY();
                 double F4 = points.get(B).getX() - points.get(A).getX();
-                points.get(A).setK1(F1 / F4);
-                points.get(A).setB1((-F2 + F3) / F4);
+                if (F4 != 0) {
+                    points.get(A).setK1(F1 / F4);
+                    points.get(A).setB1((-F2 + F3) / F4);
+                }
                 //
                 double G1 = points.get(B).getYS() - points.get(A).getYS();
                 double G2 = points.get(A).getY() * points.get(B).getYS();
                 double G3 = points.get(B).getY() * points.get(A).getYS();
                 double G4 = points.get(B).getY() - points.get(A).getY();
-                points.get(A).setK2(G1 / G4);
-                points.get(A).setB2((-G2 + G3) / G4);
+                if (G4 != 0) {
+                    points.get(A).setK2(G1 / G4);
+                    points.get(A).setB2((-G2 + G3) / G4);
+                }
 
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

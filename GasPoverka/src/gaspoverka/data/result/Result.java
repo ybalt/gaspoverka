@@ -1,5 +1,6 @@
 package gaspoverka.data.result;
 
+import gaspoverka.data.config.*;
 import org.hsqldb.jdbc.jdbcDataSource;
 import java.sql.*;
 import java.util.*;
@@ -15,6 +16,10 @@ public class Result {
     private String Owner;
     private int Channel;
     Vector<Izm> data;
+    Vector<Point> CTch;
+    Vector<Point> CPch;
+    Vector<Point> RTch;
+    Vector<Point> RPch;
     protected double DErr;
 
     public Result() {
@@ -24,6 +29,10 @@ public class Result {
         Owner = "";
         Channel = 0;
         data = new Vector<Izm>();
+        CTch = new Vector<Point>();
+        CPch = new Vector<Point>();
+        RTch = new Vector<Point>();
+        RPch = new Vector<Point>();
     }
 
     // <editor-fold defaultstate="collapsed" desc="get&set">
@@ -76,7 +85,6 @@ public class Result {
     }
 
     // </editor-fold>
-    
     public void save() {
         int result;
 
@@ -172,20 +180,105 @@ public class Result {
 
     public void calc() {
         double Vpr, Err;
+        double RV, RT, RP, CV, CT, CP;
 
-        for (int i=0;i<data.size();i++)
-        {
-            Vpr = (293.16*data.get(i).getRV()*data.get(i).getRP())/((273.16-data.get(i).getRT())*0.1013);
+        for (int i = 0; i < data.size(); i++) {
+            RV = (data.get(i).getRV() != 0) ? data.get(i).getRV() : 1;
+            RT = (data.get(i).getRT() != 0) ? data.get(i).getRT() : 1;
+            RP = (data.get(i).getRP() != 0) ? data.get(i).getRP() : 1;
+
+            CV = (data.get(i).getCV() != 0) ? data.get(i).getCV() : 1;
+            CT = (data.get(i).getCT() != 0) ? data.get(i).getCT() : 1;
+            CP = (data.get(i).getCP() != 0) ? data.get(i).getCP() : 1;
+
+            if (RTch.size()!=0) {
+                for (int A=0;A<RTch.size()-1;A++) {
+                    int B = A+1;
+                    if (RT>=RTch.get(A).getX() && RT<=RTch.get(B).getX()) {
+                        RT = RTch.get(A).getK2()*RT + RTch.get(A).getB2();
+                    }
+                }
+            }
+
+            if (RPch.size()!=0) {
+                for (int A=0;A<RPch.size()-1;A++) {
+                    int B = A+1;
+                    if (RP>=RPch.get(A).getX() && RP<=RPch.get(B).getX()) {
+                        RP = RPch.get(A).getK2()*RP + RPch.get(A).getB2();
+                    }
+                }
+            }
+
+            if (CTch.size()!=0) {
+                for (int A=0;A<CTch.size()-1;A++) {
+                    int B = A+1;
+                    if (CT>=CTch.get(A).getX() && CT<=CTch.get(B).getX()) {
+                        CT = CTch.get(A).getK2()*CT + CTch.get(A).getB2();
+                    }
+                }
+            }
+
+            if (CPch.size()!=0) {
+                for (int A=0;A<CPch.size()-1;A++) {
+                    int B = A+1;
+                    if (CP>=CPch.get(A).getX() && CP<=CPch.get(B).getX()) {
+                        CP = CPch.get(A).getK2()*CP + CPch.get(A).getB2();
+                    }
+                }
+            }
+
+            Vpr = (293.16 * RV * (RP / 1000)) / ((273.16 + RT) * 0.1013);
             data.get(i).setRVpr(Vpr);
 
-            Vpr = (293.16*data.get(i).getCV()*data.get(i).getCP())/((273.16-data.get(i).getCT())*0.1013);
+            Vpr = (293.16 * CV * (CP / 1000)) / ((273.16 + CT) * 0.1013);
             data.get(i).setCVpr(Vpr);
 
-            Err = (data.get(i).getRV()-data.get(i).getCV())/((data.get(i).getRV()))*100;
+            Err = (((CV * CP * RT) / (RV * RP * CT)) - 1) * 100;
             data.get(i).setErr(Err);
 
         }
 
+    }
+
+    public void setCT(boolean use) {
+        if (use) {
+            Channel ch = new Channel();
+            ch.getChannelData(12);
+            CTch = ch.getPoints();
+        } else {
+            CTch.clear();
+        }
+    }
+
+    public void setCP(boolean use) {
+        if (use) {
+            Channel ch = new Channel();
+            ch.getChannelData(11);
+            CPch = ch.getPoints();
+        } else {
+            CPch.clear();
+        }
+    }
+
+    public void setRT(int Channel, boolean use) {
+        if (use) {
+            Channel ch = new Channel();
+            ch.getChannelData(Channel);
+            RTch = ch.getPoints();
+        } else {
+            RTch.clear();
+        }
+
+    }
+
+    public void setRP(int Channel, boolean use) {
+        if (use) {
+            Channel ch = new Channel();
+            ch.getChannelData(Channel);
+            RPch = ch.getPoints();
+        } else {
+            RPch.clear();
+        }
     }
 
     private void connect() {

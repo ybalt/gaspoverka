@@ -82,7 +82,11 @@ public class Point {
     }
 
     public double getK1() {
-        return Rounded(K1);
+        if (K1 == 0) {
+            return 1;
+        } else {
+            return Rounded(K1);
+        }
     }
 
     public void setK1(double K1) {
@@ -90,7 +94,11 @@ public class Point {
     }
 
     public double getK2() {
-        return Rounded(K2);
+        if (K2 == 0) {
+            return 1;
+        } else {
+            return Rounded(K2);
+        }
     }
 
     public void setK2(double K2) {

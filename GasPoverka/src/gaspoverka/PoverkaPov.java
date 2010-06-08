@@ -91,6 +91,7 @@ public class PoverkaPov extends javax.swing.JFrame {
         calcButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         dataTable.setModel(dataTM);
         jspData.setViewportView(dataTable);
@@ -101,8 +102,7 @@ public class PoverkaPov extends javax.swing.JFrame {
             dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dataPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jspData, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jspData, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE))
         );
         dataPanelLayout.setVerticalGroup(
             dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -3,6 +3,7 @@
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -23,10 +24,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="dataPanel" alignment="0" max="32767" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="dataPanel" alignment="1" max="32767" attributes="1"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="devSelection" min="-2" pref="276" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="infoPanel" min="-2" max="-2" attributes="0"/>
@@ -39,13 +40,14 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="devSelection" pref="193" max="32767" attributes="1"/>
-                  <Component id="infoPanel" min="-2" max="-2" attributes="1"/>
+                  <Component id="infoPanel" max="32767" attributes="1"/>
+                  <Component id="devSelection" alignment="1" pref="207" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="dataPanel" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,18 +58,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jspData" pref="627" max="32767" attributes="0"/>
-              </Group>
+              <Component id="jspData" alignment="1" pref="627" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="jspData" pref="327" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
+              <Component id="jspData" alignment="0" pref="327" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -139,19 +135,24 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="refPL" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="refP" min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="refP" min="-2" pref="21" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
+                          <Group type="102" attributes="1">
                               <Component id="refTL" min="-2" pref="30" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="refT" min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="refT" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="refUseCalP" min="-2" max="-2" attributes="0"/>
+                          <Component id="refUseCalT" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
                   <Component id="refCB" alignment="0" pref="120" max="32767" attributes="0"/>
               </Group>
@@ -160,15 +161,21 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="refCB" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="refPL" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refP" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="refPL" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="refP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="refUseCalP" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="refTL" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refT" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="refTL" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="refT" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="refUseCalT" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -199,6 +206,10 @@
             </Component>
             <Component class="javax.swing.JTextField" name="refT">
             </Component>
+            <Component class="javax.swing.JCheckBox" name="refUseCalP">
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="refUseCalT">
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="devPanel">
@@ -221,17 +232,22 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="devPL" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="devP" min="-2" pref="50" max="-2" attributes="0"/>
+                                      <Component id="devP" min="-2" pref="21" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="1">
                                       <Component id="devTL" min="-2" pref="30" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="devT" min="-2" pref="50" max="-2" attributes="0"/>
+                                      <Component id="devT" max="32767" attributes="0"/>
                                   </Group>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="devUseCalT" min="-2" max="-2" attributes="0"/>
+                                  <Component id="devUseCalP" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="devCB" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
@@ -245,14 +261,20 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="devCB" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="devPL" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="devP" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="devPL" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="devP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="devUseCalP" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="devTL" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="devT" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="devUseCalT" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="devTL" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="devT" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -283,6 +305,10 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="devT">
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="devUseCalP">
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="devUseCalT">
             </Component>
           </SubComponents>
         </Container>
@@ -464,8 +490,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jspdevInfoKP" alignment="0" pref="115" max="32767" attributes="1"/>
-                      <Component id="jspDevInfoMR" alignment="0" pref="115" max="32767" attributes="1"/>
+                      <Component id="jspdevInfoKP" alignment="0" pref="129" max="32767" attributes="1"/>
+                      <Component id="jspDevInfoMR" alignment="0" pref="129" max="32767" attributes="1"/>
                   </Group>
               </Group>
           </Group>

@@ -16,8 +16,8 @@ public class Dev {
     private int PL;
     private int IC;
     private int MIC;
-    public Vector<T> MR;
-    public Vector<T> KP;
+    public Vector<DevT> MR;
+    public Vector<DevT> KP;
 
     public Dev() {
         this.Type = null;
@@ -26,8 +26,8 @@ public class Dev {
         this.PL = 0;
         this.IC = 0;
         this.MIC = 0;
-        MR = new Vector<T>();
-        KP = new Vector<T>();
+        MR = new Vector<DevT>();
+        KP = new Vector<DevT>();
 
     }
 
@@ -90,19 +90,19 @@ public class Dev {
         this.UD = UD;
     }
 
-    public T getKP(int Number) {
+    public DevT getKP(int Number) {
         return KP.get(Number);
     }
 
-    public T getMR(int Number) {
+    public DevT getMR(int Number) {
         return MR.get(Number);
     }
 
-    public Vector<T> getKP() {
+    public Vector<DevT> getKP() {
         return KP;
     }
 
-    public Vector<T> getMR() {
+    public Vector<DevT> getMR() {
         return MR;
     }
 
@@ -294,7 +294,7 @@ public class Dev {
             if (resultKP.next()) {
                 resultKP.beforeFirst();
                 while (resultKP.next()) {
-                    T KPT = new T(resultKP.getInt(1));
+                    DevT KPT = new DevT(resultKP.getInt(1));
                     KPT.setVL(resultKP.getDouble(2));
                     KPT.setVH(resultKP.getDouble(3));
                     KPT.setError(resultKP.getDouble(4));
@@ -305,7 +305,7 @@ public class Dev {
             if (resultMR.next()) {
                 resultMR.beforeFirst();
                 while (resultMR.next()) {
-                    T MRT = new T(resultMR.getInt(1));
+                    DevT MRT = new DevT(resultMR.getInt(1));
                     MRT.setVL(resultMR.getDouble(2));
                     MRT.setVH(resultMR.getDouble(3));
                     MRT.setError(resultMR.getDouble(4));

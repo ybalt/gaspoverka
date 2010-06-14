@@ -1,6 +1,6 @@
 package gaspoverka.table;
 
-import gaspoverka.data.arch.T;
+import gaspoverka.data.arch.DevT;
 import gaspoverka.data.*;
 import javax.swing.table.*;
 import java.util.*;
@@ -13,14 +13,14 @@ public class TTM extends AbstractTableModel {
     public static final int Error_INDEX = 3;
     protected String[] columnNames;
     boolean edit = false;
-    Vector<T> devT;
+    Vector<DevT> devT;
 
-    public TTM(Vector<T> t, String[] columnNames) {
+    public TTM(Vector<DevT> t, String[] columnNames) {
         this.columnNames = columnNames;
         this.devT = t;
     }
 
-    public void setDev(Vector<T> t) {
+    public void setDev(Vector<DevT> t) {
         this.devT = t;
         refresh();
     }
@@ -33,7 +33,7 @@ public class TTM extends AbstractTableModel {
             lastnum = 0;
         }
         if (newnum > lastnum) {
-            devT.add(new T());
+            devT.add(new DevT());
             devT.lastElement().setNumber(newnum);
         }
         if ((newnum < lastnum) && (lastnum != 0)) {

@@ -1,10 +1,8 @@
 package gaspoverka.data.config;
 
-import java.math.BigDecimal;
-
 public class Point {
 
-    int decimalPlace = 4;
+    RoundFactory rf;
     private int Point;
     private double X;
     private double Y;
@@ -20,6 +18,7 @@ public class Point {
         this.K2 = 0;
         this.B1 = 0;
         this.B2 = 0;
+        rf = new RoundFactory();
     }
 
     public Point() {
@@ -42,7 +41,7 @@ public class Point {
     }
 
     public double getX() {
-        return Rounded(X);
+        return rf.Rounded(X);
     }
 
     public void setX(double X) {
@@ -50,7 +49,7 @@ public class Point {
     }
 
     public double getY() {
-        return Rounded(Y);
+        return rf.Rounded(Y);
     }
 
     public void setY(double Y) {
@@ -58,7 +57,7 @@ public class Point {
     }
 
     public double getYS() {
-        return Rounded(YS);
+        return rf.Rounded(YS);
     }
 
     public void setYS(double YS) {
@@ -66,7 +65,7 @@ public class Point {
     }
 
     public double getB1() {
-        return Rounded(B1);
+        return rf.Rounded(B1);
     }
 
     public void setB1(double B1) {
@@ -74,7 +73,7 @@ public class Point {
     }
 
     public double getB2() {
-        return Rounded(B2);
+        return rf.Rounded(B2);
     }
 
     public void setB2(double B2) {
@@ -85,7 +84,7 @@ public class Point {
         if (K1 == 0) {
             return 1;
         } else {
-            return Rounded(K1);
+            return rf.Rounded(K1);
         }
     }
 
@@ -97,7 +96,7 @@ public class Point {
         if (K2 == 0) {
             return 1;
         } else {
-            return Rounded(K2);
+            return rf.Rounded(K2);
         }
     }
 
@@ -105,13 +104,5 @@ public class Point {
         this.K2 = K2;
     }
 
-    public double Rounded(double d) {
-        try {
-            BigDecimal k = new BigDecimal(d);
-            k = k.setScale(decimalPlace, BigDecimal.ROUND_UP);
-            return k.doubleValue();
-        } catch (Exception e) {
-            return 0;
-        }
-    }
+    
 }

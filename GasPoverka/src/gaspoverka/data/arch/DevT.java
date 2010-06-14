@@ -1,21 +1,21 @@
 package gaspoverka.data.arch;
 
 
-public class T {
+public class DevT {
 
         private int Number;
         private double VL;
         private double VH;
         private double Error;
 
-        public T(int Number) {
+        public DevT(int Number) {
             this.Number = Number;
             this.VH = 0;
             this.VL = 0;
             this.Error = 0;
         }
 
-        public T() {
+        public DevT() {
             this.Number = 0;
             this.VH = 0;
             this.VL = 0;

@@ -15,7 +15,9 @@ public class Result {
     private String DevNum;
     private String Owner;
     private int Channel;
+
     Vector<Izm> data;
+
     Vector<Point> CTch;
     Vector<Point> CPch;
     Vector<Point> RTch;
@@ -28,7 +30,9 @@ public class Result {
         DevNum = "";
         Owner = "";
         Channel = 0;
+
         data = new Vector<Izm>();
+
         CTch = new Vector<Point>();
         CPch = new Vector<Point>();
         RTch = new Vector<Point>();

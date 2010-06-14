@@ -1,11 +1,10 @@
 package gaspoverka.data.result;
 
-import java.math.BigDecimal;
+import gaspoverka.data.config.*;
 
 public class Izm {
     
-    int decimalPlace = 4;
-
+    RoundFactory rf;
     protected int MeasureNum;
     protected double RV;
     protected double RT;
@@ -20,7 +19,7 @@ public class Izm {
 
     // <editor-fold defaultstate="collapsed" desc="get&set">
     public double getCP() {
-        return Rounded(CP);
+        return rf.Rounded(CP);
     }
 
     public void setCP(double CP) {
@@ -28,7 +27,7 @@ public class Izm {
     }
 
     public double getCT() {
-        return Rounded(CT);
+        return rf.Rounded(CT);
     }
 
     public void setCT(double CT) {
@@ -36,7 +35,7 @@ public class Izm {
     }
 
     public double getCV() {
-        return Rounded(CV);
+        return rf.Rounded(CV);
     }
 
     public void setCV(double CV) {
@@ -52,7 +51,7 @@ public class Izm {
     }
 
     public double getRP() {
-        return Rounded(RP);
+        return rf.Rounded(RP);
     }
 
     public void setRP(double RP) {
@@ -60,7 +59,7 @@ public class Izm {
     }
 
     public double getRT() {
-        return Rounded(RT);
+        return rf.Rounded(RT);
     }
 
     public void setRT(double RT) {
@@ -68,7 +67,7 @@ public class Izm {
     }
 
     public double getRV() {
-        return Rounded(RV);
+        return rf.Rounded(RV);
     }
 
     public void setRV(double RV) {
@@ -76,7 +75,7 @@ public class Izm {
     }
 
     public double getCVpr() {
-        return Rounded(CVpr);
+        return rf.Rounded(CVpr);
     }
 
     public void setCVpr(double CVpr) {
@@ -84,7 +83,7 @@ public class Izm {
     }
 
     public double getErr() {
-        return Rounded(Err);
+        return rf.Rounded(Err);
     }
 
     public void setErr(double Err) {
@@ -92,23 +91,12 @@ public class Izm {
     }
 
     public double getRVpr() {
-        return Rounded(RVpr);
+        return rf.Rounded(RVpr);
     }
 
     public void setRVpr(double RVpr) {
         this.RVpr = RVpr;
     }
-
-    public double Rounded(double d) {
-        try {
-            BigDecimal k = new BigDecimal(d);
-            k = k.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-            return k.doubleValue();
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
     // </editor-fold>
 
     public Izm() {
@@ -125,5 +113,7 @@ public class Izm {
         this.RVpr = 0;
         this.CVpr = 0;
         this.Err = 0;
+
+        rf = new RoundFactory();
     }
 }

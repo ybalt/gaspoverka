@@ -10,7 +10,9 @@ public class PoverkaIzm extends javax.swing.JFrame {
 
     Dev counter;
     Dev refrence;
+
     Result res;
+
     TTM MRTM;
     TTM KPTM;
     String[] KPnames = {"№", "Зн.Н", "Зн.В", "Погр."};
@@ -118,6 +120,18 @@ public class PoverkaIzm extends javax.swing.JFrame {
 
         refTL.setText("Темп.");
 
+        refUseCalP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refUseCalPActionPerformed(evt);
+            }
+        });
+
+        refUseCalT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refUseCalTActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout refPanelLayout = new javax.swing.GroupLayout(refPanel);
         refPanel.setLayout(refPanelLayout);
         refPanelLayout.setHorizontalGroup(
@@ -215,8 +229,18 @@ public class PoverkaIzm extends javax.swing.JFrame {
         );
 
         startButton.setText("Старт");
+        startButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startButtonActionPerformed(evt);
+            }
+        });
 
         stopButton.setText("Стоп");
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopButtonActionPerformed(evt);
+            }
+        });
 
         newIzmButton.setText("Новое");
         newIzmButton.addActionListener(new java.awt.event.ActionListener() {
@@ -440,7 +464,24 @@ public class PoverkaIzm extends javax.swing.JFrame {
         dataTM.addRow();
 }//GEN-LAST:event_newIzmButtonActionPerformed
 
+    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_startButtonActionPerformed
+
+    private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void refUseCalPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refUseCalPActionPerformed
+        res.setRP(Integer.parseInt(refP.getText()), refUseCalP.isSelected());
+    }//GEN-LAST:event_refUseCalPActionPerformed
+
+    private void refUseCalTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refUseCalTActionPerformed
+        res.setRT(Integer.parseInt(refT.getText()), refUseCalT.isSelected());
+    }//GEN-LAST:event_refUseCalTActionPerformed
+
     private void refreshData() {
+
         counter.load((String) devCB.getSelectedItem());
         UD.setText(String.valueOf(counter.getUD()));
         PL.setText(String.valueOf(counter.getPL()));
@@ -451,10 +492,11 @@ public class PoverkaIzm extends javax.swing.JFrame {
         devT.setText("12");
 
         refrence.load((String) refCB.getSelectedItem());
+        //default values
         refP.setText(String.valueOf((refrence.getChannel()*2)+3));
         refT.setText(String.valueOf((refrence.getChannel()*2)+4));
 
-    }
+}
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

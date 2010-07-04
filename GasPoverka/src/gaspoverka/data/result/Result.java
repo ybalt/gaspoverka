@@ -240,6 +240,7 @@ public class Result {
             Err = (((CV * CP * RT) / (RV * RP * CT)) - 1) * 100;
             data.get(i).setErr(Err);
 
+
         }
 
     }
@@ -247,7 +248,7 @@ public class Result {
     public void setCT(boolean use) {
         if (use) {
             Channel ch = new Channel();
-            ch.getChannelData(12);
+            ch.loadCalibrationData(12);
             CTch = ch.getPoints();
         } else {
             CTch.clear();
@@ -257,7 +258,7 @@ public class Result {
     public void setCP(boolean use) {
         if (use) {
             Channel ch = new Channel();
-            ch.getChannelData(11);
+            ch.loadCalibrationData(11);
             CPch = ch.getPoints();
         } else {
             CPch.clear();
@@ -267,7 +268,7 @@ public class Result {
     public void setRT(int Channel, boolean use) {
         if (use) {
             Channel ch = new Channel();
-            ch.getChannelData(Channel);
+            ch.loadCalibrationData(Channel);
             RTch = ch.getPoints();
         } else {
             RTch.clear();
@@ -278,7 +279,7 @@ public class Result {
     public void setRP(int Channel, boolean use) {
         if (use) {
             Channel ch = new Channel();
-            ch.getChannelData(Channel);
+            ch.loadCalibrationData(Channel);
             RPch = ch.getPoints();
         } else {
             RPch.clear();

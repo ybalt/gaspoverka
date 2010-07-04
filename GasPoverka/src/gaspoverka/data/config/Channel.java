@@ -10,11 +10,20 @@ public class Channel {
     static String db_name = ".//db//config";
     private Connection conn;
     private int Channel;
-    Vector<Point> points;
+    Vector<Point> cdata;
+    private double value;
 
     // <editor-fold defaultstate="collapsed" desc="get&set">
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
     public Vector<Point> getPoints() {
-        return points;
+        return cdata;
     }
 
     public int getChannel() {
@@ -26,17 +35,18 @@ public class Channel {
     }
 
     // </editor-fold>
+    
     public Channel(int channel) {
         this.Channel = channel;
-        points = new Vector<Point>();
+        cdata = new Vector<Point>();
     }
 
     public Channel() {
         this.Channel = 0;
-        points = new Vector<Point>();
+        cdata = new Vector<Point>();
     }
 
-    public void getChannelData(int Channel) {
+    public void loadCalibrationData(int Channel) {
         ResultSet result = null;
 
         try {
@@ -52,22 +62,22 @@ public class Channel {
             result = loadData.executeQuery();
             fin();
             result.beforeFirst();
-            points.clear();
+            cdata.clear();
             while (result.next()) {
                 Point point = new Point();
                 point.setPoint(result.getInt(1));
                 point.setX(result.getDouble(2));
                 point.setY(result.getDouble(3));
                 point.setYS(result.getDouble(4));
-                points.add(point);
+                cdata.add(point);
             }
-            if (points.size() == 0) {
+            if (cdata.size() == 0) {
                 if (Channel == 5
                         || Channel == 7
                         || Channel == 9
                         || Channel == 11) {
                     for (int i = 0; i < 6; i++) {
-                        points.add(new Point(i + 1));
+                        cdata.add(new Point(i + 1));
                     }
                 }
                 if (Channel == 6
@@ -75,49 +85,50 @@ public class Channel {
                         || Channel == 10
                         || Channel == 12) {
                     for (int i = 0; i < 5; i++) {
-                        points.add(new Point(i + 1));
+                        cdata.add(new Point(i + 1));
                     }
                 }
             }
             this.setChannel(Channel);
-            calc();
+            calcCalibrationData();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void calc() {
-        for (int A = 0; A < points.size() - 1; A++) {
+    public void calcCalibrationData() {
+        for (int A = 0; A < cdata.size() - 1; A++) {
             int B = A + 1;
-            if (points.get(B).getY()!=0 || points.get(B).getX()!=0 || points.get(B).getYS()!=0)
-            try {
-                //y=x*(F1/F4)+(-F2+F3/F4))
-                //y=kx+b
-                double F1 = points.get(B).getY() - points.get(A).getY();
-                double F2 = points.get(A).getX() * points.get(B).getY();
-                double F3 = points.get(B).getX() * points.get(A).getY();
-                double F4 = points.get(B).getX() - points.get(A).getX();
-                if (F4 != 0) {
-                    points.get(A).setK1(F1 / F4);
-                    points.get(A).setB1((-F2 + F3) / F4);
-                }
-                //
-                double G1 = points.get(B).getYS() - points.get(A).getYS();
-                double G2 = points.get(A).getY() * points.get(B).getYS();
-                double G3 = points.get(B).getY() * points.get(A).getYS();
-                double G4 = points.get(B).getY() - points.get(A).getY();
-                if (G4 != 0) {
-                    points.get(A).setK2(G1 / G4);
-                    points.get(A).setB2((-G2 + G3) / G4);
-                }
+            if (cdata.get(B).getY() != 0 || cdata.get(B).getX() != 0 || cdata.get(B).getYS() != 0) {
+                try {
+                    //y=x*(F1/F4)+(-F2+F3/F4))
+                    //y=kx+b
+                    double F1 = cdata.get(B).getY() - cdata.get(A).getY();
+                    double F2 = cdata.get(A).getX() * cdata.get(B).getY();
+                    double F3 = cdata.get(B).getX() * cdata.get(A).getY();
+                    double F4 = cdata.get(B).getX() - cdata.get(A).getX();
+                    if (F4 != 0) {
+                        cdata.get(A).setK1(F1 / F4);
+                        cdata.get(A).setB1((-F2 + F3) / F4);
+                    }
+                    //
+                    double G1 = cdata.get(B).getYS() - cdata.get(A).getYS();
+                    double G2 = cdata.get(A).getY() * cdata.get(B).getYS();
+                    double G3 = cdata.get(B).getY() * cdata.get(A).getYS();
+                    double G4 = cdata.get(B).getY() - cdata.get(A).getY();
+                    if (G4 != 0) {
+                        cdata.get(A).setK2(G1 / G4);
+                        cdata.get(A).setB2((-G2 + G3) / G4);
+                    }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    public void save() {
+    public void saveCalibrationData() {
         int result;
 
         try {

@@ -2,7 +2,6 @@ package gaspoverka;
 
 import gaspoverka.data.arch.Dev;
 import gaspoverka.table.*;
-import gaspoverka.data.*;
 import java.lang.Object.*;
 import java.util.Vector;
 

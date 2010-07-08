@@ -27,18 +27,16 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-              <Component id="choosePanelCal" alignment="0" max="32767" attributes="1"/>
-              <Component id="jtP" alignment="0" pref="502" max="32767" attributes="1"/>
-          </Group>
+          <Component id="jtP" alignment="0" min="0" pref="0" max="32767" attributes="1"/>
+          <Component id="choosePanelCal" alignment="0" max="32767" attributes="1"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="choosePanelCal" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jtP" min="-2" pref="354" max="-2" attributes="0"/>
+              <Component id="choosePanelCal" min="-2" pref="101" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jtP" min="-2" pref="393" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -50,55 +48,67 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="calcButton" alignment="0" min="-2" max="-2" attributes="1"/>
-                  </Group>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jsChannel" min="-2" pref="65" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="lType" max="32767" attributes="1"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="saveButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="newButton" min="-2" pref="80" max="-2" attributes="1"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="clearButton" alignment="0" max="32767" attributes="1"/>
+                              <Component id="newButton" alignment="0" pref="80" max="32767" attributes="1"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="calcButton" min="-2" pref="77" max="-2" attributes="1"/>
                       </Group>
-                      <Component id="jLabel2" alignment="0" min="-2" pref="290" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="37" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="rbDev" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbPress" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbTemp" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                          <Component id="rbDev" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="rbPress" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="rbTemp" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" pref="26" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="calcButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                          <Component id="jLabel2" min="-2" pref="26" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="1">
+                          <Component id="lType" min="-2" pref="26" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jsChannel" min="-2" pref="63" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="calcButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="clearButton" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="jsChannel" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace pref="6" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -134,7 +144,10 @@
               <Font name="Tahoma" size="36" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="1" maximum="12" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+              <SpinnerModel initial="1" maximum="4" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Default Cursor"/>
             </Property>
           </Properties>
           <Events>
@@ -149,12 +162,54 @@
             <Property name="text" type="java.lang.String" value="&#x41a;&#x430;&#x43d;&#x430;&#x43b;"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="lType">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="1"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbDev">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="bgChannel"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="&#x421;&#x447;&#x435;&#x442;&#x447;&#x438;&#x43a;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbDevActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbPress">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="bgChannel"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#x414;&#x430;&#x432;&#x43b;&#x435;&#x43d;&#x438;&#x435;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbPressActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbTemp">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="bgChannel"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#x422;&#x435;&#x43c;&#x43f;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbTempActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="clearButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x421;&#x431;&#x440;&#x43e;&#x441;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -177,8 +232,9 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jspCal" alignment="0" pref="464" max="32767" attributes="2"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="102" max="32767" attributes="0"/>
+                      <EmptySpace pref="90" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -191,16 +247,15 @@
                               <Component id="ur1" max="32767" attributes="1"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jspCal" alignment="0" pref="497" max="32767" attributes="2"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jspCal" min="-2" pref="137" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jspCal" pref="225" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="ur1" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
@@ -210,7 +265,7 @@
                           <Component id="ur2" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jLabel6" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="80" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -231,6 +286,7 @@
                       </Table>
                     </Property>
                     <Property name="autoResizeMode" type="int" value="4"/>
+                    <Property name="cellSelectionEnabled" type="boolean" value="true"/>
                     <Property name="rowMargin" type="int" value="5"/>
                     <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
                       <JTableSelectionModel selectionMode="0"/>
@@ -289,7 +345,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jspIzm" alignment="1" pref="497" max="32767" attributes="1"/>
+                  <Component id="jspIzm" alignment="1" pref="464" max="32767" attributes="1"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -303,12 +359,12 @@
                           <Component id="V" alignment="0" max="32767" attributes="1"/>
                           <Component id="MC" alignment="0" min="-2" pref="67" max="-2" attributes="1"/>
                       </Group>
-                      <EmptySpace pref="34" max="32767" attributes="0"/>
+                      <EmptySpace pref="19" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="stopButton" max="32767" attributes="1"/>
                           <Component id="startButton" alignment="0" pref="99" max="32767" attributes="1"/>
                       </Group>
-                      <EmptySpace pref="78" max="32767" attributes="0"/>
+                      <EmptySpace pref="60" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -333,7 +389,7 @@
                           <Component id="MC" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="stopButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="92" max="32767" attributes="0"/>
+                      <EmptySpace pref="131" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -385,6 +441,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x421;&#x442;&#x430;&#x440;&#x442;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="stopButton">
               <Properties>
@@ -408,12 +467,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jspPov" alignment="1" pref="497" max="32767" attributes="1"/>
+                  <Component id="jspPov" alignment="0" pref="464" max="32767" attributes="1"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jspPov" pref="326" max="32767" attributes="0"/>
+                  <Component id="jspPov" alignment="0" pref="365" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

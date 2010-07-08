@@ -30,6 +30,7 @@ public class Point {
         this.K2 = 0;
         this.B1 = 0;
         this.B2 = 0;
+        rf = new RoundFactory();
     }
 
     public int getPoint() {

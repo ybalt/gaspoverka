@@ -482,7 +482,7 @@ public class PoverkaIzm extends javax.swing.JFrame {
 
     private void refreshData() {
 
-        counter.load((String) devCB.getSelectedItem());
+        counter.loadDevByType((String) devCB.getSelectedItem());
         UD.setText(String.valueOf(counter.getUD()));
         PL.setText(String.valueOf(counter.getPL()));
         IC.setText(String.valueOf(counter.getIC()));
@@ -491,10 +491,10 @@ public class PoverkaIzm extends javax.swing.JFrame {
         devP.setText("11");
         devT.setText("12");
 
-        refrence.load((String) refCB.getSelectedItem());
+        refrence.loadDevByType((String) refCB.getSelectedItem());
         //default values
-        refP.setText(String.valueOf((refrence.getChannel()*2)+3));
-        refT.setText(String.valueOf((refrence.getChannel()*2)+4));
+        refP.setText(String.valueOf((refrence.getChannelV()*2)+3));
+        refT.setText(String.valueOf((refrence.getChannelV()*2)+4));
 
 }
 

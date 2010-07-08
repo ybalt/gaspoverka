@@ -437,7 +437,7 @@ public class PoverkaPov extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Сохранение невозможно - не заполнены обязатаельные поля");
             return;
         }
-        res.setChannel(refrence.getChannel());
+        res.setChannel(refrence.getChannelV());
         res.setDevNum(devnum.getText());
         res.setOwner(owner.getText());
         res.setPovNum(res.getLastPovNum()+1);
@@ -455,7 +455,7 @@ public class PoverkaPov extends javax.swing.JFrame {
 }//GEN-LAST:event_calcButtonActionPerformed
 
     private void refreshData() {
-        counter.load((String) devCB.getSelectedItem());
+        counter.loadDevByType((String) devCB.getSelectedItem());
         UD.setText(String.valueOf(counter.getUD()));
         PL.setText(String.valueOf(counter.getPL()));
         IC.setText(String.valueOf(counter.getIC()));
@@ -464,9 +464,9 @@ public class PoverkaPov extends javax.swing.JFrame {
 
         devP.setText("11");
         devT.setText("12");
-        refrence.load((String) refCB.getSelectedItem());
-        refP.setText(String.valueOf((refrence.getChannel()*2)+3));
-        refT.setText(String.valueOf((refrence.getChannel()*2)+4));
+        refrence.loadDevByType((String) refCB.getSelectedItem());
+        refP.setText(String.valueOf((refrence.getChannelV()*2)+3));
+        refT.setText(String.valueOf((refrence.getChannelV()*2)+4));
     }
 
     public static void main(String args[]) {

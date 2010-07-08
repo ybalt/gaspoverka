@@ -58,7 +58,7 @@ public class DevTM extends AbstractTableModel {
             case Type_INDEX:
                 return dataVector.get(row).getType();
             case Channel_INDEX:
-                return dataVector.get(row).getChannel();
+                return dataVector.get(row).getChannelV();
             case UD_INDEX:
                 return dataVector.get(row).getUD();
             case PL_INDEX:

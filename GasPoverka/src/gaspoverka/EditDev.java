@@ -222,7 +222,7 @@ public class EditDev extends javax.swing.JFrame {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        devVector.get(devTM.getRowEdit()).save();
+        devVector.get(devTM.getRowEdit()).saveDev();
         devTM.setRowEdit(-1);
         enableEdit(false);
         refreshDevTable();
@@ -236,7 +236,7 @@ public class EditDev extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void delButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delButtonActionPerformed
-        devVector.get(tableDev.getSelectedRow()).delete();
+        devVector.get(tableDev.getSelectedRow()).delDev();
         refreshDevTable();
     }//GEN-LAST:event_delButtonActionPerformed
 
@@ -270,7 +270,7 @@ public class EditDev extends javax.swing.JFrame {
         if (tableDev.getSelectedRow() >= 0) {
             String type = (String) devTM.getValueAt(tableDev.getSelectedRow(), 0);
             int number = tableDev.getSelectedRow();
-            devVector.get(number).load(type);
+            devVector.get(number).loadDevByType(type);
             MRTM.setDev(devVector.get(number).getMR());
             KPTM.setDev(devVector.get(number).getKP());
             KPSpinner.setValue(KPTM.getRowCount());

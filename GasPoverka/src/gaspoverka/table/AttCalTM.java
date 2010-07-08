@@ -3,8 +3,6 @@ package gaspoverka.table;
 import gaspoverka.data.config.Point;
 import java.util.*;
 import javax.swing.table.*;
-import java.math.*;
-import gaspoverka.data.*;
 
 public class AttCalTM extends AbstractTableModel {
 
@@ -15,7 +13,6 @@ public class AttCalTM extends AbstractTableModel {
     protected String[] columnNamesInitial = {"Точка", "Эталон", "Измерено", "Поправка"};
     protected String[] columnNames;
     protected Vector<Point> dataVector;
-    
 
     public AttCalTM() {
         columnNames = columnNamesInitial;
@@ -23,6 +20,23 @@ public class AttCalTM extends AbstractTableModel {
 
     public void setData(Vector<Point> vector) {
         dataVector = vector;
+        fireTableChanged(null);
+    }
+
+    public void addRow() {
+        int i;
+        if (dataVector.size() == 0) {
+            i = 1;
+        } else {
+            i = dataVector.lastElement().getPoint() + 1;
+        }
+        Point p = new Point(i);
+        dataVector.add(p);
+        fireTableChanged(null);
+    }
+
+    public void clear() {
+        dataVector.clear();
         fireTableChanged(null);
     }
 
@@ -92,7 +106,7 @@ public class AttCalTM extends AbstractTableModel {
                 return new Object();
         }
     }
-    
+
     @Override
     public int getRowCount() {
         return dataVector.size();

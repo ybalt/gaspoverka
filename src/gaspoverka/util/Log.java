@@ -5,17 +5,20 @@ import java.util.logging.*;
 public class Log {
 
     private static Log _instance = null;
-    static final String filename = "./console.log";
+    static final String filename = "console.log";
     static final Logger logger = Logger.getLogger(filename);
     FileHandler logFile;
+    ConsoleHandler console;
 
     public Log() {
         try {
             logFile = new FileHandler(filename);
+            console = new ConsoleHandler();
             logFile.setFormatter(new SimpleFormatter());
             logger.addHandler(logFile);
+            logger.addHandler(console);
             if (logger != null) {
-                //logger.log(Level.INFO, "Log enable");
+                logger.log(Level.INFO, "Log enable");
             }
         } catch (Exception e) {
         }
@@ -24,7 +27,7 @@ public class Log {
     public final void out(String str) {
         try {
             if (logger != null) {
-                //logger.log(Level.INFO, str);
+                logger.log(Level.INFO, str);
             }
         } catch (Exception e) {
         }

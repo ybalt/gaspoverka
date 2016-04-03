@@ -574,6 +574,6 @@ public class Dev {
     }
 
     private void connect() {
-        conn = db.connMem();
+        conn = db.connFile();
     }
 }

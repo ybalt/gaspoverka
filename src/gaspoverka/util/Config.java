@@ -17,6 +17,7 @@ public class Config {
     }
 
     public static Properties getConfig() {
+        getInstance();
         return config;
     }
 

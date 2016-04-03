@@ -5,11 +5,43 @@ import gaspoverka.calibration.AttestationFrame;
 import gaspoverka.util.Log;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Statement;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 public class MainFrame extends javax.swing.JFrame {
 
     public static memDB db = memDB.getInstance();
     public static Log log = Log.getInstance();
+    private static final ExecutorService threadPool = Executors.newFixedThreadPool(1);
+
+    private static class Shutdown implements Callable {
+
+        final JDialog dialog;
+
+        public Shutdown(JDialog dialog) {
+            this.dialog = dialog;
+
+        }
+
+        @Override
+        public Object call() throws Exception {
+            try {
+                Statement stat = db.connMem().createStatement();
+                stat.execute("SHUTDOWN COMPACT");
+                db.close();
+                dialog.dispose();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+    }
 
     public MainFrame() {
         initComponents();
@@ -49,14 +81,23 @@ public class MainFrame extends javax.swing.JFrame {
         Help = new javax.swing.JMenu();
         About = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ЗАО \"Белавтоматикасервис\" - ГАЗ-Поверка");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImages(null);
+        addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                formPropertyChange(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(null);
 
         sb.setBackground(new java.awt.Color(204, 255, 204));
-        sb.setFont(new java.awt.Font("Tahoma", 1, 12));
+        sb.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         sb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         getContentPane().add(sb);
         sb.setBounds(0, 440, 700, 30);
@@ -66,7 +107,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Поверка"));
 
-        PovButton.setFont(new java.awt.Font("Tahoma", 1, 14));
+        PovButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         PovButton.setText("Поверка");
         PovButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +135,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Настройка"));
 
-        pov_rep.setFont(new java.awt.Font("Tahoma", 1, 14));
+        pov_rep.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         pov_rep.setText("Отчеты Поверка");
         pov_rep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,7 +143,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        devButton.setFont(new java.awt.Font("Tahoma", 1, 14));
+        devButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         devButton.setText("Устройства");
         devButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,7 +151,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        att_rep.setFont(new java.awt.Font("Tahoma", 1, 14));
+        att_rep.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         att_rep.setText("Отчет Аттестация");
         att_rep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,7 +168,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(devButton, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                     .addComponent(pov_rep, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(att_rep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(att_rep, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -145,7 +186,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Аттестация"));
 
-        AttButton.setFont(new java.awt.Font("Tahoma", 1, 14));
+        AttButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         AttButton.setText("Аттестация");
         AttButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,7 +213,7 @@ public class MainFrame extends javax.swing.JFrame {
         bPanel.add(jPanel3);
 
         getContentPane().add(bPanel);
-        bPanel.setBounds(59, 6, 589, 157);
+        bPanel.setBounds(59, 6, 589, 153);
 
         pic.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -246,7 +287,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_devButtonActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        this.dispose();
+        this.formWindowClosing(null);
     }//GEN-LAST:event_ExitActionPerformed
 
     private void att_repActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_att_repActionPerformed
@@ -264,6 +305,36 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_pov_repActionPerformed
 
+    private void formPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_formPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formPropertyChange
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (JOptionPane.showConfirmDialog(this,
+                "Вы хотите выйти из программы?", "Выход",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+            try {
+                final JOptionPane optionPane = new JOptionPane("Записывается база данных, не выключайте питание!",
+                        JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+                final JDialog dialog = new JDialog();
+                dialog.setTitle("Message");
+                dialog.setModal(true);
+                dialog.setContentPane(optionPane);
+                dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                dialog.pack();
+                Shutdown task = new Shutdown(dialog);
+                Future future = threadPool.submit(task);
+                dialog.setVisible(true);
+                while (!future.isDone()) {
+                    Thread.sleep(1);
+                }
+                System.exit(0);
+            } catch (Exception e) {
+            }
+        }
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -275,10 +346,10 @@ public class MainFrame extends javax.swing.JFrame {
 
                 new MainFrame().setVisible(true);
 
-
             }
         });
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
     private javax.swing.JButton AttButton;

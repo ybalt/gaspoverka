@@ -4,7 +4,6 @@ package gaspoverka;
 import gaspoverka.calibration.CalibrationData;
 import gaspoverka.util.Config;
 import gaspoverka.util.DateTime;
-import gaspoverka.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;

@@ -2,16 +2,18 @@ package gaspoverka.calibration;
 
 import com.icpdas.comm.Comm;
 import com.icpdas.comm.IoBuf;
+import gaspoverka.util.Log;
 import javax.swing.JLabel;
 
 public class CalibrationTask extends Thread {
 
     IoBuf buf;
+    public static Log log = Log.getInstance();
     Comm comm;
     //private Channel channel;
-    private Attestation att;
+    private final Attestation att;
     public int count;
-    private int delay, time;
+    private final int delay, time;
     static final int PORT = 1;
     JLabel sb;
 
@@ -28,7 +30,7 @@ public class CalibrationTask extends Thread {
     public synchronized void run() {
         int rev = -1;
         double value = 0;
-        rev = comm.open(PORT, 115200, comm.DATABITS_8, comm.PARITY_NONE, comm.STOPBITS_1);
+        rev = comm.open(PORT, 115200, Comm.DATABITS_8, Comm.PARITY_NONE, Comm.STOPBITS_1);
         for (int i = 0; i < att.getTm().getRowCount(); i++) {
             int ost = time;
             value = 0;
@@ -82,6 +84,7 @@ public class CalibrationTask extends Thread {
             }
         } catch (Exception e) {
             result = 0;
+            log.out(e.getLocalizedMessage());
         }
         return result;
     }

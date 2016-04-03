@@ -561,7 +561,7 @@ public final class AttestationFrame extends javax.swing.JFrame {
     private void calcButtonCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcButtonCalActionPerformed
         if (AttIzm.isVisible()) {
             data.setChannel(channel.getChannel());
-            data.set();
+//            data.set();
             izmTM.fireTableChanged(null);
         }
 }//GEN-LAST:event_calcButtonCalActionPerformed
@@ -645,7 +645,7 @@ public final class AttestationFrame extends javax.swing.JFrame {
         }
         attestation.setResult();
         data.setChannel(channel.getChannel());
-        data.set();
+//        data.set();
         izmTM.fireTableChanged(null);
     }//GEN-LAST:event_cbUseCalibrationItemStateChanged
 

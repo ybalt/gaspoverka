@@ -1,52 +1,65 @@
 package gaspoverka;
 
+
 import gaspoverka.calibration.CalibrationData;
 import gaspoverka.util.Config;
+import gaspoverka.util.DateTime;
+import gaspoverka.util.Log;
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.HashMap;
 import javax.swing.JLabel;
 import jxl.CellType;
 import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import jxl.write.WritableCell;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.Number;
+import jxl.write.WriteException;
 
 public class AttToExcel {
 
     memDB db = memDB.getInstance();
-    private static final String template_file = ".//xls/att.xls";
-    String out_file = ".//";
+    public static Log log = Log.getInstance();
+    
+    private static final String TEMPLATEFILE = ".//xls/att.xls";
+    private String OUTFILE = ".//";
+    
     private static Connection conn;
     private static Workbook template;
     private static WritableWorkbook wb;
-    static int[] Pch = {11, 21, 31, 41};
-    static int[] Tch = {12, 22, 32, 42, 43, 5};
-    ArrayList<Double> Pval, Tval;
-    Vector<CalibrationData> channels;
+    
+    static final int[] CHANNELS = {11, 21, 31, 41, 12, 22, 32, 42, 43, 5};
+    
     Config config = Config.getInstance();
+    final HashMap<Integer, ArrayList> channelPoints;
+    final HashMap<Integer, HashMap> channels;
     JLabel sb;
 
     public AttToExcel(JLabel sb) {
         this.sb = sb;
-        Pval = new ArrayList<Double>();
-        Tval = new ArrayList<Double>();
-
-        channels = new Vector<CalibrationData>();
+        channels = new HashMap<Integer, HashMap>();
+        channelPoints = new HashMap<Integer, ArrayList>();
     }
 
     public boolean open() {
         try {
             if (config.getConfig().getProperty("out-dir") != null) {
-                out_file = config.getConfig().getProperty("out-dir");
+                OUTFILE = config.getConfig().getProperty("out-dir");
             }
-            out_file = out_file + "attestation.xls";
-            template = Workbook.getWorkbook(new File(template_file));
-            wb = Workbook.createWorkbook(new File(out_file), template);
-        } catch (Exception e) {
-            sb.setText("Ошибка " + e.getMessage());
+            OUTFILE = OUTFILE + "attestation" + "-" + DateTime.getCurrentTimeStamp()+".xls";
+            template = Workbook.getWorkbook(new File(TEMPLATEFILE));
+            wb = Workbook.createWorkbook(new File(OUTFILE), template);
+        } catch (IOException e) {
+            sb.setText("Ошибка " + e.getLocalizedMessage());
+            log.out(e.getLocalizedMessage());
+            return false;
+        } catch (BiffException ex) {
+            sb.setText("Ошибка " + ex.getLocalizedMessage());
+            log.out(ex.getLocalizedMessage());
             return false;
         }
         return true;
@@ -55,20 +68,22 @@ public class AttToExcel {
 
     public void populate() {
         try {
-             sb.setText("Чтение шаблона");
-             sb.repaint();
-            //dialog.setLabel.repaint();
+            sb.setText("Чтение шаблона");
+            sb.repaint();
             if (open()) {
                 sb.setText("Загрузка данных");
+                sb.repaint();
                 loadData();
                 sb.setText("Формирование отчета");
+                sb.repaint();
                 fill();
-                sb.setText("Сохранение файла в " + out_file);
+                sb.setText("Сохранение файла в " + OUTFILE);
+                sb.repaint();
                 save();
             } else {
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.out(e.getLocalizedMessage());
         }
     }
 
@@ -76,191 +91,199 @@ public class AttToExcel {
         WritableSheet sh;
         WritableCell cell, cell1, cell2, cell3, cell4, cell5, cell6;
         try {
-            for (int i = 0; i < channels.size(); i++) {
-                if (channels.get(i) != null) {
-                    sh = wb.getSheet(getSheetByCh(channels.get(i).getChannel()));
+            for (Integer ch: channels.keySet()) {
+                    HashMap channel = channels.get(ch);
+                    for (Object point_num: channel.keySet()) {
+                        CalibrationData point = (CalibrationData) channel.get(point_num);
+                    sh = wb.getSheet(getSheetByCh(point.getChannel()));
 
                     if (sh != null) {
-                        cell = sh.getWritableCell(2 + getRowByVal(channels.get(i).getValue()), 4);
+                        int pos = getPointNum(point.getChannel(),point.getValue());
+                        cell = sh.getWritableCell(2 + pos, 4);
                         if (cell.getType() == CellType.NUMBER) {
-                                Number val = (Number) cell;
-                                val.setValue(channels.get(i).getValue());
-                            }
-                        for (int n = 0; n < channels.get(i).getDataCount(); n++) {
+                            Number val = (Number) cell;
+                            val.setValue(point.getValue());
+                        }
+                        for (int n = 0; n < point.getDataCount(); n++) {
                             //get cell
-                            cell = sh.getWritableCell(2 + getRowByVal(channels.get(i).getValue()), 5 + n);
+                            cell = sh.getWritableCell(2 + pos, 5 + n);
                             //set cell
                             if (cell.getType() == CellType.NUMBER) {
                                 Number val = (Number) cell;
-                                val.setValue(channels.get(i).getDataResult(n));
+                                val.setValue(point.getDataResult(n));
                             }
                         }
                         //errors
-                        cell1 = sh.getWritableCell(2 + getRowByVal(channels.get(i).getValue()), 25);
-                        cell2 = sh.getWritableCell(2 + getRowByVal(channels.get(i).getValue()), 26);
-                        cell3 = sh.getWritableCell(2 + getRowByVal(channels.get(i).getValue()), 27);
-                        cell4 = sh.getWritableCell(2 + getRowByVal(channels.get(i).getValue()), 28);
-                        cell5 = sh.getWritableCell(2 + getRowByVal(channels.get(i).getValue()), 29);
+                        cell1 = sh.getWritableCell(2 + pos, 25);
+                        cell2 = sh.getWritableCell(2 + pos, 26);
+                        cell3 = sh.getWritableCell(2 + pos, 27);
+                        cell4 = sh.getWritableCell(2 + pos, 28);
+                        cell5 = sh.getWritableCell(2 + pos, 29);
                         if (cell1.getType() == CellType.NUMBER) {
                             Number val = (Number) cell1;
-                            val.setValue(channels.get(i).getMedium());
+                            val.setValue(point.getMedium());
                         }
                         if (cell2.getType() == CellType.NUMBER) {
                             Number val = (Number) cell2;
-                            val.setValue(channels.get(i).getMSQR());
+                            val.setValue(point.getMSQR());
                         }
                         if (cell3.getType() == CellType.NUMBER) {
                             Number val = (Number) cell3;
-                            val.setValue(channels.get(i).getSysError());
+                            val.setValue(point.getSysError());
                         }
                         if (cell4.getType() == CellType.NUMBER) {
                             Number val = (Number) cell4;
-                            val.setValue(channels.get(i).getRandError());
+                            val.setValue(point.getRandError());
                         }
                         if (cell5.getType() == CellType.NUMBER) {
                             Number val = (Number) cell5;
-                            val.setValue(channels.get(i).getRelError());
+                            val.setValue(point.getRelError());
                         }
 
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.out(e.getLocalizedMessage());
         }
     }
 
     private String getSheetByCh(int ch) {
         switch (ch) {
             case 11:
-                return "P2";
+                return "P2"; //ЛГЕ5 Р
             case 21:
-                return "P3";
+                return "P3"; //ЛГЕ25 Р
             case 31:
-                return "P4";
+                return "P4"; //ЛГЕ250 Р
             case 41:
-                return "P5";
+                return "P5"; //поверяемый счетчик Р
             case 12:
-                return "T2";
+                return "T2"; //ЛГЕ5 Т
             case 22:
-                return "T3";
+                return "T3"; //ЛГЕ25 Т
             case 32:
-                return "T4";
+                return "T4"; //ЛГЕ250 Т
             case 42:
-                return "T5";
+                return "T5"; //поверяемый счетчик Т50
             case 43:
-                return "T6";
+                return "T6"; //поверяемый счетчик Т80
             case 5:
-                return "T7";
+                return "T7"; //окружение Т
             default:
                 return null;
         }
     }
 
-    private void getRows() {
-        ResultSet result = null;
-
+    private void getPoints() {
         try {
-            final String sql = "SELECT DISTINCT VALUE "
+            ResultSet result;
+            PreparedStatement chData = conn.prepareStatement("SELECT DISTINCT VALUE "
                     + "FROM ATT_RESULT "
-                    + "ORDER BY VALUE ";
-            Statement load = conn.createStatement();
-            result = load.executeQuery(sql);
-            //int p = 0, t = 0;
-            //get values
-            while (result.next()) {
-                if (result.getDouble(1) > 50) {
-                    Pval.add(result.getDouble(1));
-                } else {
-                    Tval.add(result.getDouble(1));
+                    + "WHERE CHANNEL=? ORDER BY VALUE ",
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            channelPoints.clear();
+            for (int i = 0; i < CHANNELS.length; i++) {
+                chData.setInt(1, CHANNELS[i]);
+                result = chData.executeQuery();
+                ArrayList points = new ArrayList();
+                result.beforeFirst();
+                while (result.next()) {
+                    points.add(result.getDouble(1));
                 }
+                channelPoints.put(CHANNELS[i], points);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.out(e.getLocalizedMessage());
         }
     }
 
-    private int getRowByVal(double val) {
-        if (val > 50) {
-            return Pval.indexOf(val);
-        } else {
-            return Tval.indexOf(val);
-        }
+    private int getPointNum(int channel, double val) {
+        return channelPoints.get(channel).indexOf(val);
     }
 
     private void save() {
         try {
             wb.write();
             wb.close();
-        } catch (Exception e) {
-             sb.setText("Ошибка " + e.getMessage());
+        } catch (IOException e) {
+            sb.setText("Ошибка ввода/вывода" + e.getMessage());
+        } catch (WriteException e) {
+            sb.setText("Ошибка записи" + e.getMessage());
         }
-        sb.setText("Сохранено в файл " + out_file);
+        sb.setText("Сохранено в файл " + OUTFILE);
     }
 
     private void loadData() {
-        ResultSet result = null;
-
         try {
+            ResultSet result;
             connect();
-            getRows();
+            getPoints();
             PreparedStatement loadData = conn.prepareStatement("SELECT "
-                    + "CHANNEL, NUM, VALUE, RESULT "
+                    + "NUM, RESULT "
                     + "FROM ATT_RESULT "
                     + "WHERE CHANNEL=? AND VALUE=? ORDER BY NUM",
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             //load P
-            for (int ch = 0; ch < Pch.length; ch++) {
-                for (int val = 0; val < Pval.size(); val++) {
-                    loadData.setInt(1, Pch[ch]);
-                    loadData.setDouble(2, Pval.get(val));
+            channels.clear();
+            for (Integer channel: channelPoints.keySet()) {
+                HashMap p = new HashMap();
+                for(Object point: channelPoints.get(channel))       {
+                    loadData.setInt(1, channel);
+                    loadData.setDouble(2, (Double)point);
                     result = loadData.executeQuery();
                     result.beforeFirst();
-                    if (result.next()) {
+                    if (result.next()) { 
                         result.beforeFirst();
-                        this.channels.add(new CalibrationData());
-                        this.channels.lastElement().setChannel(Pch[ch]);
-                        this.channels.lastElement().setValue(Pval.get(val));
+                        CalibrationData cb = new CalibrationData();
+                        cb.setChannel(channel);
+                        cb.setValue((Double)point);
                         while (result.next()) {
-                            this.channels.lastElement().add(1);
-                            this.channels.lastElement().setResult(result.getDouble(4), result.getInt(2));
+                            cb.add(1);
+                            try {
+                                cb.setResult(result.getDouble(2), result.getInt(1));
+                            } catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
-                        this.channels.lastElement().set();
+                        p.put(point, cb);
                     }
+                    channels.put(channel,p);
                 }
             }
-            //load  T
-            for (int ch = 0; ch < Tch.length; ch++) {
-                for (int val = 0; val < Tval.size(); val++) {
-                    loadData.setInt(1, Tch[ch]);
-                    loadData.setDouble(2, Tval.get(val));
-                    result = loadData.executeQuery();
-                    result.beforeFirst();
-                    if (result.next()) {
-                        result.beforeFirst();
-                        this.channels.add(new CalibrationData());
-                        this.channels.lastElement().setChannel(Tch[ch]);
-                        this.channels.lastElement().setValue(Tval.get(val));
-                        while (result.next()) {
-                            this.channels.lastElement().add(1);
-                            this.channels.lastElement().setResult(result.getDouble(4), result.getInt(2));
-                        }
-                        this.channels.lastElement().set();
-                    }
-                }
-            }
+//            //load  T
+//            for (int ch = 0; ch < Tch.length; ch++) {
+//                for (int val = 0; val < Tval.size(); val++) {
+//                    loadData.setInt(1, Tch[ch]);
+//                    loadData.setDouble(2, Tval.get(val));
+//                    result = loadData.executeQuery();
+//                    result.beforeFirst();
+//                    if (result.next()) {
+//                        result.beforeFirst();
+//                        this.channels.add(new CalibrationData());
+//                        this.channels.lastElement().setChannel(Tch[ch]);
+//                        this.channels.lastElement().setValue(Tval.get(val));
+//                        while (result.next()) {
+//                            this.channels.lastElement().add(1);
+//                            this.channels.lastElement().setResult(result.getDouble(4), result.getInt(2));
+//                        }
+////                        this.channels.lastElement().set();
+//                    }
+//                }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.out(e.getLocalizedMessage());
         } finally {
         }
     }
 
     private void connect() {
-       conn = db.connFile();
+        conn = db.connFile();
     }
- 
+
 }
-
-

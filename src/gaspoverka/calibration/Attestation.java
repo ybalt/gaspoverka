@@ -135,7 +135,7 @@ public class Attestation {
     }
 
     private void connect() {
-        conn = db.connTo();
+        conn = db.connMem();
     }
 
     

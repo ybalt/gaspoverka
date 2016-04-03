@@ -248,6 +248,6 @@ public class Calibration {
     }
 
     private void connect() {
-        conn = db.connTo();
+        conn = db.connMem();
     }
 }

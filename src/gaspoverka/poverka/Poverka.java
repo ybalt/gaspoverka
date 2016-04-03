@@ -603,6 +603,6 @@ public class Poverka {
     }
 
     private void connect() {
-        conn = db.connTo();
+        conn = db.connMem();
     }
 }

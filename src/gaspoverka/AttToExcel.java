@@ -258,7 +258,7 @@ public class AttToExcel {
     }
 
     private void connect() {
-       conn = db.connTo();
+       conn = db.connFile();
     }
  
 }

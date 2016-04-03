@@ -10,13 +10,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class MainFrame extends javax.swing.JFrame {
 
     public static memDB db = memDB.getInstance();
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(1);
 
     private static class Shutdown implements Callable {
@@ -36,7 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
                 db.close();
                 dialog.dispose();
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.info(e.getLocalizedMessage());
             }
             return "";
         }
@@ -46,6 +47,8 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         try {
+            Log.setup();
+            LOG.info("log from main");
             Toolkit tk = Toolkit.getDefaultToolkit();
             Dimension screenSize = tk.getScreenSize();
             int screenHeight = screenSize.height;

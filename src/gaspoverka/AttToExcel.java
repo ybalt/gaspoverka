@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import jxl.CellType;
 import jxl.Workbook;
@@ -23,7 +24,7 @@ import jxl.write.WriteException;
 public class AttToExcel {
 
     memDB db = memDB.getInstance();
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
     private static final String TEMPLATEFILE = ".//xls/att.xls";
     private String OUTFILE = ".//";
@@ -55,11 +56,11 @@ public class AttToExcel {
             wb = Workbook.createWorkbook(new File(OUTFILE), template);
         } catch (IOException e) {
             sb.setText("Ошибка " + e.getLocalizedMessage());
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
             return false;
         } catch (BiffException ex) {
             sb.setText("Ошибка " + ex.getLocalizedMessage());
-            log.out(ex.getLocalizedMessage());
+            LOG.info(ex.getLocalizedMessage());
             return false;
         }
         return true;
@@ -83,7 +84,7 @@ public class AttToExcel {
             } else {
             }
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -144,7 +145,7 @@ public class AttToExcel {
                 }
             }
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -195,7 +196,7 @@ public class AttToExcel {
                 channelPoints.put(CHANNELS[i], points);
             }
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -226,7 +227,7 @@ public class AttToExcel {
                     + "WHERE CHANNEL=? AND VALUE=? ORDER BY NUM",
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            //load P
+            //load data
             channels.clear();
             for (Integer channel: channelPoints.keySet()) {
                 HashMap p = new HashMap();
@@ -240,45 +241,24 @@ public class AttToExcel {
                         CalibrationData cb = new CalibrationData();
                         cb.setChannel(channel);
                         cb.setValue((Double)point);
-                        while (result.next()) {
+                        while (result.next()) { //point number
                             cb.add(1);
                             try {
                                 cb.setResult(result.getDouble(2), result.getInt(1));
                             } catch (Exception e)
                             {
-                                e.printStackTrace();
+                                LOG.info(e.getLocalizedMessage());
                             }
                         }
+                        System.out.println("channel " + channel + " point " + point + " numbers " + cb.getDataCount());
                         p.put(point, cb);
                     }
                     channels.put(channel,p);
                 }
             }
-//            //load  T
-//            for (int ch = 0; ch < Tch.length; ch++) {
-//                for (int val = 0; val < Tval.size(); val++) {
-//                    loadData.setInt(1, Tch[ch]);
-//                    loadData.setDouble(2, Tval.get(val));
-//                    result = loadData.executeQuery();
-//                    result.beforeFirst();
-//                    if (result.next()) {
-//                        result.beforeFirst();
-//                        this.channels.add(new CalibrationData());
-//                        this.channels.lastElement().setChannel(Tch[ch]);
-//                        this.channels.lastElement().setValue(Tval.get(val));
-//                        while (result.next()) {
-//                            this.channels.lastElement().add(1);
-//                            this.channels.lastElement().setResult(result.getDouble(4), result.getInt(2));
-//                        }
-////                        this.channels.lastElement().set();
-//                    }
-//                }
-//            }
-
+            LOG.info("loaded " + channels.size() + " channels for attestation");
         } catch (Exception e) {
-            e.printStackTrace();
-            log.out(e.getLocalizedMessage());
-        } finally {
+            LOG.info(e.getLocalizedMessage());
         }
     }
 

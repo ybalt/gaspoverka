@@ -1,16 +1,16 @@
 package gaspoverka.calibration;
 
 import gaspoverka.memDB;
-import gaspoverka.util.Log;
 import gaspoverka.util.RoundFactory;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Calibration {
 
     memDB db = memDB.getInstance();
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static Connection conn;
     private Vector<CalibrationPoint> points;
     private final double[] A0Points;
@@ -89,7 +89,7 @@ public class Calibration {
                 calcCalibrationData();
             }
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
 
     }
@@ -156,7 +156,7 @@ public class Calibration {
             connect();
             PreparedStatement delData = conn.prepareStatement("DELETE FROM CALIBRATION "
                     + "WHERE CHANNEL=?");
-            log.out("delete calibration data on channel " + getChannel());
+            LOG.info("delete calibration data on channel " + getChannel());
             delData.setInt(1, this.getChannel());
             delData.executeUpdate();
             delData.close();
@@ -173,7 +173,7 @@ public class Calibration {
                         saveData.setDouble(i + 2, A0Points[i]);
                         acal = acal + " " + A0Points[i];
                     }
-                    log.out("save calibration data on channel: " + getChannel() + "with:" + acal);
+                    LOG.info("save calibration data on channel: " + getChannel() + "with:" + acal);
                     saveData.executeUpdate();
                     saveData.close();
                 }
@@ -190,7 +190,7 @@ public class Calibration {
                         saveData.setDouble(3, this.getPoints().get(i).getX());
                         saveData.setDouble(4, this.getPoints().get(i).getY());
                         saveData.setDouble(5, this.getPoints().get(i).getYS());
-                        log.out("save calibration data on channel " + getChannel() + "with "
+                        LOG.info("save calibration data on channel " + getChannel() + "with "
                                 + "point: " + this.getPoints().get(i).getPoint()
                                 + "X: " + this.getPoints().get(i).getX()
                                 + "Y: " + this.getPoints().get(i).getY()
@@ -199,7 +199,7 @@ public class Calibration {
                         if (result == 0) {
                             conn.rollback();
                             JOptionPane.showMessageDialog(null, "Невозможно обновить базу данных");
-                            log.out("unable to write to db, rollback");
+                            LOG.info("unable to write to db, rollback");
                             return;
                         }
                     }
@@ -209,11 +209,11 @@ public class Calibration {
         } catch (Exception e) {
             try {
                 conn.rollback();
-                log.out(e.getLocalizedMessage());
+                LOG.info(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
                 return;
             } catch (Exception ej) {
-                log.out(e.getLocalizedMessage());
+                LOG.info(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно");
                 return;
             }
@@ -222,7 +222,7 @@ public class Calibration {
             conn.commit();
             db.write();
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
 
     }
@@ -242,7 +242,7 @@ public class Calibration {
             }
             if (value >= (points.get(A).getY() + k1)
                     && value <= (points.get(B).getY() + k2)) {
-                //log.out("PDcal: value:" + value + "\n" +
+                //LOG.info("PDcal: value:" + value + "\n" +
                 //        "PDcal: A:" + (points.get(A).getY() + k1) + "\n" +
                 //        "PDcal: B:" + (points.get(B).getY() + k2));
                 return points.get(A).getK2() * value + points.get(A).getB2();

@@ -7,6 +7,7 @@ import gaspoverka.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jxl.CellType;
 import jxl.write.Label;
@@ -20,7 +21,7 @@ import jxl.write.Number;
 public class PovToExcel {
 
     memDB db = memDB.getInstance();
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String template_file = ".//xls/pov.xls";
     String out_file = ".//";
     private static Workbook template;
@@ -48,10 +49,10 @@ public class PovToExcel {
             template = Workbook.getWorkbook(new File(template_file));
             wb = Workbook.createWorkbook(out, template);
         } catch (IOException e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
             return false;
         } catch (BiffException e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
             return false;
         }
         return true;
@@ -66,7 +67,7 @@ public class PovToExcel {
             } else {
             }
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -208,7 +209,7 @@ public class PovToExcel {
             }
 
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -218,7 +219,7 @@ public class PovToExcel {
             wb.close();
             JOptionPane.showMessageDialog(null, "Отчет записан в " + out.getAbsolutePath());
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 

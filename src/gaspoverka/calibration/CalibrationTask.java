@@ -2,14 +2,14 @@ package gaspoverka.calibration;
 
 import com.icpdas.comm.Comm;
 import com.icpdas.comm.IoBuf;
-import gaspoverka.util.Log;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 
 public class CalibrationTask extends Thread {
 
     IoBuf buf;
-    public static Log log = Log.getInstance();
-    Comm comm;
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static Comm comm;
     //private Channel channel;
     private final Attestation att;
     public int count;
@@ -21,13 +21,18 @@ public class CalibrationTask extends Thread {
         this.time = time;
         this.delay = delay;
         buf = new IoBuf();
-        comm = new Comm();
         this.att = att;
         this.sb = sb;
     }
 
     @Override
     public synchronized void run() {
+        try {
+            comm = new Comm(); }
+        catch (Exception e) {
+            LOG.info(e.getLocalizedMessage());
+            return;
+        }
         int rev = -1;
         double value = 0;
         rev = comm.open(PORT, 115200, Comm.DATABITS_8, Comm.PARITY_NONE, Comm.STOPBITS_1);
@@ -84,7 +89,7 @@ public class CalibrationTask extends Thread {
             }
         } catch (Exception e) {
             result = 0;
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
         return result;
     }

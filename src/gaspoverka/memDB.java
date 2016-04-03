@@ -1,16 +1,16 @@
 package gaspoverka;
 
-import gaspoverka.util.Log;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.hsqldb.jdbc.JDBCDataSource;
 
 public class memDB {
 
     private static memDB _instance = null;
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     String db_file = ".//db//database";
     String db_mem = "mem:tempdb";
     private Connection filedb;
@@ -32,7 +32,7 @@ public class memDB {
 //            to.commit();
 
         } catch (SQLException ex2) {
-            log.out(ex2.getLocalizedMessage());
+            LOG.info(ex2.getLocalizedMessage());
             JOptionPane.showMessageDialog(null, "Ошибка открытия базы данных");
             System.exit(0);
         }
@@ -131,7 +131,7 @@ public class memDB {
             filedb.close();
             filedb = ds_from.getConnection("sa", "");
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 

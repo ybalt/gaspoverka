@@ -3,16 +3,16 @@ package gaspoverka.calibration;
 import gaspoverka.memDB;
 import gaspoverka.util.Channel;
 import gaspoverka.util.Config;
-import gaspoverka.util.Log;
 import java.sql.*;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 public class Attestation {
 
-    //private static final String db_result = ".//db//att_result";
-    public static Log log = Log.getInstance();
+    private static final String db_result = ".//db//att_result";
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     memDB db = memDB.getInstance();
     private static Connection conn;
     private AbstractTableModel tm;
@@ -93,7 +93,7 @@ public class Attestation {
                 result = delData.executeUpdate();
                 delData.close();
             } catch (Exception e) {
-                log.out(e.getLocalizedMessage());
+                LOG.info(e.getLocalizedMessage());
             }
 
             PreparedStatement saveData = conn.prepareStatement("INSERT INTO ATT_RESULT "
@@ -119,11 +119,11 @@ public class Attestation {
         } catch (Exception e) {
             try {
                 conn.rollback();
-                log.out(e.getLocalizedMessage());
+                LOG.info(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
                 return;
             } catch (Exception ej) {
-                log.out(e.getLocalizedMessage());
+                LOG.info(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно");
                 return;
             }
@@ -132,7 +132,7 @@ public class Attestation {
             conn.commit();
             db.write();
         } catch (Exception e) {
-            log.out(e.getLocalizedMessage());            
+            LOG.info(e.getLocalizedMessage());            
         }
     }
 

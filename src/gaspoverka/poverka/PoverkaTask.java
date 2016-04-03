@@ -5,10 +5,11 @@ import com.icpdas.comm.IoBuf;
 import gaspoverka.util.Log;
 import java.awt.Color;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 public class PoverkaTask extends Thread {
 
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     static final int RATE = 100;
     static final int PORT = 1;
     private Poverka poverka;
@@ -92,13 +93,13 @@ public class PoverkaTask extends Thread {
                     poverka.setDataPovC(counter, (newsec - oldsec), i);
                     poverka.frame.SB.setText("Поверка закончена, общее время исполнения: " + ((newsec - oldsec)) + " мсек, импульсов " + (poverka.R.getResult(false, counter) - poverka.R.getResult(false, 0)));
                     poverka.tm.fireTableChanged(null);
-                    log.out("poverka end with time " + ((newsec - oldsec)));
+                    LOG.info("poverka end with time " + ((newsec - oldsec)));
                 }
             }
 
         } catch (Exception e) {
             super.interrupt();
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
             poverka.frame.SB.setText("Поверка прервана");
             return;
         } finally {
@@ -132,7 +133,7 @@ public class PoverkaTask extends Thread {
 
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -154,7 +155,7 @@ public class PoverkaTask extends Thread {
             poverka.getC().setRawResults(Long.parseLong(buf.szReceive.substring(1, 9), 16), counter);
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -180,7 +181,7 @@ public class PoverkaTask extends Thread {
 
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -202,7 +203,7 @@ public class PoverkaTask extends Thread {
             poverka.getR().setRawResults(Long.parseLong(buf.szReceive.substring(1, 9), 16), counter);
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -295,7 +296,7 @@ public class PoverkaTask extends Thread {
             }
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
-            log.out(e.getLocalizedMessage());
+            LOG.info(e.getLocalizedMessage());
         }
     }
 

@@ -3,41 +3,22 @@ package gaspoverka.util;
 import java.util.logging.*;
 
 public class Log {
+    static private FileHandler logFile;
+    static private ConsoleHandler console;
 
-    private static Log _instance = null;
-    static final String filename = "./console.log";
-    static final Logger logger = Logger.getLogger(filename);
-    FileHandler logFile;
-
-    public Log() {
+    static public void setup() {
         try {
-            logFile = new FileHandler(filename);
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logFile = new FileHandler("console.log");
+            console = new ConsoleHandler();
             logFile.setFormatter(new SimpleFormatter());
+            console.setFormatter(new SimpleFormatter());
             logger.addHandler(logFile);
-            if (logger != null) {
-                //logger.log(Level.INFO, "Log enable");
-            }
+            logger.addHandler(console);
+            logger.setLevel(Level.INFO);
+            logger.log(Level.INFO, "Log setup");
         } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    public final void out(String str) {
-        try {
-            if (logger != null) {
-                //logger.log(Level.INFO, str);
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    public final Logger from() {
-                return logger;
-    }
-
-    public synchronized static Log getInstance() {
-        if (_instance == null) {
-            _instance = new Log();
-        }
-        return _instance;
     }
 }

@@ -7,11 +7,11 @@ import gaspoverka.util.Config;
 import gaspoverka.util.Dev;
 import gaspoverka.util.Log;
 import gaspoverka.util.RoundFactory;
+import java.awt.HeadlessException;
 import java.sql.*;
 import java.util.*;
 import java.sql.Date;
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
@@ -19,8 +19,8 @@ import javax.swing.table.AbstractTableModel;
 public class Poverka {
 
     memDB db = memDB.getInstance();
-    public static Log log = Log.getInstance();
-    private String db_name = " POV_RESULT ";
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final String db_name = " POV_RESULT ";
     private Connection conn;
     //izmerenie info
     private long PovNum;
@@ -41,7 +41,7 @@ public class Poverka {
     Channel C;
     Channel CT; //counter
     Channel CP;
-    Channel T; //environment
+    Channel T;  //environment
     Channel P;
     Calibration PD; //delta
     boolean isDeltaT;
@@ -281,11 +281,11 @@ public class Poverka {
         } catch (Exception e) {
             try {
                 conn.rollback();
-                //fin();
+                LOG.info(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
                 return;
             } catch (Exception ej) {
-                //fin();
+                LOG.info(ej.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно. Обартитесь к разработчику");
                 return;
             }
@@ -293,9 +293,9 @@ public class Poverka {
         try {
             conn.commit();
             db.write();
-            JOptionPane.showMessageDialog(null, "Запись в базу произведена");
+            JOptionPane.showMessageDialog(null, "Обновление базы успешно произведено");
         } catch (Exception exc) {
-            exc.printStackTrace();
+            LOG.info(exc.getLocalizedMessage());
             //fin();
         }
     }
@@ -310,7 +310,7 @@ public class Poverka {
                     + "WHERE POVNUM=?");
 
             delData.setLong(1, this.getPovNum());
-            result = delData.executeUpdate();
+            delData.executeUpdate();
             delData.close();
             //save
             PreparedStatement saveData = conn.prepareStatement("INSERT INTO " + db_name
@@ -356,25 +356,36 @@ public class Poverka {
                 }
                 saveData.close();
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             try {
                 conn.rollback();
-                ex.printStackTrace();
+                LOG.info(ex.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
                 return;
             } catch (Exception ej) {
-                ej.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно. Обартитесь к разработчику");
+                LOG.info(ej.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Неизвестная ошибка. Обратитесь к разработчику");
+                return;
+            }
+        } catch (HeadlessException ex) {
+            try {
+                conn.rollback();
+                LOG.info(ex.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Ошибка драйвера базы данных");
+                return;
+            } catch (Exception ej) {
+                LOG.info(ej.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Неизвестная ошибка. Обратитесь к разработчику");
                 return;
             }
         }
         try {
             conn.commit();
             db.write();
-            JOptionPane.showMessageDialog(null, "Запись в базу произведена");
+            JOptionPane.showMessageDialog(null, "Обновление базы успешно завершено");
         } catch (Exception exc) {
-            exc.printStackTrace();
-            //fin();
+            LOG.info(exc.getLocalizedMessage());
+            JOptionPane.showMessageDialog(null, "Ошибка обновления/записи");
         }
     }
 
@@ -389,6 +400,7 @@ public class Poverka {
                     + "ORDER BY POVNUM";
             Statement load = conn.createStatement();
             result = load.executeQuery(sql);
+            //result.beforeFirst();
             while (result.next()) {
                 Poverka pov = new Poverka();
                 pov.setPovNum(result.getLong(1));
@@ -401,7 +413,9 @@ public class Poverka {
             }
             //fin();
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ошибка получения списка поверок");
+            LOG.info(e.getLocalizedMessage());
+            list.add(new Poverka());
             return list;
         }
 
@@ -461,7 +475,8 @@ public class Poverka {
             loadData.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ошибка загрузки результата");
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -477,14 +492,15 @@ public class Poverka {
                 return result.getLong(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ошибка получения последней поверки");
+            LOG.info(e.getLocalizedMessage());
         }
         return 0;
     }
 
     public void startPov(int time, double value, int rtime, int row, PoverkaFrame frame) {
-        log.out("poverka start");
-        log.out("RefType=" + Ref.getType() + " CountType=" + Count.getType() + " time=" + time);
+        LOG.info("poverka start");
+        LOG.info("RefType=" + Ref.getType() + " CountType=" + Count.getType() + " time=" + time);
         this.row = row;
         this.frame = frame;
         thread = new Thread(new PoverkaTask(this, time, value, rtime));
@@ -553,7 +569,7 @@ public class Poverka {
         }
         RPi = RPi / counter;
         RTi = RTi / counter;
-        log.out("Refrence data: imp.count=" + RNoN + " V=" + RV + " G=" + Rg + " Vy=" + RVy + " Gy=" + Rgy + " P=" + RPi + " PD=" + PD.getCalibrated(Rgy) + " T=" + RTi);
+        LOG.info("Refrence data: imp.count=" + RNoN + " V=" + RV + " G=" + Rg + " Vy=" + RVy + " Gy=" + Rgy + " P=" + RPi + " PD=" + PD.getCalibrated(Rgy) + " T=" + RTi);
         tm.setValueAt(Rgy, row + mes, 2);
         tm.setValueAt(RPi, row + mes, 3);
         tm.setValueAt(RTi, row + mes, 4);
@@ -574,7 +590,7 @@ public class Poverka {
 
         CV = CNoN / Count.getIC();
         Cg = ((CV * 3600) / (double) time) * 1000;
-        //log.out("Refrence data: imp.count=" + CNoN + " V=" + CV + " G=" + Cg + " P=" + CPi + " T=" + CTi);
+        //LOG.info("Refrence data: imp.count=" + CNoN + " V=" + CV + " G=" + Cg + " P=" + CPi + " T=" + CTi);
         if ((C.getResult(false, counter) - C.getResult(false, counter - 1)) >= 1) {
             tm.setValueAt(Cg, row + mes, 6);
             tm.setValueAt(CV, row + mes, 9);
@@ -603,6 +619,6 @@ public class Poverka {
     }
 
     private void connect() {
-        conn = db.connTo();
+        conn = db.connFile();
     }
 }

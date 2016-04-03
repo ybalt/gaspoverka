@@ -1,20 +1,20 @@
 package gaspoverka.calibration;
 
 import gaspoverka.memDB;
-import gaspoverka.util.Log;
 import gaspoverka.util.RoundFactory;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Calibration {
 
     memDB db = memDB.getInstance();
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static Connection conn;
     private Vector<CalibrationPoint> points;
-    private double[] A0Points;
-    private int channel;
+    private final double[] A0Points;
+    private final int channel;
     RoundFactory rf = RoundFactory.getInstance();
 
     public Vector<CalibrationPoint> getPoints() {
@@ -29,8 +29,8 @@ public class Calibration {
         return channel;
     }
 
-    public Calibration(int Channel) {
-        this.channel = Channel;
+    public Calibration(int channel) {
+        this.channel = channel;
         points = new Vector<CalibrationPoint>();
         A0Points = new double[5];
     }
@@ -46,9 +46,8 @@ public class Calibration {
     }
 
     public void loadCalibrationData() {
-        ResultSet result = null;
-
         try {
+            ResultSet result;
             connect();
             if ((channel == 1) || (channel == 2) || (channel == 3)) {
                 PreparedStatement loadData = conn.prepareStatement("SELECT "
@@ -64,7 +63,7 @@ public class Calibration {
 //                points.clear();
                 if (result.next()) {
                     for (int i = 0; i < 5; i++) {
-                        A0Points[i] = result.getDouble(i+1);
+                        A0Points[i] = result.getDouble(i + 1);
                     }
                 }
             } else {
@@ -90,13 +89,13 @@ public class Calibration {
                 calcCalibrationData();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.info(e.getLocalizedMessage());
         }
 
     }
 
     public void calcCalibrationData() {
-        RoundFactory rf = new RoundFactory();
+        RoundFactory localrf = new RoundFactory();
         for (int A = 0; A < points.size() - 1; A++) {
 
             int B = A + 1;
@@ -129,18 +128,18 @@ public class Calibration {
                     points.get(A).setB2(B2);
 
                     u1 = new String();
-                    u1 += "Y=" + rf.Rounded(K1) + "*X";
+                    u1 += "Y=" + localrf.Rounded(K1) + "*X";
                     if (B1 >= 0) {
-                        u1 += "+" + rf.Rounded(B1);
+                        u1 += "+" + localrf.Rounded(B1);
                     } else {
-                        u1 += rf.Rounded(B1);
+                        u1 += localrf.Rounded(B1);
                     }
                     u2 = new String();
-                    u2 = "Y=" + rf.Rounded(K2) + "*X";
+                    u2 = "Y=" + localrf.Rounded(K2) + "*X";
                     if (B2 >= 0) {
-                        u2 += "+" + rf.Rounded(B2);
+                        u2 += "+" + localrf.Rounded(B2);
                     } else {
-                        u2 += rf.Rounded(B2);
+                        u2 += localrf.Rounded(B2);
                     }
                     points.get(A).setUr1(u1);
                     points.get(A).setUr2(u2);
@@ -153,16 +152,15 @@ public class Calibration {
     public void saveCalibrationData() {
         int result;
 
-
         try {
             connect();
+            PreparedStatement delData = conn.prepareStatement("DELETE FROM CALIBRATION "
+                    + "WHERE CHANNEL=?");
+            LOG.info("delete calibration data on channel " + getChannel());
+            delData.setInt(1, this.getChannel());
+            delData.executeUpdate();
+            delData.close();
             if ((this.channel == 1) || (this.channel == 2) || (this.channel == 3)) {
-                PreparedStatement delData = conn.prepareStatement("DELETE FROM ACALIBRATION "
-                        + "WHERE CHANNEL=?");
-
-                delData.setInt(1, this.getChannel());
-                result = delData.executeUpdate();
-                delData.close();
 
                 PreparedStatement saveData = conn.prepareStatement("INSERT INTO ACALIBRATION "
                         + "(CHANNEL, A1, A2, A3, A4, A5) "
@@ -170,19 +168,16 @@ public class Calibration {
 
                 if (A0Points != null) {
                     saveData.setInt(1, this.getChannel());
+                    String acal = "";
                     for (int i = 0; i < 5; i++) {
                         saveData.setDouble(i + 2, A0Points[i]);
+                        acal = acal + " " + A0Points[i];
                     }
-                    result = saveData.executeUpdate();
+                    LOG.info("save calibration data on channel: " + getChannel() + "with:" + acal);
+                    saveData.executeUpdate();
+                    saveData.close();
                 }
             } else {
-
-                PreparedStatement delData = conn.prepareStatement("DELETE FROM CALIBRATION "
-                        + "WHERE CHANNEL=?");
-
-                delData.setInt(1, this.getChannel());
-                result = delData.executeUpdate();
-                delData.close();
 
                 PreparedStatement saveData = conn.prepareStatement("INSERT INTO CALIBRATION "
                         + "(CHANNEL, POINT, X, Y, YS) "
@@ -195,10 +190,16 @@ public class Calibration {
                         saveData.setDouble(3, this.getPoints().get(i).getX());
                         saveData.setDouble(4, this.getPoints().get(i).getY());
                         saveData.setDouble(5, this.getPoints().get(i).getYS());
+                        LOG.info("save calibration data on channel " + getChannel() + "with "
+                                + "point: " + this.getPoints().get(i).getPoint()
+                                + "X: " + this.getPoints().get(i).getX()
+                                + "Y: " + this.getPoints().get(i).getY()
+                                + "YS: " + this.getPoints().get(i).getYS());
                         result = saveData.executeUpdate();
                         if (result == 0) {
                             conn.rollback();
                             JOptionPane.showMessageDialog(null, "Невозможно обновить базу данных");
+                            LOG.info("unable to write to db, rollback");
                             return;
                         }
                     }
@@ -208,9 +209,11 @@ public class Calibration {
         } catch (Exception e) {
             try {
                 conn.rollback();
+                LOG.info(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
                 return;
             } catch (Exception ej) {
+                LOG.info(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно");
                 return;
             }
@@ -219,6 +222,7 @@ public class Calibration {
             conn.commit();
             db.write();
         } catch (Exception e) {
+            LOG.info(e.getLocalizedMessage());
         }
 
     }
@@ -236,9 +240,9 @@ public class Calibration {
             if (B == (points.size() - 1)) {
                 k2 = +0.5;
             }
-            if (value >= (points.get(A).getY() + k1) &&
-                value <= (points.get(B).getY() + k2)) {
-                //log.out("PDcal: value:" + value + "\n" +
+            if (value >= (points.get(A).getY() + k1)
+                    && value <= (points.get(B).getY() + k2)) {
+                //LOG.info("PDcal: value:" + value + "\n" +
                 //        "PDcal: A:" + (points.get(A).getY() + k1) + "\n" +
                 //        "PDcal: B:" + (points.get(B).getY() + k2));
                 return points.get(A).getK2() * value + points.get(A).getB2();
@@ -248,6 +252,6 @@ public class Calibration {
     }
 
     private void connect() {
-        conn = db.connTo();
+        conn = db.connFile();
     }
 }

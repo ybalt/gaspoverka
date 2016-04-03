@@ -3,12 +3,16 @@ package gaspoverka;
 import gaspoverka.poverka.Poverka;
 import gaspoverka.poverka.PoverkaPoint;
 import gaspoverka.util.Config;
+import gaspoverka.util.Log;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jxl.CellType;
 import jxl.write.Label;
 import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import jxl.write.WritableCell;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -17,6 +21,7 @@ import jxl.write.Number;
 public class PovToExcel {
 
     memDB db = memDB.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String template_file = ".//xls/pov.xls";
     String out_file = ".//";
     private static Workbook template;
@@ -31,8 +36,8 @@ public class PovToExcel {
 
     private boolean open() {
         try {
-            if (config.getConfig().getProperty("out-dir") != null) {
-                out_file = config.getConfig().getProperty("out-dir");
+            if (Config.getConfig().getProperty("out-dir") != null) {
+                out_file = Config.getConfig().getProperty("out-dir");
             }
             out_file = out_file + pov.getDevNum()
                     + "-"
@@ -43,8 +48,11 @@ public class PovToExcel {
             out = new File(out_file);
             template = Workbook.getWorkbook(new File(template_file));
             wb = Workbook.createWorkbook(out, template);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOG.info(e.getLocalizedMessage());
+            return false;
+        } catch (BiffException e) {
+            LOG.info(e.getLocalizedMessage());
             return false;
         }
         return true;
@@ -59,7 +67,7 @@ public class PovToExcel {
             } else {
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -201,7 +209,7 @@ public class PovToExcel {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.info(e.getLocalizedMessage());
         }
     }
 
@@ -211,7 +219,7 @@ public class PovToExcel {
             wb.close();
             JOptionPane.showMessageDialog(null, "Отчет записан в " + out.getAbsolutePath());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.info(e.getLocalizedMessage());
         }
     }
 

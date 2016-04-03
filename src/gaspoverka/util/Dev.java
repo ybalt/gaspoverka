@@ -3,13 +3,14 @@ package gaspoverka.util;
 import gaspoverka.memDB;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Dev {
 
     private Connection conn;
     memDB db = memDB.getInstance();
-    public static Log log = Log.getInstance();
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private String Type;
     private int Channel;
     private int UD;
@@ -494,8 +495,8 @@ public class Dev {
         try {
             PreparedStatement delDev = conn.prepareStatement("DELETE FROM DEV "
                     + "WHERE TYPE = ?");
-            log.from().entering(this.Type, "delDev");
-            log.out(delDev.toString());
+            
+            LOG.info(delDev.toString());
             if (getType() != null) {
                 delDev.setString(1, getType());
             } else {
@@ -574,6 +575,6 @@ public class Dev {
     }
 
     private void connect() {
-        conn = db.connTo();
+        conn = db.connFile();
     }
 }

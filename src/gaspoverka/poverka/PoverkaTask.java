@@ -40,7 +40,7 @@ public class PoverkaTask extends Thread {
             if (time != 0 && measures != 0) {
                 getEnv();
                 for (int i = 0; i < measures; i++) {
-                    
+
                     counter = 0;
                     setC(0);//stop ref
                     setR(0);//stop counter
@@ -73,8 +73,8 @@ public class PoverkaTask extends Thread {
                         cursec = getCurTime();
                         getEnv();
                         poverka.frame.SB.setText("Время до завершения: " + ((time / 1000) - ((cursec - oldsec) / 1000)) + " сек");
-                        poverka.setDataPovR(counter, (cursec - oldsec),i);
-                        poverka.setDataPovC(counter, (cursec - oldsec),i);
+                        poverka.setDataPovR(counter, (cursec - oldsec), i);
+                        poverka.setDataPovC(counter, (cursec - oldsec), i);
                         counter++;
                         Thread.sleep(rtime);
                     }
@@ -88,8 +88,8 @@ public class PoverkaTask extends Thread {
                     getDDataR(counter);
                     getEnv();
                     newsec = getCurTime();
-                    poverka.setDataPovR(counter, (newsec - oldsec),i);
-                    poverka.setDataPovC(counter, (newsec - oldsec),i);
+                    poverka.setDataPovR(counter, (newsec - oldsec), i);
+                    poverka.setDataPovC(counter, (newsec - oldsec), i);
                     poverka.frame.SB.setText("Поверка закончена, общее время исполнения: " + ((newsec - oldsec)) + " мсек, импульсов " + (poverka.R.getResult(false, counter) - poverka.R.getResult(false, 0)));
                     poverka.tm.fireTableChanged(null);
                     log.out("poverka end with time " + ((newsec - oldsec)));
@@ -98,9 +98,8 @@ public class PoverkaTask extends Thread {
 
         } catch (Exception e) {
             super.interrupt();
-            //e.printStackTrace();
+            log.out(e.getLocalizedMessage());
             poverka.frame.SB.setText("Поверка прервана");
-            log.out("poverka stopped");
             return;
         } finally {
             poverka.frame.startButton.setEnabled(true);
@@ -133,6 +132,7 @@ public class PoverkaTask extends Thread {
 
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
+            log.out(e.getLocalizedMessage());
         }
     }
 
@@ -154,6 +154,7 @@ public class PoverkaTask extends Thread {
             poverka.getC().setRawResults(Long.parseLong(buf.szReceive.substring(1, 9), 16), counter);
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
+            log.out(e.getLocalizedMessage());
         }
     }
 
@@ -177,9 +178,9 @@ public class PoverkaTask extends Thread {
             rev = comm.getSendReceiveCmd(buf);
             poverka.getRT().setRawResults(Double.parseDouble(buf.szReceive.substring(1, 7)), counter);
 
-
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
+            log.out(e.getLocalizedMessage());
         }
     }
 
@@ -201,6 +202,7 @@ public class PoverkaTask extends Thread {
             poverka.getR().setRawResults(Long.parseLong(buf.szReceive.substring(1, 9), 16), counter);
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
+            log.out(e.getLocalizedMessage());
         }
     }
 
@@ -279,8 +281,6 @@ public class PoverkaTask extends Thread {
             //buf.szSend = "#01" + String.valueOf(poverka.P.getAdress()[1]);
             //rev = comm.getSendReceiveCmd(buf);
             //poverka.P.setRawResults(Double.parseDouble(buf.szReceive.substring(1, 7)), 0);
-
-
             poverka.Ttext.setText(String.valueOf(poverka.T.getResult(true)));
             //poverka.Ptext.setText(String.valueOf(poverka.P.getResult(true)));
             if (poverka.T.getResult(true) > 22 && poverka.T.getResult(true) < 18) {
@@ -295,6 +295,7 @@ public class PoverkaTask extends Thread {
             }
         } catch (Exception e) {
             poverka.frame.SB.setText("Ошибка получения данных");
+            log.out(e.getLocalizedMessage());
         }
     }
 

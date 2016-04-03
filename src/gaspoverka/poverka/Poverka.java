@@ -7,11 +7,10 @@ import gaspoverka.util.Config;
 import gaspoverka.util.Dev;
 import gaspoverka.util.Log;
 import gaspoverka.util.RoundFactory;
+import java.awt.HeadlessException;
 import java.sql.*;
 import java.util.*;
 import java.sql.Date;
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
@@ -20,7 +19,7 @@ public class Poverka {
 
     memDB db = memDB.getInstance();
     public static Log log = Log.getInstance();
-    private String db_name = " POV_RESULT ";
+    private final String db_name = " POV_RESULT ";
     private Connection conn;
     //izmerenie info
     private long PovNum;
@@ -41,7 +40,7 @@ public class Poverka {
     Channel C;
     Channel CT; //counter
     Channel CP;
-    Channel T; //environment
+    Channel T;  //environment
     Channel P;
     Calibration PD; //delta
     boolean isDeltaT;
@@ -281,11 +280,11 @@ public class Poverka {
         } catch (Exception e) {
             try {
                 conn.rollback();
-                //fin();
+                log.out(e.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
                 return;
             } catch (Exception ej) {
-                //fin();
+                log.out(ej.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно. Обартитесь к разработчику");
                 return;
             }
@@ -293,9 +292,9 @@ public class Poverka {
         try {
             conn.commit();
             db.write();
-            JOptionPane.showMessageDialog(null, "Запись в базу произведена");
+            JOptionPane.showMessageDialog(null, "Обновление базы успешно произведено");
         } catch (Exception exc) {
-            exc.printStackTrace();
+            log.out(exc.getLocalizedMessage());
             //fin();
         }
     }
@@ -310,7 +309,7 @@ public class Poverka {
                     + "WHERE POVNUM=?");
 
             delData.setLong(1, this.getPovNum());
-            result = delData.executeUpdate();
+            delData.executeUpdate();
             delData.close();
             //save
             PreparedStatement saveData = conn.prepareStatement("INSERT INTO " + db_name
@@ -356,25 +355,36 @@ public class Poverka {
                 }
                 saveData.close();
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             try {
                 conn.rollback();
-                ex.printStackTrace();
+                log.out(ex.getLocalizedMessage());
                 JOptionPane.showMessageDialog(null, "Ошибка записи - база данных возвращена в исходное состояние");
                 return;
             } catch (Exception ej) {
-                ej.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Ошибка записи - состояние базы данных неизвестно. Обартитесь к разработчику");
+                log.out(ej.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Неизвестная ошибка. Обратитесь к разработчику");
+                return;
+            }
+        } catch (HeadlessException ex) {
+            try {
+                conn.rollback();
+                log.out(ex.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Ошибка драйвера базы данных");
+                return;
+            } catch (Exception ej) {
+                log.out(ej.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Неизвестная ошибка. Обратитесь к разработчику");
                 return;
             }
         }
         try {
             conn.commit();
             db.write();
-            JOptionPane.showMessageDialog(null, "Запись в базу произведена");
+            JOptionPane.showMessageDialog(null, "Обновление базы успешно завершено");
         } catch (Exception exc) {
-            exc.printStackTrace();
-            //fin();
+            log.out(exc.getLocalizedMessage());
+            JOptionPane.showMessageDialog(null, "Ошибка обновления/записи");
         }
     }
 
@@ -389,6 +399,7 @@ public class Poverka {
                     + "ORDER BY POVNUM";
             Statement load = conn.createStatement();
             result = load.executeQuery(sql);
+            //result.beforeFirst();
             while (result.next()) {
                 Poverka pov = new Poverka();
                 pov.setPovNum(result.getLong(1));
@@ -401,7 +412,9 @@ public class Poverka {
             }
             //fin();
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ошибка получения списка поверок");
+            log.out(e.getLocalizedMessage());
+            list.add(new Poverka());
             return list;
         }
 
@@ -461,7 +474,8 @@ public class Poverka {
             loadData.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ошибка загрузки результата");
+            log.out(e.getLocalizedMessage());
         }
     }
 
@@ -477,7 +491,8 @@ public class Poverka {
                 return result.getLong(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ошибка получения последней поверки");
+            log.out(e.getLocalizedMessage());
         }
         return 0;
     }
@@ -603,6 +618,6 @@ public class Poverka {
     }
 
     private void connect() {
-        conn = db.connMem();
+        conn = db.connFile();
     }
 }

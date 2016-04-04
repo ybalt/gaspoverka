@@ -249,7 +249,6 @@ public class AttToExcel {
                                 LOG.info(e.getLocalizedMessage());
                             }
                         }
-                        System.out.println("channel " + channel + " point " + point + " numbers " + cb.getDataCount());
                         p.put(point, cb);
                     }
                     channels.put(channel,p);

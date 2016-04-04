@@ -5,7 +5,6 @@ import gaspoverka.memDB;
 import gaspoverka.util.Channel;
 import gaspoverka.util.Config;
 import gaspoverka.util.Dev;
-import gaspoverka.util.Log;
 import gaspoverka.util.RoundFactory;
 import java.awt.HeadlessException;
 import java.sql.*;
@@ -190,7 +189,7 @@ public class Poverka {
     public Dev getCount() {
         return Count;
     }
-
+    //устанавливается поверяемый счетчик
     public void setCount(Dev Count) {
         this.Count = Count;
         C = new Channel(Count.getChannel());
@@ -201,7 +200,7 @@ public class Poverka {
     public Dev getRef() {
         return Ref;
     }
-
+    // устанавливается эталонный счетчик
     public void setRef(Dev Ref) {
         this.Ref = Ref;
         R = new Channel(Ref.getChannel());
@@ -527,6 +526,7 @@ public class Poverka {
         Rg = (RV / (time / 1000)) * 3600;
         //уточненный объем
         RVy = RNoN / R.getAO(Rg);
+        
         if (RP.getChannel() == 1 || RP.getChannel() == 2) {
             RPi = RPi - R.getResult(RVy, true) / 2;
         }
@@ -541,6 +541,9 @@ public class Poverka {
         frame.N.setText(String.valueOf(RNoN));
         frame.A.setText(String.valueOf(rf.Rounded(R.getAO(Rg))));
         frame.time.setText(String.valueOf(time));
+        LOG.info("Refrence izmerenie: imp.count=" + RNoN + " V=" + RV + " G=" + 
+                Rg + " Vy=" + RVy + " Gy=" + Rgy + " P=" + RPi + " getA0(Rg)=" + 
+                R.getAO(Rg) + " T=" + RTi + " time=" + time);
     }
 
     public void setDataPovR(int counter, double time, int mes) {
@@ -569,7 +572,10 @@ public class Poverka {
         }
         RPi = RPi / counter;
         RTi = RTi / counter;
-        LOG.info("Refrence data: imp.count=" + RNoN + " V=" + RV + " G=" + Rg + " Vy=" + RVy + " Gy=" + Rgy + " P=" + RPi + " PD=" + PD.getCalibrated(Rgy) + " T=" + RTi);
+        LOG.info("Refrence data: imp.count=" + RNoN + " V=" + RV + " G=" + Rg + 
+                " Vy=" + RVy + " Gy=" + Rgy + " P=" + RPi + " PD=" + 
+                PD.getCalibrated(Rgy) + " T=" + RTi + 
+                " R.getA0=" + R.getAO(Rg) + " time=" + time);
         tm.setValueAt(Rgy, row + mes, 2);
         tm.setValueAt(RPi, row + mes, 3);
         tm.setValueAt(RTi, row + mes, 4);
@@ -590,7 +596,7 @@ public class Poverka {
 
         CV = CNoN / Count.getIC();
         Cg = ((CV * 3600) / (double) time) * 1000;
-        //LOG.info("Refrence data: imp.count=" + CNoN + " V=" + CV + " G=" + Cg + " P=" + CPi + " T=" + CTi);
+        LOG.info("Counter data: imp.count=" + CNoN + " V=" + CV + " G=" + Cg + " P=" + CPi + " T=" + CTi);
         if ((C.getResult(false, counter) - C.getResult(false, counter - 1)) >= 1) {
             tm.setValueAt(Cg, row + mes, 6);
             tm.setValueAt(CV, row + mes, 9);
